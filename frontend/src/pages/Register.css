@@ -1,0 +1,38 @@
+form {
+    max-width: 300px; /* Or any width you prefer */
+    margin: auto;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px; /* Adds space between input fields */
+    border-radius: 5px; /* Adds rounded corners to input fields */
+  }
+  
+  input::placeholder {
+    color: #888;
+  }
+  
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff; /* Example blue color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  form p {
+    color: red;
+    font-size: 0.8em;
+  }
+  
