@@ -2,6 +2,13 @@
 
 const GridFsStorage = require('multer-gridfs-storage').GridFsStorage;
 const express = require('express');
+const cors = require('cors');
+// app.options('*', cors());
+// app.use(cors({
+//     origin: 'http://localhost:3000', // or your specific allowed domain
+//     methods: 'GET,POST,PUT,DELETE',
+//     credentials: true // to support session cookies from the browser
+//   }));
 const router = express.Router();
 
 // src/Utils to upload

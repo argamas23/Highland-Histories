@@ -6,8 +6,13 @@ const archiveRoutes = require('./routes/archiveRoutes');
 const app = express();
 const routes = require('./routes'); // Import routes
 
-
-
+const cors = require('cors');
+app.options('*', cors()); // Enable pre-flight across the board
+app.use(cors({
+  origin: 'http://localhost:3000', // or your specific allowed domain
+  methods: 'GET,POST,PUT,DELETE',
+  credentials: true // to support session cookies from the browser
+}));
 
 // mongoose.connect('yourMongoDBUrl', { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -39,6 +44,7 @@ mongoose.connect(mongoURI, {
 //Routes
 app.use('/',routes);
 app.use('/api/archives', archiveRoutes);
+
 
 // Sample GET route
 app.get('/', (req, res) => {
