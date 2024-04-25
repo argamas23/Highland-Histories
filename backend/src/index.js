@@ -1,12 +1,15 @@
 // index.js
-
+const { MongoClient, ServerApiVersion } = require('mongodb');
 const express = require('express');
 const mongoose = require('mongoose');
 const archiveRoutes = require('./routes/archiveRoutes');
 const app = express();
-const app = require('./routes'); // Import routes
+const routes = require('./routes'); // Import routes
 
-mongoose.connect('yourMongoDBUrl', { useNewUrlParser: true, useUnifiedTopology: true });
+
+
+
+// mongoose.connect('yourMongoDBUrl', { useNewUrlParser: true, useUnifiedTopology: true });
 
 // const port = process.env.PORT || 3001; // Use the environment port or 3001 if local
 
@@ -14,11 +17,27 @@ mongoose.connect('yourMongoDBUrl', { useNewUrlParser: true, useUnifiedTopology: 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Use your actual MongoDB URI
+const mongoURI = "mongodb+srv://aish:aish@dassa1.nyvfikg.mongodb.net/?retryWrites=true&w=majority&appName=dassA1";
+
+// Connect to MongoDB using Mongoose with additional options
+mongoose.connect(mongoURI, {
+  useNewUrlParser: true, 
+  useUnifiedTopology: true,
+  serverApi: ServerApiVersion.v1,
+  connectTimeoutMS: 30000, // Increase timeout to 30 seconds
+  socketTimeoutMS: 45000 // Increase socket timeout as well
+}).then(() => {
+  console.log('Successfully connected to MongoDB.');
+}).catch(err => {
+  console.error('Failed to connect to MongoDB', err);
+});
 // Connect to MongoDB
 // mongoose.connect('your-mongodb-connection-string', { useNewUrlParser: true, useUnifiedTopology: true });
 
 
 //Routes
+app.use('/',routes);
 app.use('/api/archives', archiveRoutes);
 
 // Sample GET route
