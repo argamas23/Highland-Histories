@@ -93,6 +93,157 @@ router.post('/api/archives/upload', handleFileUpload, saveFileDocument, respondS
 //     }
 // });
 
+// // PUT endpoint for updating file content or metadata
+// router.put('/api/archives/:id', upload.single('file'), async (req, res) => {
+//   try {
+//       const fileDoc = await File.findById(req.params.id);
+
+//       if (!fileDoc) {
+//           return res.status(404).send('File not found.');
+//       }
+
+//       // Update the file metadata or replace the file as needed
+//       fileDoc.filename = req.file.filename;
+//       fileDoc.contentType = req.file.mimetype;
+//       fileDoc.size = req.file.size;
+//       // Add any other metadata updates here
+
+//       await fileDoc.save();
+
+//       res.json({ message: "File updated successfully", fileDoc });
+//   } catch (error) {
+//       console.error('Error updating file:', error);
+//       res.status(500).send('Error updating file');
+//   }
+// });
+
+// // DELETE endpoint for deleting a file
+// router.delete('/api/archives/:id', async (req, res) => {
+//   try {
+//       const fileDoc = await File.findById(req.params.id);
+
+//       if (!fileDoc) {
+//           return res.status(404).send('File not found.');
+//       }
+
+//       // Delete the file from the filesystem or wherever it's stored
+//       fs.unlinkSync(fileDoc.path, (err) => {
+//           if (err) {
+//               console.error('Error deleting file from filesystem:', err);
+//               return res.status(500).send('Error deleting file');
+//           }
+//       });
+
+//       // Remove the file metadata from the database
+//       await fileDoc.remove();
+
+//       res.json({ message: "File deleted successfully" });
+//   } catch (error) {
+//       console.error('Error deleting file:', error);
+//       res.status(500).send('Error deleting file');
+//   }
+// });
+
+// // router.delete('/api/archives/:id', async (req, res) => {
+// //   try {
+// //     const fileDoc = await File.findById(req.params.id);
+// //     if (!fileDoc) {
+// //       return res.status(404).send('File not found.');
+// //     }
+
+// //     // Try to delete the file from the filesystem
+// //     const filePath = fileDoc.path;
+// //     if (fs.existsSync(filePath)) {
+// //       fs.unlinkSync(filePath);
+// //     } else {
+// //       console.warn('File not found on the filesystem, but will continue to delete metadata');
+// //     }
+
+// //     // Remove the file metadata from the database
+// //     await fileDoc.remove();
+// //     res.json({ message: "File deleted successfully" });
+// //   } catch (error) {
+// //     console.error('Error deleting file:', error);
+// //     res.status(500).send('Error deleting file');
+// //   }
+// // });
+
+// PUT endpoint for updating file content or metadata
+router.put('/api/archives/:id', upload.single('file'), async (req, res) => {
+  try {
+    const fileDoc = await File.findById(req.params.id);
+    if (!fileDoc) {
+      return res.status(404).send('File not found.');
+    }
+
+    // Check if there is a new file to replace the old one
+    if (req.file) {
+      // Update the file metadata with the new file's info
+      fileDoc.filename = req.file.filename;
+      fileDoc.contentType = req.file.mimetype;
+      fileDoc.size = req.file.size;
+      // Delete the old file from the filesystem
+      fs.unlinkSync(fileDoc.path);
+      // Update the path to the new file
+      fileDoc.path = req.file.path;
+    }
+
+    // Add any other metadata updates here
+
+    await fileDoc.save();
+
+    res.json({ message: "File updated successfully", fileDoc });
+  } catch (error) {
+    console.error('Error updating file:', error);
+    res.status(500).send('Error updating file');
+  }
+});
+
+// DELETE endpoint for deleting a file
+// router.delete('/api/archives/:id', async (req, res) => {
+//   try {
+//     const fileDoc = await File.findById(req.params.id);
+//     if (!fileDoc) {
+//       return res.status(404).send('File not found.');
+//     }
+
+//     // Check if the file exists before attempting to delete
+//     if (fs.existsSync(fileDoc.path)) {
+//       // Delete the file from the filesystem
+//       fs.unlinkSync(fileDoc.path);
+//     }
+
+//     // Remove the file metadata from the database
+//     await fileDoc.remove();
+
+//     res.json({ message: "File deleted successfully" });
+//   } catch (error) {
+//     console.error('Error deleting file:', error);
+//     res.status(500).send('Error deleting file');
+//   }
+// });
+
+router.delete('/api/archives/:id', async (req, res) => {
+  try {
+    const fileDoc = await File.findById(req.params.id);
+    if (!fileDoc) {
+      return res.status(404).send('File not found.');
+    }
+
+    // Delete the file from the filesystem or wherever it's stored
+    await fs.promises.unlink(fileDoc.path);
+
+    // Remove the file metadata from the database
+    await fileDoc.remove();
+
+    res.json({ message: "File deleted successfully" });
+  } catch (error) {
+    console.error('Error deleting file:', error);
+    res.status(500).send('Error deleting file');
+  }
+});
+
+
 
 
 module.exports = router;
