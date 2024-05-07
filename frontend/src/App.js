@@ -9,6 +9,10 @@ import Archives from './pages/Archives';
 import Login from './pages/Login'; 
 import Register from './pages/Register';
 import Search from './pages/Search';
+import UploadFile from './pages/UploadFile';
+import FileDetails from './pages/FileDetails';
+import ConfirmUpload from './pages/ConfirmUpload';
+import MyUploads from './pages/MyUploads';
 
 
 
@@ -25,6 +29,11 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} /> 
           <Route path="/search" element={<Search />} />
+          <Route path="/" exact component={UploadFile} />
+          <Route path="/file-details" component={FileDetails} />
+          <Route path="/confirm-upload" component={ConfirmUpload} />
+          <Route path="/my-uploads" element={<MyUploads />} />
+          {/* <Route path="/my-uploads" component={Archives} /> */}
         
         </Routes>
         </div>
