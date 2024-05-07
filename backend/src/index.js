@@ -14,16 +14,12 @@ app.use(cors({
   credentials: true // to support session cookies from the browser
 }));
 
-// mongoose.connect('yourMongoDBUrl', { useNewUrlParser: true, useUnifiedTopology: true });
 
-// const port = process.env.PORT || 3001; // Use the environment port or 3001 if local
-
-// Middleware to parse request bodies. Necessary for POST and PUT requests
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Use your actual MongoDB URI
-const mongoURI = "mongodb+srv://aish:aish@dassa1.nyvfikg.mongodb.net/?retryWrites=true&w=majority&appName=dassA1";
+const mongoURI = "mongodb+srv://highlandhistoriesdeveloper:RvWKjUnNKacdWaX1@cluster0.pz0l5dq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 // Connect to MongoDB using Mongoose with additional options
 mongoose.connect(mongoURI, {
