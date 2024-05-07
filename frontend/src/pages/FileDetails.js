@@ -106,7 +106,8 @@ const FileDetails = () => {
         categories: [],
         description: '',
         date: '',
-        location: null
+        location: null,
+        userId: 'defaultUserId',
     });
 
     const handleChange = (key, value) => {

@@ -1,10 +1,19 @@
-// index.js
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const express = require('express');
 const mongoose = require('mongoose');
 const archiveRoutes = require('./routes/archiveRoutes');
 const app = express();
 const routes = require('./routes'); // Import routes
+
+// mongoose.connect("mongodb+srv://highlandhistoriesdeveloper:RvWKjUnNKacdWaX1@cluster0.pz0l5dq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", { useNewUrlParser: true, useUnifiedTopology: true });
+
+// Middleware to parse request bodies
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static('uploads'));
+
+// Routes
+app.use('/api/archives', archiveRoutes);
 
 const cors = require('cors');
 app.options('*', cors()); // Enable pre-flight across the board

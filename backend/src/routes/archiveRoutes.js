@@ -1,14 +1,16 @@
 const express = require('express');
-const upload = require('../utils/upload');
+
 const {
-  getArchiveById,
-  getArchivesByFeature,
-  getUserUploads,
-  updateArchive,
-  deleteArchive,
+  getArchiveById, 
+  getArchivesByFeature, 
+  getUserUploads, 
+  updateArchive, 
+  deleteArchive, 
   uploadArchive
 
 } = require('../controllers/archiveController');
+
+const upload = require('../utils/upload');
 
 const router = express.Router();
 
@@ -28,6 +30,7 @@ router.delete('/:id', deleteArchive);
 router.post('/upload', upload.single('file'), uploadArchive);
 
 // Get user uploads
-router.get('/user/:userId/uploads', getUserUploads);
+// router.get('/user/:userId/uploads', getUserUploads);
+router.get('/user-uploads', getUserUploads);
 
 module.exports = router;

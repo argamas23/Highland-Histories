@@ -1,33 +1,48 @@
 const mongoose = require('mongoose');
 
 const archiveSchema = new mongoose.Schema({
+    userId: {
+        type: String,
+        required: true,
+    },
+
     title: {
         type: String,
         required: true
     },
     caption: {
-        type: String
+        type: String,
+        required: true,
     },
     categories: {
-        type: [String]
+        type: [String],
+        required: true,
     },
     description: {
-        type: String
+        type: String,
+        required: true,
     },
     date: {
-        type: Date
+        type: String,
+        required:true,
     },
     location: {
-        type: String
+        type: String,
+        required:true,
     },
     filename: {
         type: String,
-        required: true
+        required: true,
     },
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    url: {
+        type: String,
+        required: true,
+    },
+    
 });
 
 const Archive = mongoose.model('Archive', archiveSchema);
