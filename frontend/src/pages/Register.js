@@ -2,14 +2,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Register.css';
+import { loggedin } from '../globals';
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
+  const [credentials, setCredentials] = useState({ name: '', email: '', password: '', confirmPassword: '' });
   const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
 
@@ -22,15 +18,15 @@ const Register = () => {
       case 'password':
         return value.length >= 8;
       case 'confirmPassword':
-        return value === formData.password;
+        return value === credentials.password;
       default:
         return true;
     }
   };
-
+  
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    setCredentials({ ...credentials, [name]: value });
 
     if (formErrors[name] && validateField(name, value)) {
       setFormErrors({ ...formErrors, [name]: '' });
@@ -39,22 +35,33 @@ const Register = () => {
 
   const validateForm = () => {
     const errors = {};
-    if (!validateField('name', formData.name)) errors.name = 'Name must be at least 3 characters';
-    if (!validateField('email', formData.email)) errors.email = 'Email address is invalid';
-    if (!validateField('password', formData.password)) errors.password = 'Password must be at least 8 characters';
-    if (!validateField('confirmPassword', formData.confirmPassword)) errors.confirmPassword = 'Passwords do not match';
+    if (!validateField('name', credentials.name)) errors.name = 'Name must be at least 3 characters';
+    if (!validateField('email', credentials.email)) errors.email = 'Email address is invalid';
+    if (!validateField('password', credentials.password)) errors.password = 'Password must be at least 8 characters';
+    if (!validateField('confirmPassword', credentials.confirmPassword)) errors.confirmPassword = 'Passwords do not match';
 
     setFormErrors(errors);
 
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (validateForm()) {
-      alert('Registration successful!');
-      navigate('/login'); // Redirect to login page after successful registration
-      // TODO: Send registration data to your server here
+    const { name, email, password, confirmPassword } = credentials;
+    const response = await fetch("http://localhost:5000/api/auth/createuser", {
+      method: 'POST',
+      headers: {
+        "Content-Type": 'application/json',
+      },
+      body: JSON.stringify({ name, email, password })
+    });
+    const json = await response.json();
+    console.log(json);
+    if (json.success) {
+      // localStorage.setItem('token', json.authtoken);
+      navigate('/');
+    } else {
+      alert("Invalid credentials");
     }
   };
 
@@ -67,7 +74,7 @@ const Register = () => {
             type="text"
             name="name"
             placeholder="Name"
-            value={formData.name}
+            value={credentials.name}
             onChange={handleInputChange}
             required
           />
@@ -78,7 +85,7 @@ const Register = () => {
             type="email"
             name="email"
             placeholder="Email"
-            value={formData.email}
+            value={credentials.email}
             onChange={handleInputChange}
             required
           />
@@ -89,7 +96,7 @@ const Register = () => {
             type="password"
             name="password"
             placeholder="Password"
-            value={formData.password}
+            value={credentials.password}
             onChange={handleInputChange}
             required
           />
@@ -100,7 +107,7 @@ const Register = () => {
             type="password"
             name="confirmPassword"
             placeholder="Confirm Password"
-            value={formData.confirmPassword}
+            value={credentials.confirmPassword}
             onChange={handleInputChange}
             required
           />

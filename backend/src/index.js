@@ -1,6 +1,7 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const express = require('express');
 const mongoose = require('mongoose');
+const userRoutes = require('./routes/auth'); // Adjust the path as per your project structure
 const archiveRoutes = require('./routes/archiveRoutes');
 const app = express();
 const routes = require('./routes'); // Import routes
@@ -48,6 +49,7 @@ mongoose.connect(mongoURI, {
 
 //Routes
 app.use('/',routes);
+app.use('/api/auth', userRoutes);
 app.use('/api/archives', archiveRoutes);
 
 

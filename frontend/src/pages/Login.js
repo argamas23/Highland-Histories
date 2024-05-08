@@ -45,19 +45,32 @@
 // src/pages/Login.js
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [credentials, setCredentials] = useState({ email: '', password: '' });
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // Here you would add your logic to authenticate the user with your backend.
-    console.log('Login with:', email, password);
-    
+    const response = await fetch("http://localhost:5000/api/auth/login", {
+      method: 'POST',
+      headers: {
+        "Content-Type": 'application/json',
+      },
+      body: JSON.stringify(credentials)
+    });
+    const json = await response.json();
+    console.log(json);
+    if (json.success){
+      // loggedin = useState(true);
+      localStorage.setItem('token', json.authtoken);
+      navigate('/');
+    } else {
+      alert("Invalid credentials");
+    }
+  };
 
-    navigate('/');
+  const onChange = (event) => {
+    setCredentials({ ...credentials, [event.target.name]: event.target.value });
   };
 
   return (
@@ -68,8 +81,9 @@ const Login = () => {
           <label>Email:</label>
           <input
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name="email"
+            value={credentials.email}
+            onChange={onChange}
             required
           />
         </div>
@@ -77,8 +91,9 @@ const Login = () => {
           <label>Password:</label>
           <input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            name="password"
+            value={credentials.password}
+            onChange={onChange}
             required
           />
         </div>

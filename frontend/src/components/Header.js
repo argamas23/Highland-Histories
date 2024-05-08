@@ -1,21 +1,23 @@
-// import React from 'react';
-// import { Link } from 'react-router-dom';
 import React, { useState } from 'react'; 
 import { Link, useNavigate } from 'react-router-dom';
 import './Header.css'; 
+import { loggedin } from '../globals';
 
 const Header = () => {
-
-  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
+  const token = localStorage.getItem('token');
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
 
   const handleSearch = (event) => {
     event.preventDefault();
     navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
-    // Resets the search input after submitting
-    setSearchQuery(''); 
+    setSearchQuery(''); // Resets the search input after submitting
   };
-
 
   return (
     <header>
@@ -23,35 +25,24 @@ const Header = () => {
         <ul>
           <li><Link to="/">Home</Link></li>
           <li><Link to="/about">About</Link></li>
-          <li><Link to="/archives">Archives</Link></li>
-          <li><Link to="/upload">Upload</Link></li>
-          <li><Link to="/my-uploads">My Uploads</Link></li>
-          <li><Link to="/login">Login</Link></li>
-          {/* <li><Link to="/register">Register</Link></li> */}
+          {token && <li><Link to="/archives">Archives</Link></li>}
+          {token && <li><Link to="/upload">Upload</Link></li>}
+          {token && <li><Link to="/my-uploads">My Uploads</Link></li>}
+          {!token && <li><Link to="/login">Login</Link></li>}
         </ul>
 
-        {/* <form onSubmit={handleSearch}>
+        {token && <button onClick={handleLogout} className="btn btn-primary">LogOut</button>}
+
+        <form onSubmit={handleSearch} className="search-form">
           <input
             type="search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search..."
+            className="search-input"
           />
-          <button type="submit">Search</button>
-        </form> */}
-
-<form onSubmit={handleSearch} className="search-form">
-  <input
-    type="search"
-    value={searchQuery}
-    onChange={(e) => setSearchQuery(e.target.value)}
-    placeholder="Search..."
-    className="search-input"
-  />
-  <button type="submit" className="search-button">Search</button>
-</form>
-
-
+          <button type="submit" className="search-button">Search</button>
+        </form>
       </nav>
     </header>
   );

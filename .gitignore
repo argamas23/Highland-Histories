@@ -2,3 +2,5 @@ backend/node_modules/*
 frontend/node_modules/*
 node_modules/*
 reactproject
+package-lock.json
+package.json
