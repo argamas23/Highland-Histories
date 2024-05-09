@@ -1,6 +1,43 @@
 
 const Archive = require('../models/Archive');
 
+const multer = require('multer');
+const path = require('path');
+
+// const Archive = require('../models/Archive');
+const upload = require('../utils/upload'); // Import the Multer configuration
+
+exports.uploadFile = upload.single('file'); // Middleware for route to handle file uploads
+
+exports.saveFile = async (req, res) => {
+  const { title, description, categories, location, date, userId } = req.body;
+  const file = req.file;
+
+  if (!file) {
+      return res.status(400).json({ message: "No file uploaded." });
+  }
+
+  const newArchive = new Archive({
+      userId,
+      title,
+      description,
+      categories: JSON.parse(categories),
+      location,
+      date,
+      filePath: file.path,
+      fileType: file.mimetype
+  });
+
+  try {
+      const savedArchive = await newArchive.save();
+      res.status(201).json({ message: "File uploaded successfully", data: savedArchive });
+  } catch (error) {
+      res.status(500).json({ error: "Error saving file", message: error.message });
+  }
+};
+
+
+
 exports.getArchiveById = async (req, res) => {
   try {
       const archive = await Archive.findById(req.params.id);
@@ -49,12 +86,21 @@ exports.getArchiveById = async (req, res) => {
 //   }
 // };
 
-exports.getArchivesByFeature = async (req, res) => {
+// exports.getArchivesByFeature = async (req, res) => {
+//   try {
+//       const archives = await Archive.find({ feature: req.query.feature });
+//       res.json(archives);
+//   } catch (error) {
+//       res.status(500).json({ message: error.message });
+//   }
+// };
+
+exports.getArchives = async (req, res) => {
   try {
-      const archives = await Archive.find({ feature: req.query.feature });
+      const archives = await Archive.find({});
       res.json(archives);
   } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).send("Error fetching archives");
   }
 };
   
@@ -80,15 +126,26 @@ exports.getArchivesByFeature = async (req, res) => {
   //   }
   // };
   
-  exports.getUserUploads = async (req, res) => {
-    try {
-        const uploads = await Archive.find({ userId: req.query.userId });
-        // const userId = req.params.userId; 
-        // const uploads = await Archive.find({ user: userId });
-        res.json(uploads);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+//   exports.getUserUploads = async (req, res) => {
+//     try {
+//         const uploads = await Archive.find({ userId: req.query.userId });
+//         // const userId = req.params.userId; 
+//         // const uploads = await Archive.find({ user: userId });
+//         res.json(uploads);
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
+
+exports.getMyUploads = async (req, res) => {
+  try {
+      // Replace with actual user ID
+      const userId = "testUserId"; 
+      const uploads = await Archive.find({ userId: userId });
+      res.json(uploads);
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
 };
 
 // exports.updateArchive = async (req, res) => {
@@ -100,6 +157,19 @@ exports.getArchivesByFeature = async (req, res) => {
 //     }
 // };
 
+// exports.updateArchive = async (req, res) => {
+//   try {
+//       const updatedArchive = await Archive.findByIdAndUpdate(
+//           req.params.id,
+//           req.body,
+//           { new: true }
+//       );
+//       res.json(archive);
+//   } catch (error) {
+//       res.status(500).json({ message: error.message });
+//   }
+// };
+
 exports.updateArchive = async (req, res) => {
   try {
       const updatedArchive = await Archive.findByIdAndUpdate(
@@ -107,9 +177,12 @@ exports.updateArchive = async (req, res) => {
           req.body,
           { new: true }
       );
-      res.json(archive);
+      if (!updatedArchive) {
+          return res.status(404).send('Archive not found');
+      }
+      res.json(updatedArchive);
   } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).send("Error updating archive: " + error.message);
   }
 };
 

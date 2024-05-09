@@ -13,7 +13,8 @@ import UploadFile from './pages/UploadFile';
 import FileDetails from './pages/FileDetails';
 import ConfirmUpload from './pages/ConfirmUpload';
 import MyUploads from './pages/MyUploads';
-
+import ArchiveDetail from './pages/ArchiveDetail';
+import EditUpload from './pages/EditUpload';
 
 
 function App() {
@@ -34,6 +35,9 @@ function App() {
           <Route path="/file-details" component={FileDetails} />
           <Route path="/confirm-upload" component={ConfirmUpload} />
           <Route path="/my-uploads" element={<MyUploads />} />
+          <Route path="/archives/:id" element={<ArchiveDetail />} />
+          <Route path="/edit-upload/:id" element={<EditUpload />} />
+
           {/* <Route path="/my-uploads" component={Archives} /> */}
         
         </Routes>
