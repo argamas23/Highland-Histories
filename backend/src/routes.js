@@ -1,14 +1,7 @@
-// backend/routes.js or backend/index.js
-
 const GridFsStorage = require('multer-gridfs-storage').GridFsStorage;
 const express = require('express');
 const cors = require('cors');
-// app.options('*', cors());
-// app.use(cors({
-//     origin: 'http://localhost:3000', // or your specific allowed domain
-//     methods: 'GET,POST,PUT,DELETE',
-//     credentials: true // to support session cookies from the browser
-//   }));
+
 const router = express.Router();
 
 // src/Utils to upload
@@ -61,112 +54,7 @@ const respondSuccess = (req, res) => {
 // POST endpoint for file upload
 router.post('/api/archives/upload', handleFileUpload, saveFileDocument, respondSuccess);
 
-// // POST endpoint for file upload
-// router.post('/api/archives/upload', upload.single('file'), async (req, res) => {
-//     if (!req.file) {
-//         return res.status(400).send('No file uploaded.');
-//     }
 
-//     // Create a new file document
-//     const fileDoc = new File({
-//         filename: req.file.filename,
-//         path: req.file.path, // GridFS storage path
-//         contentType: req.file.mimetype,
-//         size: req.file.size,
-//         gridFsFileId: req.file.id, // Assuming you want to store the GridFS file ID
-//         bucketName: 'uploads'
-//     });
-
-//     try {
-//         // Save the file document in MongoDB
-//         await fileDoc.save();
-//         res.json({
-//             message: "File uploaded and saved to MongoDB successfully",
-//             fileDetails: {
-//                 filename: req.file.filename,
-//                 mongoGridFsId: req.file.id
-//             }
-//         });
-//     } catch (error) {
-//         console.error('Error saving file information to MongoDB:', error);
-//         res.status(500).send('Error saving file information to MongoDB');
-//     }
-// });
-
-// // PUT endpoint for updating file content or metadata
-// router.put('/api/archives/:id', upload.single('file'), async (req, res) => {
-//   try {
-//       const fileDoc = await File.findById(req.params.id);
-
-//       if (!fileDoc) {
-//           return res.status(404).send('File not found.');
-//       }
-
-//       // Update the file metadata or replace the file as needed
-//       fileDoc.filename = req.file.filename;
-//       fileDoc.contentType = req.file.mimetype;
-//       fileDoc.size = req.file.size;
-//       // Add any other metadata updates here
-
-//       await fileDoc.save();
-
-//       res.json({ message: "File updated successfully", fileDoc });
-//   } catch (error) {
-//       console.error('Error updating file:', error);
-//       res.status(500).send('Error updating file');
-//   }
-// });
-
-// // DELETE endpoint for deleting a file
-// router.delete('/api/archives/:id', async (req, res) => {
-//   try {
-//       const fileDoc = await File.findById(req.params.id);
-
-//       if (!fileDoc) {
-//           return res.status(404).send('File not found.');
-//       }
-
-//       // Delete the file from the filesystem or wherever it's stored
-//       fs.unlinkSync(fileDoc.path, (err) => {
-//           if (err) {
-//               console.error('Error deleting file from filesystem:', err);
-//               return res.status(500).send('Error deleting file');
-//           }
-//       });
-
-//       // Remove the file metadata from the database
-//       await fileDoc.remove();
-
-//       res.json({ message: "File deleted successfully" });
-//   } catch (error) {
-//       console.error('Error deleting file:', error);
-//       res.status(500).send('Error deleting file');
-//   }
-// });
-
-// // router.delete('/api/archives/:id', async (req, res) => {
-// //   try {
-// //     const fileDoc = await File.findById(req.params.id);
-// //     if (!fileDoc) {
-// //       return res.status(404).send('File not found.');
-// //     }
-
-// //     // Try to delete the file from the filesystem
-// //     const filePath = fileDoc.path;
-// //     if (fs.existsSync(filePath)) {
-// //       fs.unlinkSync(filePath);
-// //     } else {
-// //       console.warn('File not found on the filesystem, but will continue to delete metadata');
-// //     }
-
-// //     // Remove the file metadata from the database
-// //     await fileDoc.remove();
-// //     res.json({ message: "File deleted successfully" });
-// //   } catch (error) {
-// //     console.error('Error deleting file:', error);
-// //     res.status(500).send('Error deleting file');
-// //   }
-// // });
 
 // PUT endpoint for updating file content or metadata
 router.put('/api/archives/:id', upload.single('file'), async (req, res) => {
@@ -199,29 +87,7 @@ router.put('/api/archives/:id', upload.single('file'), async (req, res) => {
   }
 });
 
-// DELETE endpoint for deleting a file
-// router.delete('/api/archives/:id', async (req, res) => {
-//   try {
-//     const fileDoc = await File.findById(req.params.id);
-//     if (!fileDoc) {
-//       return res.status(404).send('File not found.');
-//     }
 
-//     // Check if the file exists before attempting to delete
-//     if (fs.existsSync(fileDoc.path)) {
-//       // Delete the file from the filesystem
-//       fs.unlinkSync(fileDoc.path);
-//     }
-
-//     // Remove the file metadata from the database
-//     await fileDoc.remove();
-
-//     res.json({ message: "File deleted successfully" });
-//   } catch (error) {
-//     console.error('Error deleting file:', error);
-//     res.status(500).send('Error deleting file');
-//   }
-// });
 
 router.delete('/api/archives/:id', async (req, res) => {
   try {
@@ -242,8 +108,5 @@ router.delete('/api/archives/:id', async (req, res) => {
     res.status(500).send('Error deleting file');
   }
 });
-
-
-
 
 module.exports = router;

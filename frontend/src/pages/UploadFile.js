@@ -36,19 +36,43 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
+import './dropzone.css';
+
+
+// function MyDropzone() {
+//     const {getRootProps, getInputProps} = useDropzone({
+//       onDrop: acceptedFiles => {
+//         console.log(acceptedFiles);
+//       }
+//     });
 
 const UploadFile = () => {
     const [file, setFile] = useState(null);
     const navigate = useNavigate();
 
     const onDrop = acceptedFiles => {
+        
         setFile(acceptedFiles[0]);
+        console.log(acceptedFiles);
     };
+
+    // const {getRootProps, getInputProps} = useDropzone({
+    //     onDrop: acceptedFiles => {
+    //       console.log(acceptedFiles);
+    //     }
+    // });
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
     const handleNext = () => {
-        navigate('/file-details', { state: { file } });
+        console.log(file);
+        if (file) {
+            navigate('/file-details', { state: { file } }); // Navigate with the file in state
+        } else {
+            alert("Please select a file first.");
+        }
+    // };
+        // navigate('/file-details', { state: { file } });
     };
 
     return (

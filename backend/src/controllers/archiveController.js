@@ -18,15 +18,23 @@ exports.saveFile = async (req, res) => {
   }
 
   const newArchive = new Archive({
-      userId,
-      title,
-      description,
-      categories: JSON.parse(categories),
-      location,
-      date,
-      filePath: file.path,
-      fileType: file.mimetype
-  });
+      // userId,
+      // title,
+      // description,
+      // categories: JSON.parse(categories),
+      // location,
+      // date,
+      // filePath: file.path,
+      // fileType: file.mimetype
+      userId: req.body.userId,
+      title: req.body.title,
+      caption: req.body.caption,
+      categories: req.body.categories, // Expecting an array directly
+      description: req.body.description,
+      date: req.body.date,
+      location: req.body.location,
+      filename: req.file ? req.file.filename : '',
+    });
 
   try {
       const savedArchive = await newArchive.save();
@@ -77,24 +85,6 @@ exports.getArchiveById = async (req, res) => {
 };
 
   
-// exports.getArchivesByFeature = async (req, res) => {
-//   try {
-//       const archives = await Archive.find();
-//       res.json(archives);
-//   } catch (error) {
-//       res.status(500).json({ message: error.message });
-//   }
-// };
-
-// exports.getArchivesByFeature = async (req, res) => {
-//   try {
-//       const archives = await Archive.find({ feature: req.query.feature });
-//       res.json(archives);
-//   } catch (error) {
-//       res.status(500).json({ message: error.message });
-//   }
-// };
-
 exports.getArchives = async (req, res) => {
   try {
       const archives = await Archive.find({});
@@ -104,39 +94,6 @@ exports.getArchives = async (req, res) => {
   }
 };
   
-  // exports.updateArchive = async (req, res) => {
-  //   try {
-  //     // In a real app, you'd update the archive in the database:
-  //     // const archive = await Archive.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  //     const updatedArchive = { id: req.params.id, ...req.body }; // Placeholder
-  //     res.json(updatedArchive);
-  //   } catch (error) {
-  //     res.status(500).json({ message: error.message });
-  //   }
-  // };
-  
-  // exports.deleteArchive = async (req, res) => {
-  //   try {
-  //     // In a real app, you'd delete the archive from the database:
-  //     // const archive = await Archive.findByIdAndRemove(req.params.id);
-  //     // Placeholder response:
-  //     res.json({ message: `Archive with id ${req.params.id} deleted.` });
-  //   } catch (error) {
-  //     res.status(500).json({ message: error.message });
-  //   }
-  // };
-  
-//   exports.getUserUploads = async (req, res) => {
-//     try {
-//         const uploads = await Archive.find({ userId: req.query.userId });
-//         // const userId = req.params.userId; 
-//         // const uploads = await Archive.find({ user: userId });
-//         res.json(uploads);
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
-
 exports.getMyUploads = async (req, res) => {
   try {
       // Replace with actual user ID
@@ -148,27 +105,6 @@ exports.getMyUploads = async (req, res) => {
   }
 };
 
-// exports.updateArchive = async (req, res) => {
-//     try {
-//         const updatedArchive = await Archive.findByIdAndUpdate(req.params.id, req.body, { new: true });
-//         res.json(updatedArchive);
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
-
-// exports.updateArchive = async (req, res) => {
-//   try {
-//       const updatedArchive = await Archive.findByIdAndUpdate(
-//           req.params.id,
-//           req.body,
-//           { new: true }
-//       );
-//       res.json(archive);
-//   } catch (error) {
-//       res.status(500).json({ message: error.message });
-//   }
-// };
 
 exports.updateArchive = async (req, res) => {
   try {

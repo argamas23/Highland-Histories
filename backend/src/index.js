@@ -53,7 +53,7 @@ app.use('/api/auth', userRoutes);
 app.use('/api/archives', archiveRoutes);
 
 
-// Sample GET route
+
 app.get('/', (req, res) => {
   res.send('Welcome to the Highland Histories Digital Archive System backend!');
 });

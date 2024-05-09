@@ -1,4 +1,3 @@
-// src/pages/Register.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Register.css';
@@ -59,6 +58,7 @@ const Register = () => {
     console.log(json);
     if (json.success) {
       // localStorage.setItem('token', json.authtoken);
+      localStorage.setItem('userId', json.userId);  // Storing the userId
       navigate('/');
     } else {
       alert("Invalid credentials");

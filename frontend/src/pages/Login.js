@@ -42,7 +42,7 @@
 
 // export default Login;
 
-// src/pages/Login.js
+
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 const Login = () => {
@@ -63,6 +63,7 @@ const Login = () => {
     if (json.success){
       // loggedin = useState(true);
       localStorage.setItem('token', json.authtoken);
+      localStorage.setItem('userId', json.userId); //Storing the userID
       navigate('/');
     } else {
       alert("Invalid credentials");

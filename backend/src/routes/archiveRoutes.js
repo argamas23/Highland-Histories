@@ -18,7 +18,7 @@ const router = express.Router();
 const archiveController = require('../controllers/archiveController');
 
 // Get archive by ID
-router.get('/:id', getArchiveById);
+// router.get('/:id', getArchiveById);
 
 // Get archives by feature (this will be a query string)
 router.get('/', getArchives);
