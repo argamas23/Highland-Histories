@@ -39,6 +39,33 @@ router.delete('/:id', deleteArchive);
 // router.get('/user/:userId/uploads', getUserUploads);
 router.get('/my-uploads', getMyUploads);
 
+// // Get user uploads
+// //
+// router.get('/user/:userId/uploads', archiveController.getMyUploads);
+
+// GET endpoint for fetching user uploads by user ID
+router.get('/user/:userId/uploads', async (req, res) => {
+    console.log("Hi from backend: archiveRoutes.js: I am in the GET endpoint for fetching user uploads");
+    try {
+        const userId = req.params.userId;
+        console.log("Requested User ID for uploads:", userId);
+
+        if (!userId) {
+            return res.status(400).json({ message: "User ID is required." });
+        }
+
+        const uploads = await archiveController.getMyUploads(req); // Assuming this function handles the logic correctly
+        console.log("Uploads fetched for User ID:", userId, " Uploads:", uploads);
+
+        res.status(200).json(uploads);
+    } catch (error) {
+        console.error('Error fetching user uploads:', error);
+        res.status(500).json({ error: "Error fetching user uploads; Error Originates from archiveRoutes.js in the backend", message: error.message });
+    }
+});
+
+
+
 // Route to get a single archive by ID
 router.get('/:id', archiveController.getArchiveById);
 

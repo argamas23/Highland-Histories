@@ -95,17 +95,32 @@ exports.getArchives = async (req, res) => {
   }
 };
   
-exports.getMyUploads = async (req, res) => {
-  try {
-      // Replace with actual user ID
-      const userId = "testUserId"; 
-      const uploads = await Archive.find({ userId: userId });
-      res.json(uploads);
-  } catch (error) {
-      res.status(500).json({ message: error.message });
-  }
-};
+// exports.getMyUploads = async (req, res) => {
+//   try {
+//       // Replace with actual user ID
+//     //   const userId = "testUserId"; 
+//       const userId = req.params.userId; // Get userId from route parameters; 
+//       const uploads = await Archive.find({ userId: userId });
+//       res.json(uploads);
+//   } catch (error) {
+//       res.status(500).json({ message: error.message });
+//   }
+// };
 
+exports.getMyUploads = async (req) => {
+    try {
+        const userId = req.params.userId;
+        console.log("Fetching uploads for User ID:", userId);
+
+        const uploads = await Archive.find({ userId: userId });
+        console.log("Found uploads:", uploads.length);
+
+        return uploads; // Return the uploads to be handled by the route
+    } catch (error) {
+        console.error("Error in getMyUploads function:", error);
+        throw error; // Rethrow the error to be caught by the route
+    }
+};
 
 exports.updateArchive = async (req, res) => {
   try {
