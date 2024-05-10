@@ -85,7 +85,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
         
         // If url ends with "undefined", remove it, and replace with content of file.filename
         if (url.endsWith("uploads/undefined")) {
-            url = url.replace ("uploads/undefined","src/uploads/"+file.filename);
+            url = url.replace ("uploads/undefined","uploads/"+file.filename);
             // url = url.replace("uploads/undefined", file.filename);
         }
 
