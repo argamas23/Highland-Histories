@@ -1,12 +1,12 @@
-// src/pages/Register.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Register.css';
-import { loggedin } from '../globals';
 
 const Register = () => {
-  const [credentials, setCredentials] = useState({ name: '', email: '', password: '', confirmPassword: '' });
+  const [credentials, setCredentials] = useState({ name: '', email: '', password: '', confirmPassword: '', usertype: '' }); // Include usertype in credentials
   const [formErrors, setFormErrors] = useState({});
+  const [secretkey, setSecretKey] = useState('');
+
   const navigate = useNavigate();
 
   const validateField = (name, value) => {
@@ -23,10 +23,10 @@ const Register = () => {
         return true;
     }
   };
-  
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setCredentials({ ...credentials, [name]: value });
+    setCredentials({ ...credentials, [name]: value }); // Update credentials with usertype
 
     if (formErrors[name] && validateField(name, value)) {
       setFormErrors({ ...formErrors, [name]: '' });
@@ -47,28 +47,72 @@ const Register = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const { name, email, password, confirmPassword } = credentials;
-    const response = await fetch("http://localhost:5000/api/auth/createuser", {
-      method: 'POST',
-      headers: {
-        "Content-Type": 'application/json',
-      },
-      body: JSON.stringify({ name, email, password })
-    });
-    const json = await response.json();
-    console.log(json);
-    if (json.success) {
-      // localStorage.setItem('token', json.authtoken);
-      navigate('/');
-    } else {
-      alert("Invalid credentials");
+    if (credentials.usertype === 'Admin' && secretkey !== 'iiit') {
+      alert("Invalid Admin");
     }
+    if (!validateForm()) return;
+    const { name, email, password, usertype } = credentials;
+    if (usertype === 'Admin' && secretkey === 'iiit') {
+      const response = await fetch("http://localhost:5000/api/auth/createuser", {
+        method: 'POST',
+        headers: {
+          "Content-Type": 'application/json',
+        },
+        body: JSON.stringify({ name, email, password, usertype })
+      });
+      const json = await response.json();
+      // console.log(json);
+      if (json.success) {
+        navigate('/');
+        // localStorage.setItem('user',credentials.usertype);
+      } else {
+        alert("Invalid credentials");
+      }
+    } if(usertype == 'User') {
+      localStorage.setItem('request', JSON.stringify(credentials));
+      // console.log('here')
+      alert("Please wait for Admin to approve")
+    }
+    if(usertype == '') {
+      alert('Please Select UserType');
+    }
+  };
+
+  const secretKey = (event) => {
+    setSecretKey(event.target.value);
   };
 
   return (
     <div>
       <h2>Register</h2>
       <form onSubmit={handleSubmit} noValidate>
+        <div>
+          <input
+            type="radio"
+            name="usertype"
+            value="User"
+            onChange={handleInputChange}
+          />
+          User
+          <input
+            type="radio"
+            name="usertype"
+            value="Admin"
+            onChange={handleInputChange}
+          />
+          Admin
+        </div>
+        {credentials.usertype === "Admin" &&
+          <div>
+            <input
+              type="text"
+              name="secret-key"
+              placeholder="Secret Key"
+              value={secretkey}
+              onChange={secretKey}
+            />
+          </div>
+        }
         <div>
           <input
             type="text"

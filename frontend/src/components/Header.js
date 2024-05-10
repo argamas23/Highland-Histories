@@ -3,14 +3,18 @@ import { Link, useNavigate } from 'react-router-dom';
 import './Header.css'; 
 import { loggedin } from '../globals';
 
+
 const Header = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const token = localStorage.getItem('token');
+  const usertype =(localStorage.getItem('user'));
+  
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
+    localStorage.removeItem('user'); // Update usertype state to clear the user type
   };
 
   const handleSearch = (event) => {
@@ -28,10 +32,9 @@ const Header = () => {
           {token && <li><Link to="/archives">Archives</Link></li>}
           {token && <li><Link to="/upload">Upload</Link></li>}
           {token && <li><Link to="/my-uploads">My Uploads</Link></li>}
+          {usertype === "Admin" && <li><Link to="/permission">Permission</Link></li>}
           {!token && <li><Link to="/login">Login</Link></li>}
         </ul>
-
-        {token && <button onClick={handleLogout} className="btn btn-primary">LogOut</button>}
 
         <form onSubmit={handleSearch} className="search-form">
           <input
@@ -43,6 +46,8 @@ const Header = () => {
           />
           <button type="submit" className="search-button">Search</button>
         </form>
+
+        {token && <button onClick={handleLogout} className="logout smaller">LogOut</button>}
       </nav>
     </header>
   );
