@@ -1,4 +1,7 @@
 const express = require('express');
+const Archive = require('../models/Archive');
+const upload = require('../utils/upload');
+const router = express.Router();
 
 const {
   getArchiveById, 
@@ -11,9 +14,9 @@ const {
 
 } = require('../controllers/archiveController');
 
-const upload = require('../utils/upload');
+// const upload = require('../utils/upload');
 
-const router = express.Router();
+// const router = express.Router();
 
 const archiveController = require('../controllers/archiveController');
 
@@ -40,5 +43,51 @@ router.get('/my-uploads', getMyUploads);
 router.get('/:id', archiveController.getArchiveById);
 
 // router.post('/upload' , uploadFile, savefile);
-router.post('/upload', upload.single('file'), saveFile);
+// router.post('/upload', upload.single('file'), saveFile);
+
+// POST endpoint for uploading an archive
+router.post('/upload', upload.single('file'), async (req, res) => {
+    console.log(req.body); // Log text field values
+    console.log(req.file); // Log file details
+    try {
+        const { title, caption, categories, description, date, location,userID } = req.body;
+        const file = req.file;
+
+        if (!file) {
+            return res.status(400).json({ message: "No file uploaded." });
+        }
+
+        const newArchive = new Archive({
+            userID,
+            title,
+            caption,
+            categories: JSON.parse(categories),
+            // categories: categories.split(','),  // Assuming categories are sent as comma-separated
+            description,
+            date,
+            location,
+            filename: file.filename,
+            filePath: file.path,
+            fileType: file.mimetype
+        });
+
+        const savedArchive = await newArchive.save();await newArchive.save();
+        res.status(201).json({ message: "File uploaded successfully", data: savedArchive });
+    } catch (error) {
+        console.error('Error uploading file:', error);
+        res.status(500).json({ error: "Error uploading file", message: error.message });
+    }
+});
+
+// Additional routes for archives
+router.get('/', async (req, res) => {
+    try {
+        const archives = await Archive.find({});
+        res.status(200).json(archives);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching archives", error: error.message });
+    }
+});
+
+
 module.exports = router;

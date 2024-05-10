@@ -32,8 +32,9 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/upload" element={<UploadFile />} />
           {/* <Route path="/" exact component={UploadFile} /> */}
-          <Route path="/file-details" component={FileDetails} />
-          <Route path="/confirm-upload" component={ConfirmUpload} />
+          <Route path="/file-details" element={<FileDetails />} />
+          <Route path="/confirm-upload" element={<ConfirmUpload />} />
+          {/* <Route path="/confirm-upload" element={ConfirmUpload} /> */}
           <Route path="/my-uploads" element={<MyUploads />} />
           <Route path="/archives/:id" element={<ArchiveDetail />} />
           <Route path="/edit-upload/:id" element={<EditUpload />} />

@@ -51,9 +51,10 @@ const UploadFile = () => {
     const navigate = useNavigate();
 
     const onDrop = acceptedFiles => {
-        
-        setFile(acceptedFiles[0]);
+
         console.log(acceptedFiles);
+        setFile(acceptedFiles[0]);
+        
     };
 
     // const {getRootProps, getInputProps} = useDropzone({
@@ -65,8 +66,9 @@ const UploadFile = () => {
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
     const handleNext = () => {
-        console.log(file);
+        // console.log(file);
         if (file) {
+            console.log('Navigating with:', file);
             navigate('/file-details', { state: { file } }); // Navigate with the file in state
         } else {
             alert("Please select a file first.");
@@ -82,7 +84,8 @@ const UploadFile = () => {
                 <input {...getInputProps()} />
                 {file ? <p>{file.name}</p> : <p>Drag & drop a file here, or click to select one</p>}
             </div>
-            {file && <button onClick={handleNext}>Next</button>}
+            {/* {file && <button onClick={handleNext}>Next</button>} */}
+            <button onClick={handleNext}>Next</button>
         </div>
     );
 };

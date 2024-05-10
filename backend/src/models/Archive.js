@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const archiveSchema = new mongoose.Schema({
     userId: {
         type: String,
-        required: true,
+        required: [true, "User ID is required"],
     },
 
     title: {
@@ -40,7 +40,7 @@ const archiveSchema = new mongoose.Schema({
     },
     url: {
         type: String,
-        required: true,
+        required: [true, "URL is required"]
     },
     
 });

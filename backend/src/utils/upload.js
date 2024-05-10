@@ -9,13 +9,23 @@ const uploadDirectory = path.join(__dirname, '..', 'uploads');
 // Ensure upload directory exists
 fs.mkdirSync(uploadDirectory, { recursive: true });
 
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     // cb(null, 'uploads/');
+//     cb(null, uploadDirectory);
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
+//   }
+// });
+
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    // cb(null, 'uploads/');
-    cb(null, uploadDirectory);
+  destination: (req, file, cb) => {
+      cb(null, uploadDirectory);
+      // cb(null, path.join(__dirname, '..', 'uploads'))
   },
-  filename: function (req, file, cb) {
-    cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
+  filename: (req, file, cb) => {
+      cb(null, `${Date.now()}-${file.originalname}`);
   }
 });
 

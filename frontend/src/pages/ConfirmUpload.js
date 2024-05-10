@@ -118,12 +118,19 @@ const ConfirmUpload = () => {
             formData.append('categories', JSON.stringify(state.details.categories));
             formData.append('description', state.details.description);
             formData.append('date', state.details.date);
-            formData.append('location', state.details.location.value);
+            formData.append('location', state.details.location);
+            formData.append('userId', localStorage.getItem('userId')); 
+            formData.append('url', `http://localhost:5000/uploads/${state.file.name}`);  // Construct URL
 
             const response = await fetch('http://localhost:5000/api/archives/upload', {
                 method: 'POST',
                 body: formData,
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',  // This header can help in some configurations
+                },
             });
+            if (!response.ok) throw new Error('Network response was not ok.');
 
             const result = await response.json();
             if (response.ok) {
@@ -133,7 +140,7 @@ const ConfirmUpload = () => {
                 throw new Error(result.message || 'File upload failed');
             }
         } catch (error) {
-            alert('File upload failed');
+            alert('File upload failed: ${error.message}');
             console.error('Upload error', error);
         }
     };
@@ -143,10 +150,10 @@ const ConfirmUpload = () => {
             <h2>Confirm Upload</h2>
             <p>Title: {state.details.title}</p>
             <p>Caption: {state.details.caption}</p>
-            <p>Categories: {state.details.categories.join(', ')}</p>
+            <p>Categories: {state.details.categories.join(',')}</p>
             <p>Description: {state.details.description}</p>
             <p>Date: {state.details.date}</p>
-            <p>Location: {state.details.location.label}</p>
+            <p>Location: {state.details.location}</p>
             <button onClick={handleUpload}>Upload</button>
         </div>
     );

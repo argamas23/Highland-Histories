@@ -16,7 +16,7 @@ const FileDetails = () => {
         categories: [],
         description: '',
         date: '',
-        location: null,
+        location: '',
         userId: localStorage.getItem('userId'), // Fetch userId from localStorage
     });
 
@@ -93,10 +93,10 @@ const FileDetails = () => {
             </div>
             <div>
                 <label>Location:</label>
-                <Select
-                    options={[]}
+                <input
+                    type="text"
                     value={details.location}
-                    onChange={(selected) => handleChange('location', selected)}
+                    onChange={(e) => handleChange('location', e.target.value)}
                 />
             </div>
             <button onClick={handleSubmit}>Next</button>

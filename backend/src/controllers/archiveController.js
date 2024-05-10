@@ -1,4 +1,3 @@
-
 const Archive = require('../models/Archive');
 
 const multer = require('multer');
@@ -29,11 +28,13 @@ exports.saveFile = async (req, res) => {
       userId: req.body.userId,
       title: req.body.title,
       caption: req.body.caption,
-      categories: req.body.categories, // Expecting an array directly
+      categories: JSON.parse(req.body.categories),
       description: req.body.description,
       date: req.body.date,
       location: req.body.location,
-      filename: req.file ? req.file.filename : '',
+      // filename: req.file ? req.file.filename : '',
+      filename: req.file.filename,
+      url: req.body.url,
     });
 
   try {
