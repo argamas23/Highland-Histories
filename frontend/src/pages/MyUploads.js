@@ -169,17 +169,33 @@ const MyUploads = () => {
     }, [navigate]);
 
     const handleDelete = async (id) => {
+        // try {
+        //     const response = await fetch(`http://localhost:5000/api/archives/${id}`, {
+        //         method: 'DELETE',
+        //     });
+        //     if (!response.ok) {
+        //         throw new Error('Failed to delete the file.');
+        //     }
+        //     setUploads(uploads.filter(upload => upload.id !== id));
+        //     alert('File deleted successfully.');
+        // } catch (error) {
+        //     alert('Error deleting file: ' + error.message);
+        // }
         try {
             const response = await fetch(`http://localhost:5000/api/archives/${id}`, {
                 method: 'DELETE',
             });
-            if (!response.ok) {
-                throw new Error('Failed to delete the file.');
+            if (response.ok) {
+                const { message } = await response.json();
+                setUploads(uploads.filter(upload => upload._id !== id));
+                alert(message);
+            } else {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to delete the file.');
             }
-            setUploads(uploads.filter(upload => upload.id !== id));
-            alert('File deleted successfully.');
         } catch (error) {
             alert('Error deleting file: ' + error.message);
+            console.error('Error deleting file:', error);
         }
     };
 

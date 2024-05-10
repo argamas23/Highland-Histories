@@ -138,13 +138,53 @@ exports.updateArchive = async (req, res) => {
   }
 };
 
+// exports.deleteArchive = async (req, res) => {
+//     try {
+//         await Archive.findByIdAndRemove(req.params.id);
+//         res.json({ message: `Archive with id ${req.params.id} deleted.` });
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
+ 
+// exports.deleteArchive = async (req, res) => {
+//     const { id } = req.params;  // Destructure the ID for clarity and convenience
+
+//     if (!id) {
+//         return res.status(400).json({ message: "Archive ID is required." });
+//     }
+
+//     try {
+//         const archive = await Archive.findById(id);
+//         if (!archive) {
+//             return res.status(404).json({ message: `Archive with id ${id} not found.` });
+//         }
+
+//         await Archive.findByIdAndRemove(id);
+//         res.json({ message: `Archive with id ${id} successfully deleted.` });
+//     } catch (error) {
+//         console.error(`Error deleting archive with id ${id}:`, error);
+//         res.status(500).json({ message: "Internal Server Error", error: error.message });
+//     }
+// };
+
 exports.deleteArchive = async (req, res) => {
+    const { id } = req.params;  // Destructure the ID for clarity and convenience
+
+    if (!id) {
+        return res.status(400).json({ message: "Archive ID is required." });
+    }
+
     try {
-        await Archive.findByIdAndRemove(req.params.id);
-        res.json({ message: `Archive with id ${req.params.id} deleted.` });
+        const archive = await Archive.findById(id);
+        if (!archive) {
+            return res.status(404).json({ message: `Archive with id ${id} not found.` });
+        }
+
+        await Archive.findOneAndDelete({ _id: id });
+        res.json({ message: `Archive with id ${id} successfully deleted.` });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error(`Error deleting archive with id ${id}:`, error);
+        res.status(500).json({ message: "Internal Server Error", error: error.message });
     }
 };
- 
-  
