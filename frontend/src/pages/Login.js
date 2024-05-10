@@ -45,12 +45,18 @@
 
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+
 const Login = () => {
-  const [credentials, setCredentials] = useState({ email: '', password: '' });
+  const [credentials, setCredentials] = useState({ email: '', password: '', usertype: '' });
   const navigate = useNavigate();
+  const [secretkey, setSecretKey] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (credentials.usertype == 'Admin' && secretkey != 'iiit') {
+      alert("Invalid Admin")
+    }
+    else{
     const response = await fetch("http://localhost:5000/api/auth/login", {
       method: 'POST',
       headers: {
@@ -58,26 +64,58 @@ const Login = () => {
       },
       body: JSON.stringify(credentials)
     });
+
     const json = await response.json();
-    console.log(json);
-    if (json.success){
-      // loggedin = useState(true);
+    if (json.success) {
       localStorage.setItem('token', json.authtoken);
-      localStorage.setItem('userId', json.userId); //Storing the userID
+      console.log(credentials.usertype);
+      localStorage.setItem('user', credentials.usertype); // Set user type from the form
       navigate('/');
     } else {
       alert("Invalid credentials");
     }
+  }
   };
 
   const onChange = (event) => {
     setCredentials({ ...credentials, [event.target.name]: event.target.value });
   };
 
+  const secretKey = (event) => {
+    setSecretKey(event.target.value);
+  };
+
   return (
     <div>
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
+        <div>
+          <input
+            type="radio"
+            name="usertype" // Use "usertype" as the name for radio buttons
+            value="User"
+            onChange={onChange}
+          />
+          User
+          <input
+            type="radio"
+            name="usertype"
+            value="Admin"
+            onChange={onChange}
+          />
+          Admin
+        </div>
+        {credentials.usertype === "Admin" &&
+          <div>
+            <input
+              type="text"
+              name="secret-key"
+              placeholder="Secret Key"
+              value={secretkey}
+              onChange={secretKey}
+            />
+          </div>
+        }
         <div>
           <label>Email:</label>
           <input

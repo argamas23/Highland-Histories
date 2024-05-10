@@ -113,4 +113,9 @@
   .search-input {
     padding-right: 40px; /* Right padding to avoid text going under button */
   }
+
+  .smaller {
+    width: 100px;
+  }
+  
   
