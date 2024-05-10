@@ -122,6 +122,8 @@ const ConfirmUpload = () => {
             formData.append('userId', localStorage.getItem('userId')); 
             formData.append('url', `http://localhost:5000/uploads/${state.file.name}`);  // Construct URL
 
+            console.log('Hello from ConfirmUpload.js in frontend Folder : I am sending "formData"', formData)
+
             const response = await fetch('http://localhost:5000/api/archives/upload', {
                 method: 'POST',
                 body: formData,
@@ -141,6 +143,7 @@ const ConfirmUpload = () => {
             }
         } catch (error) {
             alert('File upload failed: ${error.message}');
+            console.log('Upload error: Error Originated from Fronted Confirm Upload.js ', error);
             console.error('Upload error', error);
         }
     };

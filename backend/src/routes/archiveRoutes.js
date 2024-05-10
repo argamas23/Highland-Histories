@@ -50,15 +50,18 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     console.log(req.body); // Log text field values
     console.log(req.file); // Log file details
     try {
-        const { title, caption, categories, description, date, location,userID } = req.body;
+        console.log ("Hi from backend : archiveRoutes.js : I am in the POST endpoint for uploading an archive")
+        const { title, caption, categories, description, date, location,userId, url } = req.body;
         const file = req.file;
+        //debugging 
+        console.log("Request Body Recieved from frontend to backend is : "  , req.body, "Consisting of - 'Title' = ", title, " Caption : ",  caption, "Categories : ", categories,"Description :", description,"Date : ", date,"Location : ", location, "UserID : " , userId, "URL :", url, " file : " , file)
 
         if (!file) {
             return res.status(400).json({ message: "No file uploaded." });
         }
 
         const newArchive = new Archive({
-            userID,
+            userId,
             title,
             caption,
             categories: JSON.parse(categories),
@@ -66,6 +69,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
             description,
             date,
             location,
+            url,
             filename: file.filename,
             filePath: file.path,
             fileType: file.mimetype
@@ -75,7 +79,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
         res.status(201).json({ message: "File uploaded successfully", data: savedArchive });
     } catch (error) {
         console.error('Error uploading file:', error);
-        res.status(500).json({ error: "Error uploading file", message: error.message });
+        res.status(500).json({ error: "Error uploading file; Error Originates from archiveRoutes.js in the backend", message: error.message });
     }
 });
 
