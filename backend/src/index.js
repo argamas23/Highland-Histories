@@ -72,6 +72,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 const userRoutes = require('./routes/auth');
 const archiveRoutes = require('./routes/archiveRoutes');
 
@@ -94,6 +95,9 @@ app.use('/api/archives', archiveRoutes);
 // // Routes
 // app.use('/api/auth', userRoutes);
 // app.use('/api/archives', archiveRoutes);
+
+// Serve static files from 'uploads' directory if needed
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // MongoDB connection
 const mongoURI = "mongodb+srv://highlandhistoriesdeveloper:RvWKjUnNKacdWaX1@cluster0.pz0l5dq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";

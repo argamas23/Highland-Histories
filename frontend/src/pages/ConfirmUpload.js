@@ -120,7 +120,7 @@ const ConfirmUpload = () => {
             formData.append('date', state.details.date);
             formData.append('location', state.details.location);
             formData.append('userId', localStorage.getItem('userId')); 
-            formData.append('url', `http://localhost:5000/uploads/${state.file.name}`);  // Construct URL
+            formData.append('url', `http://localhost:5000/uploads/${state.file.filename}`);  // Construct URL
 
             console.log('Hello from ConfirmUpload.js in frontend Folder : I am sending "formData"', formData)
 
