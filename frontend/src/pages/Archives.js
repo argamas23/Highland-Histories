@@ -218,8 +218,8 @@ const Archives = () => {
                             <Link to={`/archives/${archive.id}`}></Link>
                                <h3>{archive.title}</h3>
                                <p>Description: {archive.description}</p>
-                                {/* <p>Tags: {archive.categories.join(', ')}</p> */}
-                               <p>Tags: {archive.tags.join(', ')}</p>
+                                <p>Tags: {archive.categories.join(', ')}</p>
+                               {/* <p>Tags: {archive.tags.join(', ')}</p> */}
                            </li>
                        ));
     };
