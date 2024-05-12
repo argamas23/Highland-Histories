@@ -1,0 +1,27 @@
+/* src/pages/Home.css */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  color: #333;
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h2 {
+  color: #666;
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+p {
+  color: #999;
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}

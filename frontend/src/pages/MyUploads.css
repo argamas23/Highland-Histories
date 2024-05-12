@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .heading {
+    text-align: center;
+  }
+  
+  .upload-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .upload-item {
+    text-align: center;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .no-uploads {
+    text-align: center;
+  }

@@ -7,10 +7,13 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
-        <section className="footer-section">
-          <h4>About Us</h4>
-          <p>We are a digital archive dedicated to preserving history.</p>
-        </section>
+      <section className="footer-section">
+        <h4>About Us</h4>
+        <p>
+          We are a digital archive dedicated<br/> to preserving history.
+        </p>
+    </section>
+
         <section className="footer-section">
           <h4>Contact</h4>
           <p>Email: info@onlinehistorian.com</p>
