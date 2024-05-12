@@ -202,15 +202,17 @@ const MyUploads = () => {
                 <ul>
                     {uploads.map((upload) => (
                         <li key={upload._id}>
-                            <h3>{upload.title}</h3>
+                            <Link to={`/view-upload/${upload._id}`}>{upload.title}</Link> 
+                        <span> - {upload.section}</span> 
+                            {/* <h3>{upload.title}</h3> */}
                             <p>{upload.description}</p>
-                            {upload.filename.endsWith('.pdf') && (
+                            {/* {upload.filename.endsWith('.pdf') && (
                                 <object data={upload.url} type="application/pdf" width="100%" height="600px">
                                     <iframe src={upload.url} width="100%" height="600px">
                                         <p>This browser does not support PDFs. Please download the PDF to view it: <a href={upload.url}>Download PDF</a>.</p>
                                     </iframe>
                                 </object>
-                            )}
+                            )} */}
                             <button onClick={() => handleEdit(upload._id)}>Edit</button>
                             <button onClick={() => handleDelete(upload._id)}>Delete</button>
                         </li>
