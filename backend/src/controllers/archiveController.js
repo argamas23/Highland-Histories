@@ -35,6 +35,8 @@ exports.saveFile = async (req, res) => {
       // filename: req.file ? req.file.filename : '',
       filename: req.file.filename,
       url: req.body.url,
+      fileType: file.mimetype,
+      section
     });
 
   try {
@@ -60,29 +62,60 @@ exports.getArchiveById = async (req, res) => {
 };
 
 
-  exports.uploadArchive = async (req, res) => {
-    try {
+//   exports.uploadArchive = async (req, res) => {
+//     const { section } = req.body; // Ensure section is extracted from the request body
+//     console.log("Section received:", section);
+//     try {
         
-        const newArchive = new Archive({
-            userId: req.body.userId,
-            title: req.body.title,
-            caption: req.body.caption,
-            categories: JSON.parse(req.body.categories),
-            description: req.body.description,
-            date: req.body.date,
-            location: req.body.location,
-            filename: req.file.filename
-        });
-    //     await archive.save();
-    //     res.status(200).json({ message: 'File uploaded successfully', filename: req.file.filename });
-    // } catch (error) {
-    //     res.status(500).json({ message: 'File upload failed', error });
-    // }
-    const savedArchive = await newArchive.save();
-        res.json({ message: "File uploaded successfully", filename: req.file.filename, archive: savedArchive });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+//         const newArchive = new Archive({
+//             userId: req.body.userId,
+//             title: req.body.title,
+//             caption: req.body.caption,
+//             categories: JSON.parse(req.body.categories),
+//             description: req.body.description,
+//             date: req.body.date,
+//             location: req.body.location,
+//             filename: req.file.filename,
+//             fileType: file.mimetype,
+//             section
+        
+//         });
+//     //     await archive.save();
+//     //     res.status(200).json({ message: 'File uploaded successfully', filename: req.file.filename });
+//     // } catch (error) {
+//     //     res.status(500).json({ message: 'File upload failed', error });
+//     // }
+//     const savedArchive = await newArchive.save();
+//         res.json({ message: "File uploaded successfully", filename: req.file.filename, archive: savedArchive });
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
+
+exports.uploadArchive = async (req, res) => {
+  const { section } = req.body; // Ensure section is extracted from the request body
+  console.log("Section received:", section);
+
+  try {
+      const newArchive = new Archive({
+          userId: req.body.userId,
+          title: req.body.title,
+          caption: req.body.caption,
+          categories: JSON.parse(req.body.categories),
+          description: req.body.description,
+          date: req.body.date,
+          location: req.body.location,
+          filename: req.file.filename,
+          fileType: req.file.mimetype,
+          section
+      });
+
+      const savedArchive = await newArchive.save();
+      res.json({ message: "File uploaded successfully", filename: req.file.filename, archive: savedArchive });
+  } catch (error) {
+      console.error("Error saving file:", error);
+      res.status(500).json({ message: error.message });
+  }
 };
 
   

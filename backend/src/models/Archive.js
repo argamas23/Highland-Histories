@@ -42,6 +42,15 @@ const archiveSchema = new mongoose.Schema({
         type: String,
         required: [true, "URL is required"]
     },
+    // section: {
+    //     type: String,
+    //     required: true,
+    //     enum: ['Maps', 'Documents', 'Audio', 'Video']
+    //   },
+    section: { 
+        type: String, 
+        required: true 
+    }
     
 });
 

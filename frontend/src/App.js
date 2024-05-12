@@ -16,6 +16,7 @@ import MyUploads from './pages/MyUploads';
 import ArchiveDetail from './pages/ArchiveDetail';
 import EditUpload from './pages/EditUpload';
 import Permission from './pages/Permission';
+import ViewUpload from './pages/ViewUpload';
 
 
 function App() {
@@ -37,10 +38,11 @@ function App() {
           <Route path="/confirm-upload" element={<ConfirmUpload />} />
           {/* <Route path="/confirm-upload" element={ConfirmUpload} /> */}
           <Route path="/my-uploads" element={<MyUploads />} />
+          
           <Route path="/archives/:id" element={<ArchiveDetail />} />
           <Route path="/edit-upload/:id" element={<EditUpload />} />
           <Route path="/permission" element={<Permission />}/>
-
+          <Route path="/view-upload/:id" element={<ViewUpload />} />
           {/* <Route path="/my-uploads" component={Archives} /> */}
         
         </Routes>

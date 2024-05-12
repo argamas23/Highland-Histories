@@ -74,11 +74,11 @@ router.get('/:id', archiveController.getArchiveById);
 
 // POST endpoint for uploading an archive
 router.post('/upload', upload.single('file'), async (req, res) => {
-    console.log(req.body); // Log text field values
+    console.log("Received fields:", req.body); // Log text field values
     console.log(req.file); // Log file details
     try {
         console.log ("Hi from backend : archiveRoutes.js : I am in the POST endpoint for uploading an archive")
-        let { title, caption, categories, description, date, location,userId, url } = req.body;
+        let { title, caption, categories, description, date, location,userId, url , section } = req.body;
         const file = req.file;
         //debugging 
         console.log("Request Body Recieved from frontend to backend is : "  , req.body, "Consisting of - 'Title' = ", title, " Caption : ",  caption, "Categories : ", categories,"Description :", description,"Date : ", date,"Location : ", location, "UserID : " , userId, "URL :", url, " file : " , file)
@@ -105,7 +105,8 @@ router.post('/upload', upload.single('file'), async (req, res) => {
             url,
             filename: file.filename,
             filePath: file.path,
-            fileType: file.mimetype
+            fileType: file.mimetype,
+            section
         });
 
         const savedArchive = await newArchive.save();await newArchive.save();
@@ -124,6 +125,17 @@ router.get('/', async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Error fetching archives", error: error.message });
     }
+});
+
+// New endpoint to fetch archives by section
+router.get('/', (req, res) => {
+    const { section } = req.query; // Capture 'section' from query parameters
+    // Construct a query object based on whether 'section' is provided
+    let query = section ? { section } : {};
+    
+    Archive.find(query)
+        .then(archives => res.json(archives))
+        .catch(err => res.status(500).json({ message: "Error fetching archives", error: err.message }));
 });
 
 
