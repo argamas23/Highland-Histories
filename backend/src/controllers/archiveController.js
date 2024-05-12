@@ -119,14 +119,30 @@ exports.uploadArchive = async (req, res) => {
 };
 
   
+// exports.getArchives = async (req, res) => {
+//   try {
+//       const archives = await Archive.find({});
+//       res.json(archives);
+//   } catch (error) {
+//       res.status(500).send("Error fetching archives");
+//   }
+// };
+
 exports.getArchives = async (req, res) => {
+  const { section } = req.query; // Capture the 'section' query parameter
+
   try {
-      const archives = await Archive.find({});
+      let query = {};
+      if (section && section !== 'All') {
+          query.section = section; // Only add the section filter if it's not 'All'
+      }
+      const archives = await Archive.find(query);
       res.json(archives);
   } catch (error) {
-      res.status(500).send("Error fetching archives");
+      res.status(500).send("Error fetching archives: " + error.message);
   }
 };
+
   
 // exports.getMyUploads = async (req, res) => {
 //   try {
