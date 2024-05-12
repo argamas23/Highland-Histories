@@ -145,9 +145,10 @@ const renderSection = (section) => {
         <div key={archive._id}>
             <Link to={`/view-upload/${archive._id}`}>
                 <h3>{archive.title}</h3>
-                <p>{archive.description}</p>
-                <p>Categories: {archive.categories.join(', ')}</p>
+                
             </Link>
+            <p>{archive.description}</p>
+                <p>Categories: {archive.categories.join(', ')}</p>
         </div>
     ));
 };
