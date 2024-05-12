@@ -38,6 +38,10 @@ const archiveSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    fileType: {
+        type: String,
+        required: true
+    },
     url: {
         type: String,
         required: [true, "URL is required"]
