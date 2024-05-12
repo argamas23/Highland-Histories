@@ -1,12 +1,18 @@
 // src/pages/Home.js
 import React from 'react';
+import './Home.css'; // Import CSS file
 
 const Home = () => {
   return (
-    <div>
-      <h1> Highland Histories</h1>
+    <div className="container">
+      <h1>Highland Histories</h1>
       <h2>Digital Archives</h2>
-      <p>Welcome to the Highland Histories Digital Archive System a treasure trove where the past meets the present. Journey through time with our extensive collection of maps, manuscripts, audio recordings, and video documentaries and much more. Here, history enthusiasts, researchers, and the simply curious can delve into the rich tapestry of our shared heritage. Our archives are meticulously curated to preserve the intricacies of history and to offer a platform for collaborative exploration and knowledge exchange. Uncover stories that shaped the world and connect with bygone eras. Begin your expedition into history with Highland Histories.</p>
+      <p>
+        Mountains are not merely geographically distinct, the human societies they nurtured are markedly different from those which emerged in the plains. This research theme works to centre mountain societies from the margins of social theory and historical practice. It draws on the works of Lucien Febvre, Owen Lattimore, Shekhar Pathak, Chetan Singh, Willem van Schendel, James Scott, and Aniket Alam, among other scholars of mountain societies to build conceptual tools, methodologies, and social theory for the study of mountain societies.
+      </p>
+      <p>
+        This is called a Lab because the intention is to, one, test social science and humanities theories for the specificities of mountain societies and, two, integrate computational tools like GIS, NLP, Data Analytics and Machine Learning into our research methods and theories.
+      </p>
     </div>
   );
 };

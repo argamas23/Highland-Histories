@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import './EditUpload.css';
 
 const EditUpload = () => {
     const { id } = useParams();
@@ -40,21 +41,59 @@ const EditUpload = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h1>Edit File</h1>
+        <form onSubmit={handleSubmit} className="edit-file-form">
+          <h1>Edit File</h1>
+          <div className="form-group">
             <label>Title:</label>
-            <input name="title" value={fileDetails.title} onChange={handleChange} />
+            <input
+              name="title"
+              value={fileDetails.title}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </div>
+          <div className="form-group">
             <label>Description:</label>
-            <textarea name="description" value={fileDetails.description} onChange={handleChange} />
+            <textarea
+              name="description"
+              value={fileDetails.description}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </div>
+          <div className="form-group">
             <label>Categories:</label>
-            <input name="categories" value={fileDetails.categories.join(',')} onChange={handleChange} />
+            <input
+              name="categories"
+              value={fileDetails.categories.join(',')}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </div>
+          <div className="form-group">
             <label>Location:</label>
-            <input name="location" value={fileDetails.location} onChange={handleChange} />
+            <input
+              name="location"
+              value={fileDetails.location}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </div>
+          <div className="form-group">
             <label>Date:</label>
-            <input type="date" name="date" value={fileDetails.date} onChange={handleChange} />
-            <button type="submit">Save Changes</button>
+            <input
+              type="date"
+              name="date"
+              value={fileDetails.date}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </div>
+          <button type="submit" className="save-btn">
+            Save Changes
+          </button>
         </form>
-    );
+      );
 };
 
 export default EditUpload;

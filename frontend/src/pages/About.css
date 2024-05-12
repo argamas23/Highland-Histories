@@ -1,0 +1,36 @@
+/* src/pages/About.css */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  li {
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  h1 {
+    color: #333;
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  p {
+    color: #666;
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  
+  }
+  
+  .left-align {
+    text-align: left;
+  }
+  

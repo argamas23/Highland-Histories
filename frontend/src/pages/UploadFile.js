@@ -78,16 +78,17 @@ const UploadFile = () => {
     };
 
     return (
-        <div>
-            <h2>Upload File</h2>
-            <div {...getRootProps()} className="dropzone">
-                <input {...getInputProps()} />
-                {file ? <p>{file.name}</p> : <p>Drag & drop a file here, or click to select one</p>}
-            </div>
-            {/* {file && <button onClick={handleNext}>Next</button>} */}
+        <div className="dropzone-container">
+          <h2>Upload File</h2>
+          <div {...getRootProps()} className="dropzone">
+            <input {...getInputProps()} />
+            {file ? <p>{file.name}</p> : <p>Drag & drop a file here, or click to select one</p>}
+          </div>
+          <div className="button-container">
             <button onClick={handleNext}>Next</button>
+          </div>
         </div>
-    );
+      );
 };
 
 export default UploadFile;
