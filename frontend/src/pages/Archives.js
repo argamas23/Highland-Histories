@@ -51,6 +51,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import './Archives.css'
 
 const Archives = () => {
     const [archives, setArchives] = useState([]);
@@ -142,23 +143,22 @@ const Archives = () => {
 
 const renderSection = (section) => {
     return archives.filter(archive => archive.section === section).map(archive => (
-        <div key={archive._id}>
-            <Link to={`/view-upload/${archive._id}`}>
-                <h3>{archive.title}</h3>
-                
-            </Link>
-            <p>{archive.description}</p>
-                <p>Categories: {archive.categories.join(', ')}</p>
-        </div>
+      <div key={archive._id} className="archive-item"> {/* Add the class name here */}
+        <Link to={`/view-upload/${archive._id}`}>
+          <h3>{archive.title}</h3>
+        </Link>
+        <p><b>Description: </b>{archive.description}</p>
+        <p><b>Categories: </b>{archive.categories.join(', ')}</p>
+      </div>
     ));
-};
+  };
 
 const renderArchives = () => {
     if (filterType === 'All') {
         const sections = ['Maps', 'Documents', 'Audio', 'Video'];
         return sections.map(section => (
             <div key={section}>
-                <h2>{section}</h2>
+                <h1>{section}</h1>
                 {renderSection(section)}
             </div>
         ));
@@ -169,17 +169,21 @@ const renderArchives = () => {
 
 return (
     <div>
-        <h1>Archives</h1>
-        <select onChange={e => setFilterType(e.target.value)} value={filterType}>
-            <option value="All">All Types</option>
-            <option value="Maps">Maps</option>
-            <option value="Documents">Documents</option>
-            <option value="Audio">Audio</option>
-            <option value="Video">Video</option>
-        </select>
-        {renderArchives()}
+      <h1>Archives</h1>
+      <select
+        onChange={e => setFilterType(e.target.value)}
+        value={filterType}
+        className="filter-dropdown"
+      >
+        <option value="All">All Types</option>
+        <option value="Maps">Maps</option>
+        <option value="Documents">Documents</option>
+        <option value="Audio">Audio</option>
+        <option value="Video">Video</option>
+      </select>
+      {renderArchives()}
     </div>
-);
+  );
 };
 
 export default Archives;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './Permission.css';
 
 const Permissions = () => {
   const [request, setRequest] = useState({ name: '', email: '', password: '', confirmPassword: '', usertype: '' });
@@ -43,13 +44,26 @@ const Permissions = () => {
     }
   }
 
+  const handleReject = () => {
+    localStorage.removeItem('request');
+    setRequest({ name: '', email: '', password: '', confirmPassword: '', usertype: '' }); // Reset form fields
+  }
+
   return (
     <div>
       <h2>Permissions</h2>
       <div>
-        <p>Request:</p>
-        <pre>{JSON.stringify(request, null, 2)}</pre> {/* Use pre tag for JSON output */}
-        <button onClick={handleSubmit}>Verify</button>
+        <p>Name: {request.name}</p>
+        <p>Email: {request.email}</p>
+        <p>User Type: {request.usertype}</p>
+        <div className="button-container">
+          <button onClick={handleSubmit} className="verify-btn">
+            Verify
+          </button>
+          <button onClick={handleReject} className="reject-btn">
+            Reject
+          </button>
+        </div>
         <p>{verificationResult}</p>
       </div>
     </div>

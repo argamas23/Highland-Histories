@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
+import './Search.css'; // Import the CSS file
 
-// This custom hook simplifies the process of getting query parameters
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
@@ -12,16 +12,33 @@ const Search = () => {
   const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
-    const performSearch = async () => {
-      // Simulate a search function that filters mock data based on the search term
-      const results = mockData.filter(item => 
-        item.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        item.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-      );
-      setSearchResults(results);
+    const fetchSearchResults = async () => {
+      try {
+        if (!searchTerm) {
+          setSearchResults([]);
+          return;
+        }
+
+        const response = await fetch(`http://localhost:5000/api/archives?query=${searchTerm}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch search results');
+        }
+
+        const data = await response.json();
+        const results = data.filter(item =>
+          item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.categories.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          item.section.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.location.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        setSearchResults(results);
+      } catch (error) {
+        console.error(error);
+      }
     };
 
-    performSearch();
+    fetchSearchResults();
   }, [searchTerm]);
 
   return (
@@ -29,10 +46,12 @@ const Search = () => {
       <h1>Search Results</h1>
       <ul>
         {searchResults.map(result => (
-          <li key={result.id}>
-            <h2>{result.title}</h2>
-            <p>Tags: {result.tags.join(', ')}</p>
-            {/* Add more details as needed */}
+          <li key={result._id} className="search-result">
+            <Link to={`/view-upload/${result._id}`}>
+              <h2>{result.title}</h2>
+            </Link>
+            <p><b>Description: </b>{result.description}</p>
+            <p><b>Tags: </b>{result.categories.join(', ')}</p>
           </li>
         ))}
       </ul>
@@ -40,13 +59,5 @@ const Search = () => {
     </div>
   );
 };
-
-// Has to be Replaced with real data fetching logic later during back-end implementation
-const mockData = [
-  { id: 1, title: 'Historical Map', tags: ['geography', 'history'] },
-  { id: 2, title: 'Ancient Manuscript', tags: ['manuscript', 'literature'] },
-  { id: 3, title: 'Audio Recording', tags: ['oral history', 'british india'] },
- 
-];
 
 export default Search;

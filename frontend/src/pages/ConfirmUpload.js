@@ -1,5 +1,6 @@
 import React , { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import './ConfirmUpload.css'
 
 
 
@@ -68,32 +69,30 @@ const ConfirmUpload = () => {
     };
 
     return (
-        <div>
-            <h2>Confirm Upload</h2>
-            <p>Title: {state.details.title}</p>
-            <p>Caption: {state.details.caption}</p>
-            <p>Categories: {state.details.categories.join(',')}</p>
-            <p>Description: {state.details.description}</p>
-            <p>Date: {state.details.date}</p>
-            <p>Location: {state.details.location}</p>
-            {/* <select onChange={(e) => state.details.section = e.target.value} defaultValue="Select Section">
-                <option disabled>Select Section</option>
-                <option value="Maps">Maps</option>
-                <option value="Documents">Documents</option>
-                <option value="Audio">Audio</option>
-                <option value="Video">Video</option>
-            </select> */}
-            {/* <select onChange={(e) => setSection(e.target.value)} value={section}> */}
-            <select onChange={(e) => setSection(e.target.value)} defaultValue="Select Section">
-                <option value="">Select Section</option>
-                <option value="Maps">Maps</option>
-                <option value="Documents">Documents</option>
-                <option value="Audio">Audio</option>
-                <option value="Video">Video</option>
-            </select>
-            <button onClick={handleUpload}>Upload</button>
+        <div className="confirm-upload">
+          <h2>Confirm Upload</h2>
+          <p>Title: {state.details.title}</p>
+          <p>Caption: {state.details.caption}</p>
+          <p>Categories: {state.details.categories.join(',')}</p>
+          <p>Description: {state.details.description}</p>
+          <p>Date: {state.details.date}</p>
+          <p>Location: {state.details.location}</p>
+          <select
+            onChange={(e) => setSection(e.target.value)}
+            defaultValue="Select Section"
+            className="filter-dropdown"
+          >
+            <option value="">Select Section</option>
+            <option value="Maps">Maps</option>
+            <option value="Documents">Documents</option>
+            <option value="Audio">Audio</option>
+            <option value="Video">Video</option>
+          </select>
+          <button onClick={handleUpload} className="upload-btn">
+            Upload
+          </button>
         </div>
-    );
+      );
 };
 
 export default ConfirmUpload;
