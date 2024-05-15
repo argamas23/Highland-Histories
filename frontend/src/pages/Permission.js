@@ -3,26 +3,27 @@ import { useNavigate } from 'react-router-dom';
 import './Permission.css';
 
 const Permissions = () => {
-  const [request, setRequest] = useState({ name: '', email: '', password: '', confirmPassword: '', usertype: '' });
+  const [pendingRequests, setPendingRequests] = useState([]);
   const [verificationResult, setVerificationResult] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedRequest = localStorage.getItem('request');
+    const storedRequests = localStorage.getItem('pendingRequests');
 
-    if (storedRequest) {
+    if (storedRequests) {
       try {
-        setRequest(JSON.parse(storedRequest));
+        setPendingRequests(JSON.parse(storedRequests));
       } catch (error) {
-        console.error('Error parsing stored request:', error);
-        // Handle error gracefully, e.g., set default request or clear localStorage
+        console.error('Error parsing stored requests:', error);
+        // Handle error gracefully, e.g., set default pendingRequests or clear localStorage
       }
     }
   }, []);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
+  const handleVerify = async (index) => {
+    
+    const request = pendingRequests[index];
+    
     const response = await fetch("http://localhost:5000/api/auth/createuser", {
       method: 'POST',
       headers: {
@@ -30,42 +31,51 @@ const Permissions = () => {
       },
       body: JSON.stringify(request)
     });
+
     const json = await response.json();
     if (json.success) {
       setVerificationResult('User created successfully.');
-      setRequest({ name: '', email: '', password: '', confirmPassword: '', usertype: '' }); // Reset form fields
-      // Optionally, you can clear localStorage as well
+      const updatedRequests = pendingRequests.filter((_, i) => i !== index);
+      setPendingRequests(updatedRequests);
+      localStorage.setItem('pendingRequests', JSON.stringify(updatedRequests));
       localStorage.setItem('userId', json.userId);
-      localStorage.removeItem('request');
+      // Optionally, you can clear localStorage for the individual request
       // localStorage.setItem('token', json.authtoken);
-      navigate('/');
+      // navigate('/');
     } else {
       setVerificationResult('Invalid credentials');
     }
-  }
+  };
 
-  const handleReject = () => {
-    localStorage.removeItem('request');
-    setRequest({ name: '', email: '', password: '', confirmPassword: '', usertype: '' }); // Reset form fields
-  }
+  const handleReject = (index) => {
+    const updatedRequests = pendingRequests.filter((_, i) => i !== index);
+    setPendingRequests(updatedRequests);
+    localStorage.setItem('pendingRequests', JSON.stringify(updatedRequests));
+  };
 
   return (
     <div>
-      <h2>Permissions</h2>
-      <div>
-        <p>Name: {request.name}</p>
-        <p>Email: {request.email}</p>
-        <p>User Type: {request.usertype}</p>
-        <div className="button-container">
-          <button onClick={handleSubmit} className="verify-btn">
-            Verify
-          </button>
-          <button onClick={handleReject} className="reject-btn">
-            Reject
-          </button>
-        </div>
-        <p>{verificationResult}</p>
-      </div>
+      <h1>Permissions</h1>
+      {pendingRequests.length === 0 ? (
+        <p>No pending requests</p>
+      ) : (
+        pendingRequests.map((request, index) => (
+          <div key={index} className="request-item">
+            <p>Name: {request.name}</p>
+            <p>Email: {request.email}</p>
+            <p>User Type: {request.usertype}</p>
+            <div className="button-container">
+              <button onClick={() => handleVerify(index)} className="verify-btn">
+                Verify
+              </button>
+              <button onClick={() => handleReject(index)} className="reject-btn">
+                Reject
+              </button>
+            </div>
+          </div>
+        ))
+      )}
+      <p>{verificationResult}</p>
     </div>
   );
 };

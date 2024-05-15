@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Register.css';
+import config from '../globals';
 
 const Register = () => {
   const [credentials, setCredentials] = useState({ name: '', email: '', password: '', confirmPassword: '', usertype: '' }); // Include usertype in credentials
   const [formErrors, setFormErrors] = useState({});
   const [secretkey, setSecretKey] = useState('');
+  let pendingRequests = JSON.parse(localStorage.getItem('pendingRequests')) || [];
 
   const navigate = useNavigate();
 
@@ -45,68 +47,15 @@ const Register = () => {
     return Object.keys(errors).length === 0;
   };
 
-//   const handleSubmit = async (event) => {
-//     event.preventDefault();
-// // <<<<<<< HEAD
-// //     const { name, email, password, confirmPassword } = credentials;
-// //     const response = await fetch("http://localhost:5000/api/auth/createuser", {
-// //       method: 'POST',
-// //       headers: {
-// //         "Content-Type": 'application/json',
-// //       },
-// //       body: JSON.stringify({ name, email, password })
-// //     });
-// //     const json = await response.json();
-// //     console.log(json);
-// //     if (json.success) {
-// //       // localStorage.setItem('token', json.authtoken);
-// //       localStorage.setItem('userId', json.userId);  // Storing the userId
-// //       navigate('/');
-// //     } else {
-// //       alert("Invalid credentials");
-// // =======
-//     if (credentials.usertype === 'Admin' && secretkey !== 'iiit') {
-//       alert("Invalid Admin");
-// // >>>>>>> stash
-//     }
-//     if (!validateForm()) return;
-//     const { name, email, password, usertype } = credentials;
-//     if (usertype === 'Admin' && secretkey === 'iiit') {
-//       console.log(credentials)
-//       const response = await fetch("http://localhost:5000/api/auth/createuser", {
-//         method: 'POST',
-//         headers: {
-//           "Content-Type": 'application/json',
-//         },
-//         body: JSON.stringify({ name, email, password, usertype })
-//       });
-//       const json = await response.json();
-//       // console.log(json);
-//       if (json.success) {
-//         localStorage.setItem('userId', json.userId);
-//         navigate('/');
-//         // localStorage.setItem('user',credentials.usertype);
-//       } else {
-//         alert("Invalid credentials");
-//       }
-//     } if(usertype == 'User') {
-//       localStorage.setItem('request', JSON.stringify(credentials));
-//       // console.log('here')
-//       alert("Please wait for Admin to approve")
-//     }
-//     if(usertype == '') {
-//       alert('Please Select UserType');
-//     }
-//   };
 
 const handleSubmit = async (event) => {
   event.preventDefault();
-  if (credentials.usertype === 'Admin' && secretkey !== 'iiit') {
+  if (credentials.usertype === 'Admin' && secretkey !== config.SECRET_KEY) {
     alert("Invalid Admin");
   }
   if (!validateForm()) return;
   const { name, email, password, usertype } = credentials;
-  if (usertype === 'Admin' && secretkey === 'iiit') {
+  if (usertype === 'Admin' && secretkey === config.SECRET_KEY) {
     const response = await fetch("http://localhost:5000/api/auth/createuser", {
       method: 'POST',
       headers: {
@@ -123,10 +72,13 @@ const handleSubmit = async (event) => {
     } else {
       alert("Invalid credentials");
     }
-  } if(usertype == 'User') {
-    localStorage.setItem('request', JSON.stringify(credentials));
+  } if(credentials.usertype == 'User') {
+    pendingRequests.push(credentials);
+    localStorage.setItem('pendingRequests', JSON.stringify(pendingRequests));
+    // localStorage.setItem('request', JSON.stringify(credentials));
     // console.log('here')
     alert("Please wait for Admin to approve")
+    console.log(pendingRequests)
   }
   if(usertype == '') {
     alert('Please Select UserType');
