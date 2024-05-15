@@ -1,1 +1,7 @@
-export let loggedin = false;
+
+const config = {
+    SECRET_KEY: 'iiit',
+  };
+  
+  export default config;
+  
