@@ -99,6 +99,24 @@ app.use('/api/archives', archiveRoutes);
 // Serve static files from 'uploads' directory if needed
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+const _dirname = path.dirname("")
+const buildPath = path.join(_dirname  , "../frontend/build");
+
+app.use(express.static(buildPath))
+
+app.get("/*", function(req, res){
+
+    res.sendFile(
+        path.join(__dirname, "../frontend/build/index.html"),
+        function (err) {
+          if (err) {
+            res.status(500).send(err);
+          }
+      }
+);
+
+})
+
 // MongoDB connection
 const mongoURI = "mongodb+srv://highlandhistoriesdeveloper:RvWKjUnNKacdWaX1@cluster0.pz0l5dq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 mongoose.connect(mongoURI, {
