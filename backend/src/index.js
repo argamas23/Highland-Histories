@@ -1,74 +1,3 @@
-// const express = require('express');
-// const mongoose = require('mongoose');
-// const cors = require('cors');
-// const path = require('path');
-// const userRoutes = require('./routes/auth');
-// const archiveRoutes = require('./routes/archiveRoutes');
-
-// const app = express();
-
-// // Correct CORS configuration to ensure headers are set properly
-// app.use(cors({
-//   origin: 'http://localhost:3000', // This should match your front-end URL exactly
-//   methods: 'GET,POST,PUT,DELETE',
-//   credentials: true, // Important to send cookies across domains
-//   allowedHeaders: ['Content-Type', 'Authorization']
-// }));
-
-// // Global middleware
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
-// // app.use('/uploads', express.static('uploads'));
-// app.use('/api/archives', archiveRoutes);
-
-// // // Routes
-// // app.use('/api/auth', userRoutes);
-// // app.use('/api/archives', archiveRoutes);
-
-// // Serve static files from 'uploads' directory if needed
-// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// const _dirname = path.dirname("")
-// const buildPath = path.join(_dirname  , "../frontend/build");
-
-// app.use(express.static(buildPath))
-
-// app.get("/*", function(req, res){
-
-//     res.sendFile(
-//         path.join(__dirname, "../frontend/build/index.html"),
-//         function (err) {
-//           if (err) {
-//             res.status(500).send(err);
-//           }
-//       }
-// );
-
-// })
-
-// // MongoDB connection
-// const mongoURI = "mongodb+srv://highlandhistoriesdeveloper:RvWKjUnNKacdWaX1@cluster0.pz0l5dq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-// mongoose.connect(mongoURI, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true
-// }).then(() => console.log('MongoDB connected successfully.'))
-//   .catch(err => console.error('MongoDB connection error:', err));
-
-//   // Routes
-// app.use('/api/auth', userRoutes);
-// app.use('/api/archives', archiveRoutes);
-
-// // Start server
-// const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
-
-
-
-
-
-
-
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -89,6 +18,33 @@ app.use(cors({
 // Global middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// app.use('/uploads', express.static('uploads'));
+app.use('/api/archives', archiveRoutes);
+
+// // Routes
+// app.use('/api/auth', userRoutes);
+// app.use('/api/archives', archiveRoutes);
+
+// Serve static files from 'uploads' directory if needed
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+const _dirname = path.dirname("")
+const buildPath = path.join(_dirname  , "../frontend/build");
+
+app.use(express.static(buildPath))
+
+app.get("/*", function(req, res){
+
+    res.sendFile(
+        path.join(__dirname, "../frontend/build/index.html"),
+        function (err) {
+          if (err) {
+            res.status(500).send(err);
+          }
+      }
+);
+
+})
 
 // MongoDB connection
 const mongoURI = "mongodb+srv://highlandhistoriesdeveloper:RvWKjUnNKacdWaX1@cluster0.pz0l5dq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
@@ -98,34 +54,18 @@ mongoose.connect(mongoURI, {
 }).then(() => console.log('MongoDB connected successfully.'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-// Routes
+  // Routes
 app.use('/api/auth', userRoutes);
 app.use('/api/archives', archiveRoutes);
-
-// Serve static files from 'uploads' directory if needed
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// Root route to verify server is running
-app.get('/', (req, res) => {
-  res.send('Welcome to Highland Histories API!');
-});
-
-const _dirname = path.dirname("");
-const buildPath = path.join(_dirname, "../frontend/build");
-
-app.use(express.static(buildPath));
-
-app.get("/*", function(req, res) {
-  res.sendFile(
-    path.join(__dirname, "../frontend/build/index.html"),
-    function (err) {
-      if (err) {
-        res.status(500).send(err);
-      }
-    }
-  );
-});
 
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+
+
+
+
+
+
+
+
