@@ -59,8 +59,8 @@ app.use('/api/auth', userRoutes);
 app.use('/api/archives', archiveRoutes);
 
 // Start server
-// const PORT = process.env.PORT || 5000;
-const PORT = 5000
+const PORT = process.env.PORT || 5000  || 80;
+
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
 
 
