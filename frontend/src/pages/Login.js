@@ -57,7 +57,7 @@ const Login = () => {
       alert("Invalid Admin")
     }
     else{
-    const response = await fetch("/api/auth/login", {
+    const response = await fetch("http://43.204.23.49/api/auth/login", {
       method: 'POST',
       headers: {
         "Content-Type": 'application/json',
