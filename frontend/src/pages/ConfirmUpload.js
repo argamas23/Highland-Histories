@@ -23,6 +23,8 @@ const ConfirmUpload = () => {
             // formData.append('url', `http://43.204.23.49/uploads/${state.file.filename}`);  // Construct URL
             // formData.append('section', state.details.section);
             formData.append('section', section);
+            // URL will be constructed in the backend
+            formData.append('url', ''); 
              // Log FormData for debugging
         for (let key of formData.keys()) {
             console.log(key, formData.get(key));  // Logs each key-value pair in the FormData
@@ -40,6 +42,7 @@ const ConfirmUpload = () => {
             userId: localStorage.getItem('userId'),
             // url: `http://43.204.23.49/uploads/${state.file.filename}`,
             section: state.details.section
+            
         });
 
             console.log('Hello from ConfirmUpload.js in frontend Folder : I am sending "formData"', formData)

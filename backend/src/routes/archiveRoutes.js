@@ -82,6 +82,10 @@ router.post('/upload', upload.single('file'), async (req, res) => {
         const file = req.file;
         //debugging 
         console.log("Request Body Recieved from frontend to backend is : "  , req.body, "Consisting of - 'Title' = ", title, " Caption : ",  caption, "Categories : ", categories,"Description :", description,"Date : ", date,"Location : ", location, "UserID : " , userId, "URL :", url, " file : " , file)
+
+
+        // Construct the URL
+        const fileUrl = `http://43.204.23.49/uploads/${file.filename}`;
         
         // If url ends with "undefined", remove it, and replace with content of file.filename
         // if (url.endsWith("uploads/undefined")) {
@@ -90,9 +94,9 @@ router.post('/upload', upload.single('file'), async (req, res) => {
         // }
 
         // If url ends with "undefined", construct the correct URL
-        if (!url || url.endsWith("uploads/undefined")) {
-            url = `http://43.204.23.49/uploads/${file.filename}`;
-        }
+        // if (!url || url.endsWith("uploads/undefined")) {
+        //     url = `http://43.204.23.49/uploads/${file.filename}`;
+        // }
 
         if (!file) {
             return res.status(400).json({ message: "No file uploaded." });
@@ -107,14 +111,14 @@ router.post('/upload', upload.single('file'), async (req, res) => {
             description,
             date,
             location,
-            url,
+            url: fileUrl,
             filename: file.filename,
             filePath: file.path,
             fileType: file.mimetype,
             section
         });
 
-        const savedArchive = await newArchive.save();await newArchive.save();
+        const savedArchive = await newArchive.save();
         res.status(201).json({ message: "File uploaded successfully", data: savedArchive });
     } catch (error) {
         console.error('Error uploading file:', error);
