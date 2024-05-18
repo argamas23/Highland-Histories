@@ -46,6 +46,7 @@ exports.getArchiveById = async (req, res) => {
       if (!archive) {
           return res.status(404).json({ message: 'Archive not found' });
       }
+      console.log('Archive URL:', archive.url);
       res.json(archive);
   } catch (error) {
       res.status(500).json({ message: error.message });
