@@ -17,14 +17,6 @@ exports.saveFile = async (req, res) => {
   }
 
   const newArchive = new Archive({
-      // userId,
-      // title,
-      // description,
-      // categories: JSON.parse(categories),
-      // location,
-      // date,
-      // filePath: file.path,
-      // fileType: file.mimetype
       userId: req.body.userId,
       title: req.body.title,
       caption: req.body.caption,
@@ -32,7 +24,6 @@ exports.saveFile = async (req, res) => {
       description: req.body.description,
       date: req.body.date,
       location: req.body.location,
-      // filename: req.file ? req.file.filename : '',
       filename: req.file.filename,
       url: req.body.url,
       fileType: file.mimetype,
