@@ -24,7 +24,7 @@ const Permissions = () => {
     
     const request = pendingRequests[index];
     
-    const response = await fetch("http://localhost:5000/api/auth/createuser", {
+    const response = await fetch("http://43.204.23.49/api/auth/createuser", {
       method: 'POST',
       headers: {
         "Content-Type": 'application/json',

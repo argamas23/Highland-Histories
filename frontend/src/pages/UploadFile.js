@@ -1,50 +1,8 @@
-// import React, { useState } from 'react';
-// import { useHistory } from 'react-router-dom';
-// import { useDropzone } from 'react-dropzone';
-
-// const UploadFile = () => {
-//     const [file, setFile] = useState(null);
-//     const history = useHistory();
-
-//     const onDrop = acceptedFiles => {
-//         setFile(acceptedFiles[0]);
-//     };
-
-//     const { getRootProps, getInputProps } = useDropzone({ onDrop });
-
-//     const handleNext = () => {
-//         history.push({
-//             pathname: '/file-details',
-//             state: { file }
-//         });
-//     };
-
-//     return (
-//         <div>
-//             <h2>Upload File</h2>
-//             <div {...getRootProps()} className="dropzone">
-//                 <input {...getInputProps()} />
-//                 {file ? <p>{file.name}</p> : <p>Drag & drop a file here, or click to select one</p>}
-//             </div>
-//             {file && <button onClick={handleNext}>Next</button>}
-//         </div>
-//     );
-// };
-
-// export default UploadFile;
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
 import './dropzone.css';
 
-
-// function MyDropzone() {
-//     const {getRootProps, getInputProps} = useDropzone({
-//       onDrop: acceptedFiles => {
-//         console.log(acceptedFiles);
-//       }
-//     });
 
 const UploadFile = () => {
     const [file, setFile] = useState(null);
@@ -57,12 +15,7 @@ const UploadFile = () => {
         
     };
 
-    // const {getRootProps, getInputProps} = useDropzone({
-    //     onDrop: acceptedFiles => {
-    //       console.log(acceptedFiles);
-    //     }
-    // });
-
+   
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
     const handleNext = () => {
