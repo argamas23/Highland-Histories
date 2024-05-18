@@ -122,7 +122,7 @@ const MyUploads = () => {
         const fetchMyUploads = async () => {
             try {
                 
-                const response = await fetch(`http://localhost:5000/api/archives/user/${userId}/uploads`, {
+                const response = await fetch(`http://43.204.23.49/api/archives/user/${userId}/uploads`, {
                                         method: 'GET', // Method is GET by default, included for clarity
                                         // headers: {
                                         //     'Content-Type': 'application/json',
@@ -150,7 +150,7 @@ const MyUploads = () => {
     const handleDelete = async (id) => {
         
         try {
-            const response = await fetch(`http://localhost:5000/api/archives/${id}`, {
+            const response = await fetch(`http://43.204.23.49/api/archives/${id}`, {
                 method: 'DELETE',
             });
             if (response.ok) {
