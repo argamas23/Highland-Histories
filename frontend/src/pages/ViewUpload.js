@@ -22,16 +22,7 @@ const ViewUpload = () => {
         fetchUpload();
     }, [id]);
 
-    // const fetchUpload = async () => {
-    //     try {
-    //         const response = await fetch(`http://localhost:5000/api/archives/${id}`);
-    //         if (!response.ok) throw new Error('Failed to fetch upload');
-    //         const data = await response.json();
-    //         setUpload(data);
-    //     } catch (error) {
-    //         console.error("Error fetching upload details:", error);
-    //     }
-    // };
+    
 
     if (!upload) return <div>Loading...</div>;
 

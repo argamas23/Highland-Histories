@@ -84,9 +84,14 @@ router.post('/upload', upload.single('file'), async (req, res) => {
         console.log("Request Body Recieved from frontend to backend is : "  , req.body, "Consisting of - 'Title' = ", title, " Caption : ",  caption, "Categories : ", categories,"Description :", description,"Date : ", date,"Location : ", location, "UserID : " , userId, "URL :", url, " file : " , file)
         
         // If url ends with "undefined", remove it, and replace with content of file.filename
-        if (url.endsWith("uploads/undefined")) {
-            url = url.replace ("uploads/undefined","uploads/"+file.filename);
-            // url = url.replace("uploads/undefined", file.filename);
+        // if (url.endsWith("uploads/undefined")) {
+        //     url = url.replace ("uploads/undefined","uploads/"+file.filename);
+        //     // url = url.replace("uploads/undefined", file.filename);
+        // }
+
+        // If url ends with "undefined", construct the correct URL
+        if (!url || url.endsWith("uploads/undefined")) {
+            url = `http://43.204.23.49/uploads/${file.filename}`;
         }
 
         if (!file) {
