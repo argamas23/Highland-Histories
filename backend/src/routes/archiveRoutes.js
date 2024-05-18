@@ -54,7 +54,7 @@ router.get('/user/:userId/uploads', async (req, res) => {
             return res.status(400).json({ message: "User ID is required." });
         }
 
-        const uploads = await archiveController.getMyUploads(req); // Assuming this function handles the logic correctly
+        const uploads = await archiveController.getMyUploads(req); 
         console.log("Uploads fetched for User ID:", userId, " Uploads:", uploads);
 
         res.status(200).json(uploads);
@@ -85,13 +85,13 @@ router.post('/upload', upload.single('file'), async (req, res) => {
 
 
         // Construct the URL
-        const fileUrl = `http://43.204.23.49/uploads/${file.filename}`;
+        // const fileUrl = `http://43.204.23.49/uploads/${file.filename}`;
         
         // If url ends with "undefined", remove it, and replace with content of file.filename
-        // if (url.endsWith("uploads/undefined")) {
-        //     url = url.replace ("uploads/undefined","uploads/"+file.filename);
-        //     // url = url.replace("uploads/undefined", file.filename);
-        // }
+        if (url.endsWith("uploads/undefined")) {
+            url = url.replace ("uploads/undefined","uploads/"+file.filename);
+            // url = url.replace("uploads/undefined", file.filename);
+        }
 
         // If url ends with "undefined", construct the correct URL
         // if (!url || url.endsWith("uploads/undefined")) {
@@ -111,7 +111,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
             description,
             date,
             location,
-            url: fileUrl,
+            url,
             filename: file.filename,
             filePath: file.path,
             fileType: file.mimetype,

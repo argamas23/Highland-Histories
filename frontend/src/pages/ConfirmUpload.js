@@ -2,8 +2,6 @@ import React , { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './ConfirmUpload.css'
 
-
-
 const ConfirmUpload = () => {
     const { state } = useLocation();
     const navigate = useNavigate();
@@ -20,11 +18,11 @@ const ConfirmUpload = () => {
             formData.append('date', state.details.date);
             formData.append('location', state.details.location);
             formData.append('userId', localStorage.getItem('userId')); 
-            // formData.append('url', `http://43.204.23.49/uploads/${state.file.filename}`);  // Construct URL
+            formData.append('url', `http://43.204.23.49/uploads/${state.file.filename}`);  // Construct URL
             // formData.append('section', state.details.section);
             formData.append('section', section);
             // URL will be constructed in the backend
-            formData.append('url', ''); 
+            // formData.append('url', ''); 
              // Log FormData for debugging
         for (let key of formData.keys()) {
             console.log(key, formData.get(key));  // Logs each key-value pair in the FormData
@@ -42,7 +40,7 @@ const ConfirmUpload = () => {
             userId: localStorage.getItem('userId'),
             // url: `http://43.204.23.49/uploads/${state.file.filename}`,
             section: state.details.section
-            
+
         });
 
             console.log('Hello from ConfirmUpload.js in frontend Folder : I am sending "formData"', formData)
