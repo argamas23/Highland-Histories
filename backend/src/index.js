@@ -16,8 +16,8 @@ app.use(cors({
 }));
 
 // Global middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({limit: '10gb'}));
+app.use(express.urlencoded({ extended: true , limit: '10gb' }));
 // app.use('/uploads', express.static('uploads'));
 app.use('/api/archives', archiveRoutes);
 
