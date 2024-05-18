@@ -20,7 +20,7 @@ const ConfirmUpload = () => {
             formData.append('date', state.details.date);
             formData.append('location', state.details.location);
             formData.append('userId', localStorage.getItem('userId')); 
-            formData.append('url', `http://localhost:5000/uploads/${state.file.filename}`);  // Construct URL
+            formData.append('url', `http://43.204.23.49/uploads/${state.file.filename}`);  // Construct URL
             // formData.append('section', state.details.section);
             formData.append('section', section);
              // Log FormData for debugging
@@ -38,13 +38,13 @@ const ConfirmUpload = () => {
             date: state.details.date,
             location: state.details.location,
             userId: localStorage.getItem('userId'),
-            url: `http://localhost:5000/uploads/${state.file.filename}`,
+            url: `http://43.204.23.49/uploads/${state.file.filename}`,
             section: state.details.section
         });
 
             console.log('Hello from ConfirmUpload.js in frontend Folder : I am sending "formData"', formData)
 
-            const response = await fetch('http://localhost:5000/api/archives/upload', {
+            const response = await fetch('http://43.204.23.49/api/archives/upload', {
                 method: 'POST',
                 body: formData,
                 credentials: 'include',

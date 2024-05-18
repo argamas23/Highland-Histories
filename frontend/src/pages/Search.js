@@ -19,7 +19,7 @@ const Search = () => {
           return;
         }
 
-        const response = await fetch(`http://localhost:5000/api/archives?query=${searchTerm}`);
+        const response = await fetch(`http://43.204.23.49/api/archives?query=${searchTerm}`);
         if (!response.ok) {
           throw new Error('Failed to fetch search results');
         }

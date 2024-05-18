@@ -15,7 +15,7 @@ const EditUpload = () => {
 
     useEffect(() => {
         // Fetch the details of the file
-        fetch(`http://localhost:5000/api/archives/${id}`)
+        fetch(`http://43.204.23.49/api/archives/${id}`)
             .then(response => response.json())
             .then(data => setFileDetails(data))
             .catch(error => console.error('Error fetching file details:', error));
@@ -24,7 +24,7 @@ const EditUpload = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Send the update request
-        fetch(`http://localhost:5000/api/archives/${id}`, {
+        fetch(`http://43.204.23.49/api/archives/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

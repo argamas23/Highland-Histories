@@ -8,7 +8,7 @@ const ViewUpload = () => {
     useEffect(() => {
         const fetchUpload = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/archives/${id}`);
+                const response = await fetch(`http://43.204.23.49/api/archives/${id}`);
                 const data = await response.json();
                 if (response.ok) {
                     setUpload(data);
