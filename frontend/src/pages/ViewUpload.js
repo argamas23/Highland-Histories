@@ -420,8 +420,19 @@ const ViewUpload = () => {
                 const response = await fetch(fileUrl);
                 if (response.ok) {
                     const blob = await response.blob();
-                    const fileContentType = response.headers.get('Content-Type') || 'application/octet-stream'; // Fallback as octet-stream
-                    console.log('File ContentType:', fileContentType); // Debug log
+                    let fileContentType = 'application/octet-stream'; // Default MIME type
+                    // const fileContentType = response.headers.get('Content-Type') || 'application/octet-stream'; // Fallback as octet-stream
+                    // console.log('File ContentType:', fileContentType); // Debug log
+
+                    // Determine the correct MIME type based on the filename extension
+                    if (fileUrl.endsWith('.pdf')) {
+                        fileContentType = 'application/pdf';
+                    } else if (fileUrl.endsWith('.mp3')) {
+                        fileContentType = 'audio/mpeg';
+                    } else if (fileUrl.endsWith('.mp4')) {
+                        fileContentType = 'video/mp4';
+                    }
+
                     const url = URL.createObjectURL(new Blob([blob], { type: fileContentType }));
                     setFileData(url);
                 } else {
@@ -442,6 +453,7 @@ const ViewUpload = () => {
     const renderContent = () => {
         const { fileType, filename } = upload;
         console.log('Render fileType:', fileType, 'filename:', filename); // Debug log
+        
         if (filename && filename.endsWith('.pdf')) {
             return (
                 <object data={fileData} type="application/pdf" width="100%" height="600px">
