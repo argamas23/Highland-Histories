@@ -191,8 +191,9 @@ const ViewUpload = () => {
         const fetchUpload = async () => {
             try {
                 const response = await fetch(`http://43.204.23.49/api/archives/${id}`);
-                const data = await response.json();
+                // const data = await response.json();
                 if (response.ok) {
+                    const data = await response.json();
                     setUpload(data);
                     fetchFileData(data.filename); // Fetch the file data based on the filename
                 } else {
@@ -207,11 +208,13 @@ const ViewUpload = () => {
             try {
                 const response = await fetch(`http://43.204.23.49/uploads/${filename}`);
                 const blob = await response.blob();
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    setFileData(reader.result);
-                };
-                reader.readAsDataURL(blob);
+                const url = URL.createObjectURL(blob);
+                setFileData(url);
+                // const reader = new FileReader();
+                // reader.onloadend = () => {
+                //     setFileData(reader.result);
+                // };
+                // reader.readAsDataURL(blob);
             } catch (error) {
                 console.error("Error fetching file data:", error);
             }
