@@ -114,6 +114,9 @@ const ViewUpload = () => {
                 const data = await response.json();
                 console.log('Fetched data:', data); // Log fetched data
                 if (response.ok) {
+                    if (data.url.includes('undefined')) {
+                        data.url = `http://43.204.23.49/uploads/${data.filename}`;
+                    }
                     setUpload(data);
                 } else {
                     throw new Error('Failed to fetch upload details');
@@ -128,15 +131,22 @@ const ViewUpload = () => {
     if (!upload) return <div>Loading...</div>;
 
     const renderContent = () => {
-        const { url, fileType } = upload;
+        const { url, fileType , filename } = upload;         
         switch (true) {
-            case fileType === 'application/pdf':
+            case filename.endsWith('.pdf'):
                 return (
-                    <object data={url} type="application/pdf" width="100%" height="600px">
-                        <iframe src={url} width="100%" height="600px">
-                            <p>This browser does not support PDFs. Please download the PDF to view it: <a href={url}>Download PDF</a>.</p>
-                        </iframe>
-                    </object>
+                    // <object data={url} type="application/pdf" width="100%" height="600px">
+                    //     <iframe src={url} width="100%" height="600px">
+                    //         <p>This browser does not support PDFs. Please download the PDF to view it: <a href={url}>Download PDF</a>.</p>
+                    //     </iframe>
+                    // </object>
+
+                   
+                                                        <object data={upload.url} type="application/pdf" width="100%" height="600px">
+                                                            <iframe src={upload.url} width="100%" height="600px">
+                                                                <p>This browser does not support PDFs. Please download the PDF to view it: <a href={upload.url}>Download PDF</a>.</p>
+                                                            </iframe>
+                                                        </object>
                 );
             case fileType.startsWith('audio/'):
                 return (
