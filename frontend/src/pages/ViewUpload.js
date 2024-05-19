@@ -295,7 +295,12 @@ const ViewUpload = () => {
                 if (response.ok) {
                     const data = await response.json();
                     setUpload(data);
-                    fetchFileData(data.filename); // Fetch the file data based on the filename
+                    // fetchFileData(data.filename); // Fetch the file data based on the filename
+                    if (data.filename) {
+                        fetchFileData(data.filename);
+                    } else {
+                        throw new Error('Filename is undefined or not present in the data');
+                    }
                 } else {
                     throw new Error('Failed to fetch upload details');
                 }
@@ -331,7 +336,7 @@ const ViewUpload = () => {
     const renderContent = () => {
         const { fileType, filename } = upload;
 
-        if (filename.endsWith('.pdf')) {
+        if (filename && filename.endsWith('.pdf')) {
             return (
                 <object data={fileData} type="application/pdf" width="100%" height="600px">
                     <iframe src={fileData} width="100%" height="600px">
