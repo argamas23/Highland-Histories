@@ -547,7 +547,7 @@ const ViewUpload = () => {
                     setUpload(data);
                     if (data.filename) {
                         const constructedUrl = `http://43.204.23.49/uploads/${data.filename}`;
-                        fetchFileData(constructedUrl, data.filename);
+                        fetchFileData(constructedUrl);
                     } else {
                         throw new Error('Filename is undefined or not present in the data');
                     }
@@ -560,55 +560,47 @@ const ViewUpload = () => {
             }
         };
 
+        const fetchFileData = async (fileUrl) => {
+            try {
+                const response = await fetch(fileUrl);
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        setFileData(reader.result);
+                    };
+                    // Depending on the file type, you might want to read it differently
+                    if (fileUrl.endsWith('.pdf')) {
+                        reader.readAsDataURL(blob);
+                    } else if (fileUrl.endsWith('.mp3') || fileUrl.endsWith('.mp4')) {
+                        reader.readAsArrayBuffer(blob);
+                    }
+                } else {
+                    throw new Error('Failed to fetch file');
+                }
+            } catch (error) {
+                console.error("Error fetching file data:", error);
+                setError('Failed to fetch file data');
+            }
+        };
+
         fetchUpload();
     }, [id]);
-
-    const fetchFileData = async (fileUrl, filename) => {
-        try {
-            const response = await fetch(fileUrl);
-            const blob = await response.blob();
-            const fileExtension = filename.split('.').pop();
-            let fileContentType;
-
-            switch(fileExtension) {
-                case 'pdf':
-                    fileContentType = 'application/pdf';
-                    break;
-                case 'mp3':
-                    fileContentType = 'audio/mpeg';
-                    break;
-                case 'mp4':
-                    fileContentType = 'video/mp4';
-                    break;
-                default:
-                    fileContentType = 'application/octet-stream';
-            }
-
-            const url = URL.createObjectURL(new Blob([blob], { type: fileContentType }));
-            setFileData(url);
-        } catch (error) {
-            console.error("Error fetching file data:", error);
-            setError('Failed to fetch file data');
-        }
-    };
 
     if (error) return <div>Error: {error}</div>;
     if (!upload) return <div>Loading...</div>;
 
     const renderContent = () => {
+        if (!fileData) return <p>Loading file...</p>;
         const { fileType, filename } = upload;
-
-        switch(fileType) {
-            case 'application/pdf':
-                return <object data={fileData} type="application/pdf" width="100%" height="600px">
-                           <p>This browser does not support PDFs. Please download the PDF to view it: <a href={fileData}>Download PDF</a>.</p>
-                       </object>;
-            case 'audio/mpeg':
-                return <audio controls src={fileData}>Your browser does not support the audio element.</audio>;
-            case 'video/mp4':
-                return <video controls src={fileData} width="100%">Your browser does not support the video element.</video>;
-            default:
-                return <p>Unsupported file type.</p>;
+        if (filename.endsWith('.pdf')) {
+            return <iframe src={fileData} style={{ width: '100%', height: '600px' }} title="PDF Viewer"></iframe>;
+        } else if (fileType === 'audio/mpeg') {
+            return <audio controls src={fileData}>Your browser does not support the audio element.</audio>;
+        } else if (fileType === 'video/mp4') {
+            return <video controls src={fileData} style={{ width: '100%' }}>Your browser does not support the video element.</video>;
+        } else {
+            return <p>Unsupported file type.</p>;
         }
     };
 
