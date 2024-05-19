@@ -223,9 +223,9 @@ const ViewUpload = () => {
     if (!upload) return <div>Loading...</div>;
 
     const renderContent = () => {
-        const { fileType } = upload;
+        const { fileType , filename } = upload;
 
-        if (fileType.startsWith('application/pdf')) {
+        if (filename.endsWith('.pdf')) {
             return (
                 <object data={fileData} type="application/pdf" width="100%" height="600px">
                     <iframe src={fileData} width="100%" height="600px">
@@ -233,13 +233,13 @@ const ViewUpload = () => {
                     </iframe>
                 </object>
             );
-        } else if (fileType.startsWith('audio/')) {
+        } else if (fileType === 'audio/mpeg') {
             return (
                 <audio controls src={fileData}>
                     Your browser does not support the audio element.
                 </audio>
             );
-        } else if (fileType.startsWith('video/')) {
+        } else if (fileType === 'video/mp4') {
             return (
                 <video controls src={fileData} width="100%">
                     Your browser does not support the video element.
