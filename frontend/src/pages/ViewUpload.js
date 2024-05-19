@@ -414,38 +414,70 @@ const ViewUpload = () => {
             }
         };
 
-        const fetchFileData = async (fileUrl) => {
-            try {
-                // const response = await fetch(`http://43.204.23.49/uploads/${filename}`);
-                const response = await fetch(fileUrl);
-                if (response.ok) {
-                    const blob = await response.blob();
-                    let fileContentType = 'application/octet-stream'; // Default MIME type
-                    // const fileContentType = response.headers.get('Content-Type') || 'application/octet-stream'; // Fallback as octet-stream
-                    // console.log('File ContentType:', fileContentType); // Debug log
+    //     const fetchFileData = async (fileUrl) => {
+    //         try {
+    //             // const response = await fetch(`http://43.204.23.49/uploads/${filename}`);
+    //             const response = await fetch(fileUrl);
+    //             if (response.ok) {
+    //                 const blob = await response.blob();
+    //                 let fileContentType = 'application/octet-stream'; // Default MIME type
+    //                 // const fileContentType = response.headers.get('Content-Type') || 'application/octet-stream'; // Fallback as octet-stream
+    //                 // console.log('File ContentType:', fileContentType); // Debug log
 
-                    // Determine the correct MIME type based on the filename extension
-                    if (fileUrl.endsWith('.pdf')) {
-                        fileContentType = 'application/pdf';
-                    } else if (fileUrl.endsWith('.mp3')) {
-                        fileContentType = 'audio/mpeg';
-                    } else if (fileUrl.endsWith('.mp4')) {
-                        fileContentType = 'video/mp4';
-                    }
+    //                 // Determine the correct MIME type based on the filename extension
+    //                 if (fileUrl.endsWith('.pdf')) {
+    //                     fileContentType = 'application/pdf';
+    //                 } else if (fileUrl.endsWith('.mp3')) {
+    //                     fileContentType = 'audio/mpeg';
+    //                 } else if (fileUrl.endsWith('.mp4')) {
+    //                     fileContentType = 'video/mp4';
+    //                 }
 
-                    const url = URL.createObjectURL(new Blob([blob], { type: fileContentType }));
-                    setFileData(url);
-                } else {
-                    throw new Error('Failed to fetch file');
+    //                 const url = URL.createObjectURL(new Blob([blob], { type: fileContentType }));
+    //                 setFileData(url);
+    //             } else {
+    //                 throw new Error('Failed to fetch file');
+    //             }
+    //         } catch (error) {
+    //             console.error("Error fetching file data:", error);
+    //             setError('Failed to fetch file data');
+    //         }
+    //     };
+
+    //     fetchUpload();
+    // }, [id]);
+
+    const fetchFileData = async (fileUrl) => {
+        try {
+            const response = await fetch(fileUrl);
+            if (response.ok) {
+                const blob = await response.blob();
+                console.log('Blob size:', blob.size); // Log the size of the blob to ensure it's not zero
+                let fileContentType = 'application/octet-stream'; // Default MIME type
+    
+                if (fileUrl.endsWith('.pdf')) {
+                    fileContentType = 'application/pdf';
+                } else if (fileUrl.endsWith('.mp3')) {
+                    fileContentType = 'audio/mpeg';
+                } else if (fileUrl.endsWith('.mp4')) {
+                    fileContentType = 'video/mp4';
                 }
-            } catch (error) {
-                console.error("Error fetching file data:", error);
-                setError('Failed to fetch file data');
+    
+                const url = URL.createObjectURL(new Blob([blob], { type: fileContentType }));
+                console.log('Generated URL:', url); // Log the URL to debug
+                setFileData(url);
+            } else {
+                throw new Error('Failed to fetch file');
             }
-        };
-
-        fetchUpload();
-    }, [id]);
+        } catch (error) {
+            console.error("Error fetching file data:", error);
+            setError('Failed to fetch file data');
+        }
+    };
+    
+    fetchUpload();
+}, [id]);
+    
 
     if (error) return <div>Error: {error}</div>;
     if (!upload) return <div>Loading...</div>;
@@ -453,15 +485,22 @@ const ViewUpload = () => {
     const renderContent = () => {
         const { fileType, filename } = upload;
         console.log('Render fileType:', fileType, 'filename:', filename); // Debug log
-        
+
+        // if (filename && filename.endsWith('.pdf')) {
+        //     return (
+        //         <object data={fileData} type="application/pdf" width="100%" height="600px">
+        //             <iframe src={fileData} width="100%" height="600px" title="PDF Viewer">
+        //                 <p>This browser does not support PDFs. Please download the PDF to view it: <a href={fileData}>Download PDF</a>.</p>
+        //             </iframe>
+        //         </object>
+        //     );
         if (filename && filename.endsWith('.pdf')) {
             return (
-                <object data={fileData} type="application/pdf" width="100%" height="600px">
-                    <iframe src={fileData} width="100%" height="600px" title="PDF Viewer">
-                        <p>This browser does not support PDFs. Please download the PDF to view it: <a href={fileData}>Download PDF</a>.</p>
-                    </iframe>
+                <object data={fileData} type="application/pdf" width="100%" height="600px" aria-label="PDF Viewer">
+                    <p>This browser does not support PDFs. Please download the PDF to view it: <a href={fileData}>Download PDF</a>.</p>
                 </object>
-            );
+            );      
+        
         } else if (fileType === 'audio/mpeg') {
             return <audio controls src={fileData}>Your browser does not support the audio element.</audio>;
         } else if (fileType === 'video/mp4') {
