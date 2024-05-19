@@ -629,95 +629,13 @@
 
 
 
-// import React, { useEffect, useState } from 'react';
-// import { useParams } from 'react-router-dom';
-
-// const ViewUpload = () => {
-//     const { id } = useParams();
-//     const [upload, setUpload] = useState(null);
-//     const [error, setError] = useState('');
-
-//     useEffect(() => {
-//         const fetchUpload = async () => {
-//             try {
-//                 const response = await fetch(`http://43.204.23.49/api/archives/${id}`);
-//                 if (response.ok) {
-//                     const data = await response.json();
-//                     setUpload(data);
-//                 } else {
-//                     throw new Error('Failed to fetch upload details');
-//                 }
-//             } catch (error) {
-//                 console.error("Error fetching upload details:", error);
-//                 setError('Failed to fetch upload details');
-//             }
-//         };
-
-//         fetchUpload();
-//     }, [id]);
-
-//     const renderContent = () => {
-//         if (!upload) return <p>Loading...</p>;
-//         if (!upload.filename) return <p>File not available</p>;
-
-//         const fileUrl = `http://43.204.23.49/uploads/${upload.filename}`;
-//         if (upload.filename.endsWith('.pdf')) {
-//             const googleViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(fileUrl)}&embedded=true`;
-//             return <iframe src={googleViewerUrl} style={{ width: '100%', height: '600px' }} title="PDF Viewer"></iframe>;
-//         } else if (upload.filename.endsWith('.mp3')) {
-//             return <audio controls src={fileUrl}>Your browser does not support the audio element.</audio>;
-//         } else if (upload.filename.endsWith('.mp4')) {
-//             return <video controls style={{ width: '100%' }} src={fileUrl}>Your browser does not support the video element.</video>;
-//         } else {
-//             return <p>Unsupported file type.</p>;
-//         }
-//     };
-
-//     if (error) return <div>Error: {error}</div>;
-
-//     return (
-//         <div>
-//             <h2>{upload ? upload.title : 'Loading...'}</h2>
-//             <p>{upload ? upload.description : 'Please wait while the file data is being loaded.'}</p>
-//             {renderContent()}
-//         </div>
-//     );
-// };
-
-// export default ViewUpload;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const ViewUpload = () => {
     const { id } = useParams();
     const [upload, setUpload] = useState(null);
-    const [fileData, setFileData] = useState(null);
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchUpload = async () => {
@@ -726,16 +644,12 @@ const ViewUpload = () => {
                 if (response.ok) {
                     const data = await response.json();
                     setUpload(data);
-                    const fileUrl = `http://43.204.23.49/uploads/${data.filename}`;
-                    setFileData(fileUrl);
                 } else {
                     throw new Error('Failed to fetch upload details');
                 }
             } catch (error) {
-                console.error("Error fetching upload details:", error.message);
+                console.error("Error fetching upload details:", error);
                 setError('Failed to fetch upload details');
-            } finally {
-                setLoading(false);
             }
         };
 
@@ -743,24 +657,27 @@ const ViewUpload = () => {
     }, [id]);
 
     const renderContent = () => {
-        if (loading) return <p>Loading...</p>;
-        if (error) return <div>Error: {error}</div>;
-        if (!upload) return <p>File not found.</p>;
+        if (!upload) return <p>Loading...</p>;
+        if (!upload.filename) return <p>File not available</p>;
 
+        const fileUrl = `http://43.204.23.49/uploads/${upload.filename}`;
         if (upload.filename.endsWith('.pdf')) {
-            return <iframe src={fileData} style={{ width: '100%', height: '600px' }} title="PDF Viewer"></iframe>;
+            const googleViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(fileUrl)}&embedded=true`;
+            return <iframe src={googleViewerUrl} style={{ width: '100%', height: '600px' }} title="PDF Viewer"></iframe>;
         } else if (upload.filename.endsWith('.mp3')) {
-            return <audio controls src={fileData}>Your browser does not support the audio element.</audio>;
+            return <audio controls src={fileUrl}>Your browser does not support the audio element.</audio>;
         } else if (upload.filename.endsWith('.mp4')) {
-            return <video controls style={{ width: '100%' }} src={fileData}>Your browser does not support the video element.</video>;
+            return <video controls style={{ width: '100%' }} src={fileUrl}>Your browser does not support the video element.</video>;
         } else {
             return <p>Unsupported file type.</p>;
         }
     };
 
+    if (error) return <div>Error: {error}</div>;
+
     return (
         <div>
-            <h2>{upload ? upload.title : 'Fetching File...'}</h2>
+            <h2>{upload ? upload.title : 'Loading...'}</h2>
             <p>{upload ? upload.description : 'Please wait while the file data is being loaded.'}</p>
             {renderContent()}
         </div>
@@ -768,3 +685,27 @@ const ViewUpload = () => {
 };
 
 export default ViewUpload;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
