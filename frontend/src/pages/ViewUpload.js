@@ -699,50 +699,70 @@
 
 
 
-import React, { useState } from 'react';
+
+
+
+
+
+
+
+
+
+
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 const ViewUpload = () => {
+    const { id } = useParams();
+    const [upload, setUpload] = useState(null);
     const [fileData, setFileData] = useState(null);
-    const [fileType, setFileType] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(true);
 
-    const handleFileChange = event => {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        setFileType(file.type);
-        const reader = new FileReader();
-
-        reader.onload = (e) => {
-            if (file.type.startsWith('application/pdf')) {
-                setFileData(e.target.result);
-            } else if (file.type.startsWith('audio/') || file.type.startsWith('video/')) {
-                setFileData(URL.createObjectURL(file));
+    useEffect(() => {
+        const fetchUpload = async () => {
+            try {
+                const response = await fetch(`http://43.204.23.49/api/archives/${id}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setUpload(data);
+                    const fileUrl = `http://43.204.23.49/uploads/${data.filename}`;
+                    setFileData(fileUrl);
+                } else {
+                    throw new Error('Failed to fetch upload details');
+                }
+            } catch (error) {
+                console.error("Error fetching upload details:", error.message);
+                setError('Failed to fetch upload details');
+            } finally {
+                setLoading(false);
             }
         };
 
-        if (file.type.startsWith('application/pdf')) {
-            reader.readAsDataURL(file);
-        }
-    };
+        fetchUpload();
+    }, [id]);
 
     const renderContent = () => {
-        switch (true) {
-            case fileType.startsWith('application/pdf'):
-                return <iframe src={fileData} style={{ width: '100%', height: '600px' }} title="PDF Viewer"></iframe>;
-            case fileType.startsWith('audio/'):
-                return <audio controls src={fileData}>Your browser does not support the audio element.</audio>;
-            case fileType.startsWith('video/'):
-                return <video controls style={{ width: '100%' }} src={fileData}>Your browser does not support the video element.</video>;
-            default:
-                return <p>Please upload a file to view it.</p>;
+        if (loading) return <p>Loading...</p>;
+        if (error) return <div>Error: {error}</div>;
+        if (!upload) return <p>File not found.</p>;
+
+        if (upload.filename.endsWith('.pdf')) {
+            return <iframe src={fileData} style={{ width: '100%', height: '600px' }} title="PDF Viewer"></iframe>;
+        } else if (upload.filename.endsWith('.mp3')) {
+            return <audio controls src={fileData}>Your browser does not support the audio element.</audio>;
+        } else if (upload.filename.endsWith('.mp4')) {
+            return <video controls style={{ width: '100%' }} src={fileData}>Your browser does not support the video element.</video>;
+        } else {
+            return <p>Unsupported file type.</p>;
         }
     };
 
     return (
         <div>
-            <h2>View Your Uploaded File</h2>
-            <input type="file" onChange={handleFileChange} />
-            {fileData && renderContent()}
+            <h2>{upload ? upload.title : 'Fetching File...'}</h2>
+            <p>{upload ? upload.description : 'Please wait while the file data is being loaded.'}</p>
+            {renderContent()}
         </div>
     );
 };
