@@ -294,6 +294,7 @@ const ViewUpload = () => {
                 const response = await fetch(`http://43.204.23.49/api/archives/${id}`);
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('Upload data:', data); // Log fetched data
                     setUpload(data);
                     // fetchFileData(data.filename); // Fetch the file data based on the filename
                     if (data.filename) {
@@ -316,6 +317,7 @@ const ViewUpload = () => {
                 if (response.ok) {
                     const blob = await response.blob();
                     const fileContentType = response.headers.get('Content-Type') || 'application/octet-stream'; // Fallback as octet-stream
+                    console.log('File ContentType:', fileContentType); // Debug log
                     const url = URL.createObjectURL(new Blob([blob], { type: fileContentType }));
                     setFileData(url);
                 } else {
@@ -335,7 +337,7 @@ const ViewUpload = () => {
 
     const renderContent = () => {
         const { fileType, filename } = upload;
-
+        console.log('Render fileType:', fileType, 'filename:', filename); // Debug log
         if (filename && filename.endsWith('.pdf')) {
             return (
                 <object data={fileData} type="application/pdf" width="100%" height="600px">
