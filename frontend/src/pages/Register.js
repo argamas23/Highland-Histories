@@ -56,7 +56,7 @@ const handleSubmit = async (event) => {
   if (!validateForm()) return;
   const { name, email, password, usertype } = credentials;
   if (usertype === 'Admin' && secretkey === config.SECRET_KEY) {
-    const response = await fetch("http://43.204.23.49/api/auth/createuser", {
+    const response = await fetch("https://highlandhistories.org/api/auth/createuser", {
       method: 'POST',
       headers: {
         "Content-Type": 'application/json',

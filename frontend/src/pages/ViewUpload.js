@@ -640,7 +640,7 @@ const ViewUpload = () => {
     useEffect(() => {
         const fetchUpload = async () => {
             try {
-                const response = await fetch(`http://43.204.23.49/api/archives/${id}`);
+                const response = await fetch(`https://highlandhistories.org/api/archives/${id}`);
                 if (response.ok) {
                     const data = await response.json();
                     setUpload(data);
@@ -660,7 +660,7 @@ const ViewUpload = () => {
         if (!upload) return <p>Loading...</p>;
         if (!upload.filename) return <p>File not available</p>;
 
-        const fileUrl = `http://43.204.23.49/uploads/${upload.filename}`;
+        const fileUrl = `https://highlandhistories.org/uploads/${upload.filename}`;
         if (upload.filename.endsWith('.pdf')) {
             const googleViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(fileUrl)}&embedded=true`;
             return <iframe src={googleViewerUrl} style={{ width: '100%', height: '600px' }} title="PDF Viewer"></iframe>;

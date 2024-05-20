@@ -9,7 +9,7 @@ const app = express();
 
 // Correct CORS configuration to ensure headers are set properly
 app.use(cors({
-  origin: 'http://43.204.23.49', // This should match your front-end URL exactly
+  origin: 'https://highlandhistories.org', // This should match your front-end URL exactly
   methods: 'GET,POST,PUT,DELETE',
   credentials: true, // Important to send cookies across domains
   allowedHeaders: ['Content-Type', 'Authorization']

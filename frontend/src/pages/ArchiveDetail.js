@@ -8,7 +8,7 @@ const ArchiveDetail = () => {
     useEffect(() => {
         const fetchArchive = async () => {
             try {
-                const response = await fetch(`http://43.204.23.49/api/archives/${id}`);
+                const response = await fetch(`https://highlandhistories.org/api/archives/${id}`);
                 if (!response.ok) throw new Error('Failed to fetch archive');
                 const data = await response.json();
                 setArchive(data);
