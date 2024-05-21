@@ -48,14 +48,13 @@ const _dirname = path.dirname("")
 // })
 const buildPath = path.join(__dirname, "../frontend/build");
 
-// Serve static files from the correct build directory
+// Serve static files from the build directory
 app.use(express.static(buildPath));
 
-// Define a catch-all route to serve index.html
-app.get("*", function(req, res) {
+// Send index.html for all routes
+app.get("/*", function(req, res) {
     res.sendFile(path.join(buildPath, 'index.html'), function(err) {
         if (err) {
-            // Handle errors such as file not found
             res.status(500).send(err);
         }
     });
