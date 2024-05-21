@@ -57,6 +57,7 @@ mongoose.connect(mongoURI, {
   // Routes
 app.use('/api/auth', userRoutes);
 app.use('/api/archives', archiveRoutes);
+app.use('/api/archives', archiveRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;
