@@ -30,22 +30,36 @@ app.use('/api/archives', archiveRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const _dirname = path.dirname("")
-const buildPath = path.join(_dirname  , "../frontend/build");
+// const buildPath = path.join(_dirname  , "../frontend/build");
 
-app.use(express.static(buildPath))
+// app.use(express.static(buildPath))
 
-app.get("/*", function(req, res){
+// app.get("/*", function(req, res){
 
-    res.sendFile(
-        path.join(__dirname, "../frontend/build/index.html"),
-        function (err) {
-          if (err) {
+//     res.sendFile(
+//         path.join(__dirname, "../frontend/build/index.html"),
+//         function (err) {
+//           if (err) {
+//             res.status(500).send(err);
+//           }
+//       }
+// );
+
+// })
+const buildPath = path.join(__dirname, "../frontend/build");
+
+// Serve static files from the correct build directory
+app.use(express.static(buildPath));
+
+// Define a catch-all route to serve index.html
+app.get("*", function(req, res) {
+    res.sendFile(path.join(buildPath, 'index.html'), function(err) {
+        if (err) {
+            // Handle errors such as file not found
             res.status(500).send(err);
-          }
-      }
-);
-
-})
+        }
+    });
+});
 
 // MongoDB connection
 const mongoURI = "mongodb+srv://highlandhistoriesdeveloper:RvWKjUnNKacdWaX1@cluster0.pz0l5dq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
