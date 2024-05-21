@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const userRoutes = require('./routes/auth');
 const archiveRoutes = require('./routes/archiveRoutes');
+const requestRoutes = require('./routes/requestRoutes');
 
 const app = express();
 
@@ -57,7 +58,7 @@ mongoose.connect(mongoURI, {
   // Routes
 app.use('/api/auth', userRoutes);
 app.use('/api/archives', archiveRoutes);
-app.use('/api/archives', archiveRoutes);
+app.use('/api/requests', requestRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;
