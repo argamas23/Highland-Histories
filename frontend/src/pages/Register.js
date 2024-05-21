@@ -262,20 +262,29 @@ const handleSubmit = async (event) => {
         },
         body: JSON.stringify({ name, email, password, usertype })
       });
-      const json = await response.json();
-
-      if (json.errors) {
-        alert("Invalid user credentials");
-        console.error('Validation errors:', json.errors);
-      } else {
-        alert("Please wait for Admin to approve");
-        console.log('Request added:', json);
+  
+      const responseText = await response.text();
+      console.log('Raw response:', responseText);
+  
+      try {
+        const json = JSON.parse(responseText);
+  
+        if (json.errors) {
+          alert("Invalid user credentials");
+          console.error('Validation errors:', json.errors);
+        } else {
+          alert("Please wait for Admin to approve");
+          console.log('Request added:', json);
+        }
+      } catch (parseError) {
+        console.error('Error parsing JSON:', parseError);
+        alert("An error occurred while processing the response");
       }
     } catch (error) {
       console.error('Error adding request:', error);
       alert("An error occurred while saving the request");
     }
-  } 
+  }
   if(usertype == '') {
     alert('Please Select UserType');
   }
