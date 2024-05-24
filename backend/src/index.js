@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true , limit: '10gb' }));
 app.use('/api/archives', archiveRoutes);
 
 // // Routes
-app.use('/api/auth', userRoutes);
+// app.use('/api/auth', userRoutes);
 // app.use('/api/archives', archiveRoutes);
 
 // Serve static files from 'uploads' directory if needed
