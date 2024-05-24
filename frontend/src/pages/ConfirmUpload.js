@@ -21,6 +21,7 @@ const ConfirmUpload = () => {
             formData.append('url', `https://highlandhistories.org/uploads/${state.file.filename}`);  // Construct URL
             // formData.append('section', state.details.section);
             formData.append('section', section);
+            formData.append('fileType', state.file.type); // Add the file type to the FormData
             // URL will be constructed in the backend
             // formData.append('url', ''); 
              // Log FormData for debugging
@@ -39,7 +40,8 @@ const ConfirmUpload = () => {
             location: state.details.location,
             userId: localStorage.getItem('userId'),
             // url: `http://43.204.23.49/uploads/${state.file.filename}`,
-            section: state.details.section
+            section: state.details.section,
+            fileType: state.file.type
 
         });
 

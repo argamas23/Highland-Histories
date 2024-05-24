@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import './ViewUpload.css'; 
 
 const ViewUpload = () => {
     const { id } = useParams();
@@ -68,10 +69,33 @@ const ViewUpload = () => {
      </audio>
  )}
  {upload.fileType === 'video/mp4' && ( 
-     <video controls src={upload.url} width="100%">
+    <div className="video-container">
+     <video controls src={upload.url} style={{ width: '100%' }}>
       Your browser does not support the video element.
      </video>
+     </div>
  )}
+
+{upload.fileType.startsWith('image/') && (
+    <img src={upload.url} alt={upload.title} style={{ width: '100%', maxHeight: '600px' }} />
+)}
+
+{upload.fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' && (
+    <iframe src={`https://docs.google.com/gview?url=${upload.url}&embedded=true`} style={{width:"100%", height:"500px"}} frameborder="0"></iframe>
+)}
+
+{upload.fileType === 'audio/x-m4a' && (
+    <audio controls src={upload.url}>
+        Your browser does not support the audio element.
+    </audio>
+)}
+
+{upload.fileType === 'video/x-matroska' && (
+    <video controls src={upload.url} width="100%">
+        Your browser does not support the video element.
+    </video>
+)}
+
 
            
 
@@ -81,21 +105,3 @@ const ViewUpload = () => {
 };
 
 export default ViewUpload;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

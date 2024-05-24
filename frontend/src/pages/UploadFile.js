@@ -36,6 +36,13 @@ const UploadFile = () => {
           <div {...getRootProps()} className="dropzone">
             <input {...getInputProps()} />
             {file ? <p>{file.name}</p> : <p>Drag & drop a file here, or click to select one</p>}
+            <p className="upload-instructions">
+                Maximum file size: 10GB. <br />
+                Accepted document formats: PDF, DOCX. <br />
+                Accepted image formats: PNG, JPEG. <br />
+                Accepted audio formats: MP3, M4A. <br />
+                Accepted video formats: MP4, MKV.
+            </p>
           </div>
           <div className="button-container">
             <button onClick={handleNext}>Next</button>
