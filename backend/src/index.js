@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true , limit: '10gb' }));
 app.use('/api/archives', archiveRoutes);
 
 // // Routes
-// app.use('/api/auth', userRoutes);
+app.use('/api/auth', userRoutes);
 // app.use('/api/archives', archiveRoutes);
 
 // Serve static files from 'uploads' directory if needed
@@ -33,7 +33,9 @@ const buildPath = path.join(_dirname  , "../frontend/build");
 
 app.use(express.static(buildPath))
 
-app.get("/*", function(req, res){
+// app.get("/*", function(req, res)
+app.get('*', (req, res) => 
+{
 
     res.sendFile(
         path.join(__dirname, "../frontend/build/index.html"),
