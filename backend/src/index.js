@@ -30,38 +30,38 @@ app.use('/api/archives', archiveRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const _dirname = path.dirname("")
-// const buildPath = path.join(_dirname  , "../frontend/build");
-const buildPath = path.join(__dirname, '../frontend/build');
+const buildPath = path.join(_dirname  , "../frontend/build");
+// const buildPath = path.join(__dirname, '../frontend/build');
 
 
 
 app.use(express.static(buildPath))
 
-// app.get("/*", function(req, res)
+app.get("/*", function(req, res)
 // app.get('*', (req, res) => 
-// {
+{
 
-//     res.sendFile(
-//         path.join(__dirname, "../frontend/build/index.html"),
-//         function (err) {
-//           if (err) {
-//             res.status(500).send(err);
-//           }
-//       }
-// );
+    res.sendFile(
+        path.join(__dirname, "../frontend/build/index.html"),
+        function (err) {
+          if (err) {
+            res.status(500).send(err);
+          }
+      }
+);
 
-// })
+})
 
-app.get('*', (req, res) => {
-  const indexPath = path.join(__dirname, "../frontend/build/index.html");
-  console.log(`Serving index.html from: ${indexPath}`);
-  res.sendFile(indexPath, function (err) {
-    if (err) {
-      console.error('Error serving index.html:', err);
-      res.status(500).send(err);
-    }
-  });
-});
+// app.get('*', (req, res) => {
+//   const indexPath = path.join(__dirname, "../frontend/build/index.html");
+//   console.log(`Serving index.html from: ${indexPath}`);
+//   res.sendFile(indexPath, function (err) {
+//     if (err) {
+//       console.error('Error serving index.html:', err);
+//       res.status(500).send(err);
+//     }
+//   });
+// });
 
 
 
