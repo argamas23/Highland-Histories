@@ -152,11 +152,19 @@ const ConfirmUpload = () => {
                 onUploadProgress: progressEvent => {
                     const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                     setUploadProgress(percentCompleted); // Update progress
-                    if (percentCompleted === 100) {
-                        checkUploadSuccess(response);
-                    }
+                    // if (percentCompleted === 100) {
+                    //     checkUploadSuccess(response);
+                    // }
                 }
             });
+            if (uploadProgress >= 100) {
+                if (response.status === 200) {
+                    alert(`File upload successful: ${response.data.filename}`);
+                    navigate('/my-uploads');
+                } else {
+                    throw new Error('File upload failed');
+                }
+            }
 
     //         if (response.status === 200) {
     //             alert(`File upload successful: ${response.data.filename}`);
