@@ -152,6 +152,9 @@ const ConfirmUpload = () => {
                 onUploadProgress: progressEvent => {
                     const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                     setUploadProgress(percentCompleted); // Update progress
+                    if (percentCompleted === 100) {
+                        checkUploadSuccess(response);
+                    }
                 }
             });
 
@@ -167,19 +170,28 @@ const ConfirmUpload = () => {
     //     }
     // };
 
-    if (response.status === 200) {
-        // Wait till the progress is fully complete
-        if (uploadProgress >= 100) {
-            alert(`File upload successful: ${response.data.filename}`);
-            navigate('/my-uploads');
-        }
-    } else {
-        throw new Error('File upload failed');
-    }
+    // if (response.status === 200) {
+    //     // Wait till the progress is fully complete
+    //     if (uploadProgress >= 100) {
+    //         alert(`File upload successful: ${response.data.filename}`);
+    //         navigate('/my-uploads');
+    //     }
+    // } else {
+    //     throw new Error('File upload failed');
+    // }
 } catch (error) {
     alert(`File upload failed: ${error.response?.data?.message || error.message}`);
     console.error('Upload error:', error);
 }
+};
+
+const checkUploadSuccess = (response) => {
+    if (response.status === 200) {
+        alert(`File upload successful: ${response.data.filename}`);
+        navigate('/my-uploads');
+    } else {
+        throw new Error('File upload failed');
+    }
 };
 
     return (

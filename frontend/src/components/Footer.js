@@ -16,7 +16,7 @@ const Footer = () => {
 
         <section className="footer-section">
           <h4>Contact</h4>
-          <p>Email: info@onlinehistorian.com</p>
+          <p>Email: highlandhistories@gmail.com</p>
         </section>
         <section className="footer-section">
           <h4>Follow Us</h4>
@@ -24,7 +24,7 @@ const Footer = () => {
         </section>
       </div>
       <div className="footer-bottom">
-        <p>&copy; 2024 Online Historian. All rights reserved.</p>
+        <p>&copy; 2024 Highland Histories. All rights reserved.</p>
       </div>
     </footer>
   );
