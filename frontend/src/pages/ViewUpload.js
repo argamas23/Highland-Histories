@@ -91,9 +91,12 @@ const ViewUpload = () => {
 )}
 
 {upload.fileType === 'video/x-matroska' && (
-    <video controls src={upload.url} width="100%">
+    <div className="video-container">
+    <video controls src={upload.url} style={{ width: '100%' }}>
+    {/* <video controls src={upload.url} width="100%"> */}
         Your browser does not support the video element.
     </video>
+    </div>
 )}
 
 
