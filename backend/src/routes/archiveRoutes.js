@@ -73,160 +73,98 @@ router.get('/:id', archiveController.getArchiveById);
 // router.post('/upload' , uploadFile, savefile);
 // router.post('/upload', upload.single('file'), saveFile);
 
-// // POST endpoint for uploading an archive
-// router.post('/upload', upload.single('file'), async (req, res) => {
-
-//     console.log("Received fields:", req.body); // Log text field values
-//     console.log(req.file); // Log file details
-//     try {
-//         console.log ("Hi from backend : archiveRoutes.js : I am in the POST endpoint for uploading an archive")
-//         let { title, caption, categories, description, date, location,userId, url , section } = req.body;
-//         const file = req.file;
-//         //debugging 
-//         console.log("Request Body Recieved from frontend to backend is : "  , req.body, "Consisting of - 'Title' = ", title, " Caption : ",  caption, "Categories : ", categories,"Description :", description,"Date : ", date,"Location : ", location, "UserID : " , userId, "URL :", url, " file : " , file)
-
-
-//         // Construct the URL
-//         // const fileUrl = `http://43.204.23.49/uploads/${file.filename}`;
-        
-//         // If url ends with "undefined", remove it, and replace with content of file.filename
-//         if (url.endsWith("uploads/undefined")) {
-//             url = url.replace ("uploads/undefined","uploads/"+file.filename);
-//             // url = url.replace("uploads/undefined", file.filename);
-//         }
-
-//         // If url ends with "undefined", construct the correct URL
-//         // if (!url || url.endsWith("uploads/undefined")) {
-//         //     url = `http://43.204.23.49/uploads/${file.filename}`;
-//         // }
-
-//         if (!file) {
-//             return res.status(400).json({ message: "No file uploaded." });
-//         }
-
-//         // let { url } = req.body;
-//   let filepath = req.file.path;
-//   let fileType = req.file.mimetype;
-//   let filename = req.file.filename;
-
-//   if (req.file.mimetype === 'video/x-matroska') {
-//     const oldPath = filepath;
-//     const newPath = oldPath.replace('.mkv', '.mp4');
-
-//     // Convert MKV to MP4 using ffmpeg
-//     try {
-//       await new Promise((resolve, reject) => {
-//         const ffmpegCommand = `ffmpeg -i "${oldPath}" "${newPath}" -hide_banner -loglevel error`;
-//         exec(ffmpegCommand, (error, stdout, stderr) => {
-//           if (error) {
-//             console.error('Conversion error:', stderr);
-//             reject(error);
-//           }
-//           resolve(stdout);
-//         });
-//       });
-
-//       // Update file path and mime type
-//       filepath = newPath;
-//       fileType = 'video/mp4';
-//       filename = filename.replace('.mkv', '.mp4');
-//       url = url.replace('.mkv', '.mp4');  // Update URL if needed
-
-//       // Optionally delete the original MKV file
-//       fs.unlinkSync(oldPath);
-//     } catch (error) {
-//       return res.status(500).json({ message: 'Error converting video file.', error: error.message });
-//     }
-//   }
-
-//         const newArchive = new Archive({
-//             userId,
-//             title,
-//             caption,
-//             categories: JSON.parse(categories),
-//             // categories: categories.split(','),  // Assuming categories are sent as comma-separated
-//             description,
-//             date,
-//             location,
-//             url,
-//             filename: file.filename,
-//             filePath: file.path,
-//             fileType: file.mimetype,
-//             section
-//         });
-
-//         const savedArchive = await newArchive.save();
-//         res.status(201).json({ message: "File uploaded successfully", data: savedArchive });
-//     } catch (error) {
-//         console.error('Error uploading file:', error);
-//         res.status(500).json({ error: "Error uploading file; Error Originates from archiveRoutes.js in the backend", message: error.message });
-//     }
-// });
-
-// POST endpoint for uploading an archive
 // POST endpoint for uploading an archive
 router.post('/upload', upload.single('file'), async (req, res) => {
-    console.log("Received fields:", req.body);
-    console.log("File details:", req.file);
 
-    // Check if the file was uploaded successfully
-    if (!req.file) {
-        return res.status(400).json({ message: "No file uploaded." });
-    }
-
-    let { title, caption, categories, description, date, location, userId, url, section } = req.body;
-    let { path: filePath, mimetype: fileType, filename } = req.file;
-
-    // Process MKV files specifically
-    if (fileType === 'video/x-matroska') {
-        const newPath = filePath.replace('.mkv', '.mp4');
-
-        try {
-            await new Promise((resolve, reject) => {
-                const ffmpegCommand = `ffmpeg -i "${filePath}" "${newPath}" -hide_banner -loglevel error`;
-                exec(ffmpegCommand, (error, stdout, stderr) => {
-                    if (error) {
-                        console.error('Conversion error:', stderr);
-                        reject(error);
-                    }
-                    console.log('Conversion success:', stdout);
-                    resolve(stdout);
-                });
-            });
-
-            // Update variables to reflect new file
-            filePath = newPath;
-            fileType = 'video/mp4';
-            filename = filename.replace('.mkv', '.mp4');
-        } catch (error) {
-            console.error('MKV conversion failed:', error);
-            return res.status(500).json({ message: 'Error converting MKV to MP4.', error: error.message });
-        }
-    }
-
-    // Create and save the new archive document
-    const newArchive = new Archive({
-        userId,
-        title,
-        caption,
-        categories: JSON.parse(categories),
-        description,
-        date,
-        location,
-        url: filePath, // Ensure this is the URL to access the file
-        filename,
-        fileType,
-        section
-    });
-
+    console.log("Received fields:", req.body); // Log text field values
+    console.log(req.file); // Log file details
     try {
+        console.log ("Hi from backend : archiveRoutes.js : I am in the POST endpoint for uploading an archive")
+        let { title, caption, categories, description, date, location,userId, url , section } = req.body;
+        const file = req.file;
+        //debugging 
+        console.log("Request Body Recieved from frontend to backend is : "  , req.body, "Consisting of - 'Title' = ", title, " Caption : ",  caption, "Categories : ", categories,"Description :", description,"Date : ", date,"Location : ", location, "UserID : " , userId, "URL :", url, " file : " , file)
+
+
+        // Construct the URL
+        // const fileUrl = `http://43.204.23.49/uploads/${file.filename}`;
+        
+        // If url ends with "undefined", remove it, and replace with content of file.filename
+        if (url.endsWith("uploads/undefined")) {
+            url = url.replace ("uploads/undefined","uploads/"+file.filename);
+            // url = url.replace("uploads/undefined", file.filename);
+        }
+
+        // If url ends with "undefined", construct the correct URL
+        // if (!url || url.endsWith("uploads/undefined")) {
+        //     url = `http://43.204.23.49/uploads/${file.filename}`;
+        // }
+
+        if (!file) {
+            return res.status(400).json({ message: "No file uploaded." });
+        }
+
+        // let { url } = req.body;
+  let filepath = req.file.path;
+  let fileType = req.file.mimetype;
+  let filename = req.file.filename;
+
+  if (req.file.mimetype === 'video/x-matroska') {
+    const oldPath = filepath;
+    const newPath = oldPath.replace('.mkv', '.mp4');
+
+    // Convert MKV to MP4 using ffmpeg
+    try {
+      await new Promise((resolve, reject) => {
+        const ffmpegCommand = `ffmpeg -i "${oldPath}" "${newPath}" -hide_banner -loglevel error`;
+        exec(ffmpegCommand, (error, stdout, stderr) => {
+          if (error) {
+            console.error('Conversion error:', stderr);
+            reject(error);
+          }
+          resolve(stdout);
+        });
+      });
+
+      // Update file path and mime type
+      filepath = newPath;
+      fileType = 'video/mp4';
+      filename = filename.replace('.mkv', '.mp4');
+      url = url.replace('.mkv', '.mp4');  // Update URL if needed
+
+      // Optionally delete the original MKV file
+      fs.unlinkSync(oldPath);
+    } catch (error) {
+      return res.status(500).json({ message: 'Error converting video file.', error: error.message });
+    }
+  }
+
+        const newArchive = new Archive({
+            userId,
+            title,
+            caption,
+            categories: JSON.parse(categories),
+            // categories: categories.split(','),  // Assuming categories are sent as comma-separated
+            description,
+            date,
+            location,
+            url,
+            filename: file.filename,
+            filePath: file.path,
+            fileType: file.mimetype,
+            section
+        });
+
         const savedArchive = await newArchive.save();
         res.status(201).json({ message: "File uploaded successfully", data: savedArchive });
     } catch (error) {
-        console.error('Error saving new archive:', error);
-        res.status(500).json({ message: "Error uploading file", error: error.message });
+        console.error('Error uploading file:', error);
+        res.status(500).json({ error: "Error uploading file; Error Originates from archiveRoutes.js in the backend", message: error.message });
     }
 });
+
+
+
 
 
 
