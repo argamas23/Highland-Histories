@@ -101,7 +101,7 @@ const ViewUpload = () => {
     </audio>
 )}
 
- {/* {upload.fileType === 'video/x-matroska' && (
+  {upload.fileType === 'video/x-matroska' && (
     <div className="video-container">
     <video controls src={upload.url} style={{ width: '100%' }}>
     
@@ -109,7 +109,7 @@ const ViewUpload = () => {
         
     </video>
     </div>
-)}  */}
+)}  
 {/* 
 {upload.fileType === 'video/x-matroska' && (
     <div>
@@ -117,7 +117,7 @@ const ViewUpload = () => {
         <p>Please download the file to view it: <a href={upload.url} download>Download Video</a>.</p>
     </div>
 )}    */}
-
+{/* 
 {upload.fileType === 'video/x-matroska' && (
    <div style={{ padding: "20px", backgroundColor: "#f4f4f4", textAlign: "center", marginTop: "20px" }}>
         <p>This browser does not support MKV video playback.</p>
@@ -127,7 +127,7 @@ const ViewUpload = () => {
             Download Video
         </button>
     </div>
-)}
+)} */}
 
 
 

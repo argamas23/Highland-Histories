@@ -2,6 +2,7 @@ const express = require('express');
 const Archive = require('../models/Archive');
 const upload = require('../utils/upload');
 const router = express.Router();
+const { exec } = require('child_process');
 
 const {
   getArchiveById, 
@@ -74,6 +75,47 @@ router.get('/:id', archiveController.getArchiveById);
 
 // POST endpoint for uploading an archive
 router.post('/upload', upload.single('file'), async (req, res) => {
+
+    // if (req.file.mimetype === 'video/x-matroska') {
+    //     const oldPath = req.file.path;
+    //     const newPath = req.file.path.replace('.mkv', '.mp4');
+    
+    //     // Convert MKV to MP4 using ffmpeg
+    //     const ffmpegCommand = `ffmpeg -i ${oldPath} ${newPath} -hide_banner -loglevel error`;
+    //     exec(ffmpegCommand, (error) => {
+    //       if (error) {
+    //         console.error('Conversion error:', error);
+    //         return res.status(500).json({ message: 'Error converting video file.' });
+    //       }
+    
+    //       // Update file path and mime type
+    //       req.file.path = newPath;
+    //       req.file.mimetype = 'video/mp4';
+    
+    //       // Save the file information to the database or respond to the client
+    //       res.json({
+    //         message: 'File uploaded and converted successfully.',
+    //         filename: req.file.filename,
+    //         filepath: newPath,
+    //         fileType: req.file.mimetype
+    //       });
+    
+    //       // Optionally delete the original MKV file
+    //       fs.unlink(oldPath, (err) => {
+    //         if (err) console.error('Error deleting original file:', err);
+    //       });
+    //     });
+    //   } else {
+    //     // Handle other file types normally
+    //     res.json({
+    //       message: 'File uploaded successfully.',
+    //       filename: req.file.filename,
+    //       filepath: req.file.path,
+    //       fileType: req.file.mimetype
+    //     });
+    //   }
+    
+
     console.log("Received fields:", req.body); // Log text field values
     console.log(req.file); // Log file details
     try {
@@ -101,6 +143,41 @@ router.post('/upload', upload.single('file'), async (req, res) => {
         if (!file) {
             return res.status(400).json({ message: "No file uploaded." });
         }
+
+        // let { url } = req.body;
+  let filepath = req.file.path;
+  let fileType = req.file.mimetype;
+  let filename = req.file.filename;
+
+  if (req.file.mimetype === 'video/x-matroska') {
+    const oldPath = filepath;
+    const newPath = oldPath.replace('.mkv', '.mp4');
+
+    // Convert MKV to MP4 using ffmpeg
+    try {
+      await new Promise((resolve, reject) => {
+        const ffmpegCommand = `ffmpeg -i "${oldPath}" "${newPath}" -hide_banner -loglevel error`;
+        exec(ffmpegCommand, (error, stdout, stderr) => {
+          if (error) {
+            console.error('Conversion error:', stderr);
+            reject(error);
+          }
+          resolve(stdout);
+        });
+      });
+
+      // Update file path and mime type
+      filepath = newPath;
+      fileType = 'video/mp4';
+      filename = filename.replace('.mkv', '.mp4');
+      url = url.replace('.mkv', '.mp4');  // Update URL if needed
+
+      // Optionally delete the original MKV file
+      fs.unlinkSync(oldPath);
+    } catch (error) {
+      return res.status(500).json({ message: 'Error converting video file.', error: error.message });
+    }
+  }
 
         const newArchive = new Archive({
             userId,
