@@ -25,6 +25,17 @@ const ViewUpload = () => {
         fetchUpload();
    }, [id]);
 
+   const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = upload.url;
+    link.setAttribute('download', true); // This sets the download attribute to a truthy value
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
+
+
+
     
 
     if (!upload) return <div>Loading...</div>;
@@ -112,11 +123,12 @@ const ViewUpload = () => {
         <p>This browser does not support MKV video playback.</p>
         <button 
             style={{ padding: "10px", backgroundColor: "#007BFF", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }}
-            onClick={() => window.location.href = upload.url}>
+            onClick={handleDownload}>
             Download Video
         </button>
     </div>
 )}
+
 
 
 
