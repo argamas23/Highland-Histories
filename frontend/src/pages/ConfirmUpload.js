@@ -239,9 +239,18 @@
 // export default ConfirmUpload;
 
 
+
+
+
+
+
+
+
+
+
+
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import './ConfirmUpload.css';
 
 const ConfirmUpload = () => {
@@ -249,8 +258,11 @@ const ConfirmUpload = () => {
     const navigate = useNavigate();
     const [section, setSection] = useState('');
     const [uploadProgress, setUploadProgress] = useState(0);
+    const [uploading, setUploading] = useState(false);
 
-    const handleUpload = async () => {
+    const handleUpload = () => {
+        setUploading(true);
+
         const formData = new FormData();
         formData.append('file', state.file);
         formData.append('title', state.details.title);
@@ -264,26 +276,34 @@ const ConfirmUpload = () => {
         formData.append('section', section);
         formData.append('fileType', state.file.type);
 
-        axios({
-            method: 'post',
-            url: 'https://highlandhistories.org/api/archives/upload',
-            data: formData,
-            headers: { 'Content-Type': 'multipart/form-data' },
-            onUploadProgress: progressEvent => {
-                const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://highlandhistories.org/api/archives/upload', true);
+
+        xhr.upload.onprogress = (event) => {
+            if (event.lengthComputable) {
+                const percentCompleted = Math.round((event.loaded * 100) / event.total);
                 setUploadProgress(percentCompleted);
             }
-        }).then(response => {
-            if (response.status === 200) {
-                alert(`File upload successful: ${response.data.filename}`);
+        };
+
+        xhr.onload = () => {
+            setUploading(false);
+            if (xhr.status === 200) {
+                alert('File upload successful');
                 navigate('/my-uploads');
             } else {
-                alert('File upload failed due to server error');
+                alert(`File upload failed: ${xhr.responseText}`);
+                console.error('Upload error:', xhr.responseText);
             }
-        }).catch(error => {
-            alert(`File upload failed: ${error.response?.data?.message || error.message}`);
-            console.error('Upload error:', error);
-        });
+        };
+
+        xhr.onerror = () => {
+            setUploading(false);
+            alert('File upload failed due to network error');
+            console.error('Network error');
+        };
+
+        xhr.send(formData);
     };
 
     return (
@@ -303,8 +323,8 @@ const ConfirmUpload = () => {
                 <option value="Video">Video</option>
             </select>
             {uploadProgress > 0 && <progress value={uploadProgress} max="100">{uploadProgress}%</progress>}
-            <button onClick={handleUpload} disabled={uploadProgress !== 0 && uploadProgress < 100} className="upload-btn">
-                {uploadProgress > 0 && uploadProgress < 100 ? `Uploading ${uploadProgress}%` : 'Upload'}
+            <button onClick={handleUpload} disabled={uploading || (uploadProgress > 0 && uploadProgress < 100)} className="upload-btn">
+                {uploading ? `Uploading ${uploadProgress}%` : 'Upload'}
             </button>
         </div>
     );
