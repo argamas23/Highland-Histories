@@ -77,7 +77,7 @@ const ViewUpload = () => {
  )}
 
 {upload.fileType.startsWith('image/') && (
-    <img src={upload.url} alt={upload.title} style={{ width: '100%', maxHeight: '600px' }} />
+    <img src={upload.url} alt={upload.title} style={{ width: '50%', maxHeight: '600px' }} />
 )}
 
 {upload.fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' && (
@@ -90,14 +90,23 @@ const ViewUpload = () => {
     </audio>
 )}
 
-{upload.fileType === 'video/x-matroska' && (
+ {/* {upload.fileType === 'video/x-matroska' && (
     <div className="video-container">
     <video controls src={upload.url} style={{ width: '100%' }}>
-    {/* <video controls src={upload.url} width="100%"> */}
+    
         Your browser does not support the video element.
+        
     </video>
     </div>
+)}  */}
+
+{upload.fileType === 'video/x-matroska' && (
+    <div>
+        <p>This browser does not support MKV video playback.</p>
+        <p>Please download the file to view it: <a href={upload.url} download>Download Video</a>.</p>
+    </div>
 )}
+
 
 
            
