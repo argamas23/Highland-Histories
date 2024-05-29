@@ -281,14 +281,19 @@ const ConfirmUpload = () => {
 
         xhr.upload.onprogress = (event) => {
             if (event.lengthComputable) {
-                const percentCompleted = Math.round((event.loaded * 100) / event.total);
+                // const percentCompleted = Math.round((event.loaded * 100) / event.total);
+                let percentCompleted = Math.round((event.loaded * 100) / event.total);
+                if (event.loaded === event.total) {
+                    percentCompleted = 100; // Ensure it reaches 100%
+                }
                 setUploadProgress(percentCompleted);
             }
         };
 
         xhr.onload = () => {
             setUploading(false);
-            if (xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            if (xhr.status === 200 || response.message === 'File uploaded successfully') {
                 alert('File upload successful');
                 navigate('/my-uploads');
             } else {
@@ -296,6 +301,14 @@ const ConfirmUpload = () => {
                 console.error('Upload error:', xhr.responseText);
             }
         };
+        //     if (xhr.status === 200) {
+        //         alert('File upload successful');
+        //         navigate('/my-uploads');
+        //     } else {
+        //         alert(`File upload failed: ${xhr.responseText}`);
+        //         console.error('Upload error:', xhr.responseText);
+        //     }
+        // };
 
         xhr.onerror = () => {
             setUploading(false);
