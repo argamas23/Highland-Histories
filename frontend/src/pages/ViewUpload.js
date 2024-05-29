@@ -101,7 +101,7 @@ const ViewUpload = () => {
     </audio>
 )}
 
-  {/* {upload.fileType === 'video/x-matroska' && (
+ {upload.fileType === 'video/x-matroska' && (
     <div className="video-container">
     <video controls src={upload.url} style={{ width: '100%' }}>
     
@@ -109,7 +109,7 @@ const ViewUpload = () => {
         
     </video>
     </div>
-)}   */}
+)}   
 
          </div>
    );
