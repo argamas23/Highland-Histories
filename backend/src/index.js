@@ -38,7 +38,7 @@ app.use(express.static(buildPath));
 
 // Handle all routes and serve the index.html file
 app.get('*', (req, res) => {
-    res.sendFile(path.join(_dirname, '../frontend/build/index.html'), function (err) {
+    res.sendFile(path.resolve(_dirname, '../frontend/build/index.html'), function (err) {
         if (err) {
             res.status(500).send(err);
         }
