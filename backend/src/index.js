@@ -29,28 +29,42 @@ app.use('/api/archives', archiveRoutes);
 // Serve static files from 'uploads' directory if needed
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-const _dirname = path.dirname("")
-const buildPath = path.join(_dirname  , "../frontend/build");
-// const buildPath = path.join(__dirname, '../frontend/build');
+const __dirname = path.dirname("")
 
+const buildPath = path.join(__dirname, '../frontend/build');
 
+// Serve static files from the build directory
+app.use(express.static(buildPath));
 
-app.use(express.static(buildPath))
-
-app.get("*", function(req, res)
-// app.get('*', (req, res) => 
-{
-
-    res.sendFile(
-        path.join(__dirname, "../frontend/build/index.html"),
-        function (err) {
-          if (err) {
+// Handle all routes and serve the index.html file
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/build/index.html'), function (err) {
+        if (err) {
             res.status(500).send(err);
-          }
-      }
-);
+        }
+    });
+});
+// const buildPath = path.join(_dirname  , "../frontend/build");
+// // const buildPath = path.join(__dirname, '../frontend/build');
 
-})
+
+
+// app.use(express.static(buildPath))
+
+// app.get("*", function(req, res)
+// // app.get('*', (req, res) => 
+// {
+
+//     res.sendFile(
+//         path.join(__dirname, "../frontend/build/index.html"),
+//         function (err) {
+//           if (err) {
+//             res.status(500).send(err);
+//           }
+//       }
+// );
+
+// })
 
 // app.use(express.static(path.join(__dirname, 'frontend/build')));
 
