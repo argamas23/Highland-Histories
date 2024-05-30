@@ -17,8 +17,8 @@ const Permissions = () => {
   
         const text = await response.text();
         console.log('Raw response:', text);
-        console.log(response.ok);
-        if (response.ok && response.headers.get("content-type")?.includes("application/json")) {
+        // console.log(response.ok);
+        if (response.ok ) {
           const data = JSON.parse(text);
           setPendingRequests(data.requests);
         } else {
