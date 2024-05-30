@@ -37,7 +37,7 @@ const buildPath = path.join(_dirname  , "../frontend/build");
 
 app.use(express.static(buildPath))
 
-app.get("/*", function(req, res)
+app.get("*", function(req, res)
 // app.get('*', (req, res) => 
 {
 
@@ -51,6 +51,12 @@ app.get("/*", function(req, res)
 );
 
 })
+
+// app.use(express.static(path.join(__dirname, 'frontend/build')));
+
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname + '/frontend/build/index.html'));
+// });
 
 // app.get('*', (req, res) => {
 //   const indexPath = path.join(__dirname, "../frontend/build/index.html");
