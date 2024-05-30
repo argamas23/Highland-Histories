@@ -11,18 +11,18 @@ const Permissions = () => {
     const fetchPendingRequests = async () => {
       try {
         const response = await fetch("https://highlandhistories.org/api/requests/fetch");
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
+        console.log("Here")
+        console.log('Response status:', response.status);
+        console.log('Response content-type:', response.headers.get("content-type"));
   
         const text = await response.text();
         console.log('Raw response:', text);
   
-        try {
+        if (response.ok && response.headers.get("content-type")?.includes("application/json")) {
           const data = JSON.parse(text);
           setPendingRequests(data.requests);
-        } catch (parseError) {
-          throw new Error(`Failed to parse JSON: ${text}`);
+        } else {
+          throw new Error(`Unexpected response: ${text}`);
         }
       } catch (error) {
         console.error('Error fetching pending requests:', error);
@@ -31,6 +31,7 @@ const Permissions = () => {
   
     fetchPendingRequests();
   }, []);
+  
   
 
   const handleVerify = async (index) => {
