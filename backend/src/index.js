@@ -29,16 +29,16 @@ app.use('/api/archives', archiveRoutes);
 // Serve static files from 'uploads' directory if needed
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-const __dirname = path.dirname("")
+const _dirname = path.dirname("")
 
-const buildPath = path.join(__dirname, '../frontend/build');
+const buildPath = path.join(_dirname, '../frontend/build');
 
 // Serve static files from the build directory
 app.use(express.static(buildPath));
 
 // Handle all routes and serve the index.html file
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/build/index.html'), function (err) {
+    res.sendFile(path.join(_dirname, '../frontend/build/index.html'), function (err) {
         if (err) {
             res.status(500).send(err);
         }
