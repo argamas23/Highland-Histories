@@ -11,7 +11,7 @@ const Permissions = () => {
     const fetchPendingRequests = async () => {
       try {
         const response = await fetch("https://highlandhistories.org/api/requests/fetch");
-        console.log("Here")
+        console.log("Here");
         console.log('Response status:', response.status);
         console.log('Response content-type:', response.headers.get("content-type"));
   
@@ -20,6 +20,7 @@ const Permissions = () => {
   
         if (response.ok && response.headers.get("content-type")?.includes("application/json")) {
           const data = JSON.parse(text);
+          console.log("Here 2");
           setPendingRequests(data.requests);
         } else {
           throw new Error(`Unexpected response: ${text}`);
