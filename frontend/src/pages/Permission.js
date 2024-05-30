@@ -14,15 +14,24 @@ const Permissions = () => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        const data = await response.json();
-        setPendingRequests(data.requests);
+  
+        const text = await response.text();
+        console.log('Raw response:', text);
+  
+        try {
+          const data = JSON.parse(text);
+          setPendingRequests(data.requests);
+        } catch (parseError) {
+          throw new Error(`Failed to parse JSON: ${text}`);
+        }
       } catch (error) {
         console.error('Error fetching pending requests:', error);
       }
     };
-
+  
     fetchPendingRequests();
   }, []);
+  
 
   const handleVerify = async (index) => {
     const request = pendingRequests[index];
