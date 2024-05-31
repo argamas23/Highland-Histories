@@ -41,7 +41,7 @@ const UploadFile = () => {
                 Accepted map formats: All image formats (JPEG , JPG , PNG  BMP , GIF etc), PDF, DOCX. <br />
                 Accepted document formats: All image formats (JPEG , JPG , PNG  BMP , GIF etc), PDF, DOCX. <br />
                 Accepted audio formats: MP3, M4A. <br />
-                Accepted video formats: MP4, MKV.
+                Accepted video formats: MP4 only.
             </p>
           </div>
           <div className="button-container">

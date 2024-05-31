@@ -105,39 +105,39 @@ router.post('/upload', upload.single('file'), async (req, res) => {
         }
 
         // let { url } = req.body;
-  let filepath = req.file.path;
-  let fileType = req.file.mimetype;
-  let filename = req.file.filename;
+//   let filepath = req.file.path;
+//   let fileType = req.file.mimetype;
+//   let filename = req.file.filename;
 
-  if (req.file.mimetype === 'video/x-matroska') {
-    const oldPath = filepath;
-    const newPath = oldPath.replace('.mkv', '.mp4');
+//   if (req.file.mimetype === 'video/x-matroska') {
+//     const oldPath = filepath;
+//     const newPath = oldPath.replace('.mkv', '.mp4');
 
-    // Convert MKV to MP4 using ffmpeg
-    try {
-      await new Promise((resolve, reject) => {
-        const ffmpegCommand = `ffmpeg -i "${oldPath}" "${newPath}" -hide_banner -loglevel error`;
-        exec(ffmpegCommand, (error, stdout, stderr) => {
-          if (error) {
-            console.error('Conversion error:', stderr);
-            reject(error);
-          }
-          resolve(stdout);
-        });
-      });
+//     // Convert MKV to MP4 using ffmpeg
+//     try {
+//       await new Promise((resolve, reject) => {
+//         const ffmpegCommand = `ffmpeg -i "${oldPath}" "${newPath}" -hide_banner -loglevel error`;
+//         exec(ffmpegCommand, (error, stdout, stderr) => {
+//           if (error) {
+//             console.error('Conversion error:', stderr);
+//             reject(error);
+//           }
+//           resolve(stdout);
+//         });
+//       });
 
-      // Update file path and mime type
-      filepath = newPath;
-      fileType = 'video/mp4';
-      filename = filename.replace('.mkv', '.mp4');
-      url = url.replace('.mkv', '.mp4');  // Update URL if needed
+//       // Update file path and mime type
+//       filepath = newPath;
+//       fileType = 'video/mp4';
+//       filename = filename.replace('.mkv', '.mp4');
+//       url = url.replace('.mkv', '.mp4');  // Update URL if needed
 
-      // Optionally delete the original MKV file
-      fs.unlinkSync(oldPath);
-    } catch (error) {
-      return res.status(500).json({ message: 'Error converting video file.', error: error.message });
-    }
-  }
+//       // Optionally delete the original MKV file
+//       fs.unlinkSync(oldPath);
+//     } catch (error) {
+//       return res.status(500).json({ message: 'Error converting video file.', error: error.message });
+//     }
+//   }
 
         const newArchive = new Archive({
             userId,
