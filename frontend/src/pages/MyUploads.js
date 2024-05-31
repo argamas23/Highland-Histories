@@ -36,8 +36,33 @@ const MyUploads = () => {
         fetchMyUploads();
     }, [navigate]);
 
+    // const handleDelete = async (id) => {
+        
+    //     // Confirm Delete button addition
+        
+        
+    //     try {
+    //         const response = await fetch(`https://highlandhistories.org/api/archives/${id}`, {
+    //             method: 'DELETE',
+    //         });
+    //         if (response.ok) {
+    //             const { message } = await response.json();
+    //             setUploads(uploads.filter(upload => upload._id !== id));
+    //             alert(message);
+    //         } else {
+    //             const errorData = await response.json();
+    //             throw new Error(errorData.message || 'Failed to delete the file.');
+    //         }
+    //     } catch (error) {
+    //         alert('Error deleting file: ' + error.message);
+    //         console.error('Error deleting file:', error);
+    //     }
+    // };
+
     const handleDelete = async (id) => {
         
+       // Confirmation dialog
+       if (window.confirm("Are you sure you want to delete this upload?")) {
         try {
             const response = await fetch(`https://highlandhistories.org/api/archives/${id}`, {
                 method: 'DELETE',
@@ -54,7 +79,8 @@ const MyUploads = () => {
             alert('Error deleting file: ' + error.message);
             console.error('Error deleting file:', error);
         }
-    };
+    }
+};
 
     const handleEdit = (fileId) => {
         navigate(`/edit-upload/${fileId}`);
