@@ -15,20 +15,24 @@ const Permissions = () => {
         console.log('Response status:', response.status);
         console.log('Response content-type:', response.headers.get("content-type"));
   
-        const contentType = response.headers.get("content-type");
+        const text = await response.text();
+        console.log('Response text:', text);
   
-        if (contentType && contentType.includes("text/html")) {
-          const data = await response.json();
+        // Try to parse the text as JSON
+        let data;
+        try {
+          data = JSON.parse(text);
           console.log('Parsed JSON:', data);
+  
           if (response.ok) {
             setPendingRequests(data.requests);
           } else {
             throw new Error(`Unexpected response: ${JSON.stringify(data)}`);
           }
-        } else {
-          const text = await response.text();
-          console.log('Non-JSON response:', text);
-          throw new Error(`Unexpected response format or error: ${text}`);
+        } catch (jsonError) {
+          console.error('Error parsing JSON:', jsonError);
+          console.error('Response text that failed to parse as JSON:', text);
+          throw new Error(`Error parsing JSON: ${jsonError.message}`);
         }
       } catch (error) {
         console.error('Error fetching pending requests:', error);
@@ -37,6 +41,7 @@ const Permissions = () => {
   
     fetchPendingRequests();
   }, []);
+  
   
   
 
