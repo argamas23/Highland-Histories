@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Permission.css';
-import axios from 'axios'
+
 const Permissions = () => {
   const [pendingRequests, setPendingRequests] = useState([]);
   const [verificationResult, setVerificationResult] = useState('');
@@ -11,39 +11,18 @@ const Permissions = () => {
     const fetchPendingRequests = async () => {
       try {
         const response = await fetch("https://highlandhistories.org/api/requests/fetch");
-        console.log("Fetching data...");
-        console.log('Response status:', response.status);
-        console.log('Response content-type:', response.headers.get("content-type"));
-  
-        const text = await response.text();
-        console.log('Response text:', text);
-  
-        // Try to parse the text as JSON
-        let data;
-        try {
-          data = JSON.parse(text);
-          console.log('Parsed JSON:', data);
-  
-          if (response.ok) {
-            setPendingRequests(data.requests);
-          } else {
-            throw new Error(`Unexpected response: ${JSON.stringify(data)}`);
-          }
-        } catch (jsonError) {
-          console.error('Error parsing JSON:', jsonError);
-          console.error('Response text that failed to parse as JSON:', text);
-          throw new Error(`Error parsing JSON: ${jsonError.message}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
+        const data = await response.json();
+        setPendingRequests(data.requests);
       } catch (error) {
         console.error('Error fetching pending requests:', error);
       }
     };
-  
+
     fetchPendingRequests();
   }, []);
-  
-  
-  
 
   const handleVerify = async (index) => {
     const request = pendingRequests[index];
