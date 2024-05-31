@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Permission.css';
-
+import axios from 'axios'
 const Permissions = () => {
   const [pendingRequests, setPendingRequests] = useState([]);
   const [verificationResult, setVerificationResult] = useState('');
@@ -17,7 +17,7 @@ const Permissions = () => {
   
         const contentType = response.headers.get("content-type");
   
-        if (contentType && contentType.includes("application/json")) {
+        if (contentType && contentType.includes("text/html")) {
           const data = await response.json();
           console.log('Parsed JSON:', data);
           if (response.ok) {
