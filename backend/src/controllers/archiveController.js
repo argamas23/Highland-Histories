@@ -17,34 +17,6 @@ exports.saveFile = async (req, res) => {
   }
 
 
-// Convert MKV files to MP4
-if (file.mimetype === 'video/x-matroska') {
-    const inputPath = file.path;
-    const outputPath = inputPath.replace('.mkv', '.mp4');
-
-    ffmpeg(inputPath)
-        .output(outputPath)
-        .on('end', async () => {
-            console.log('Conversion successful');
-            await saveArchive({
-                ...req.body,
-                filename: file.filename.replace('.mkv', '.mp4'),
-                filePath: outputPath,
-                fileType: 'video/mp4',
-                url: req.body.url.replace('.mkv', '.mp4')
-            }, res);
-        })
-        .on('error', (err) => {
-            console.error('Error converting file:', err);
-            res.status(500).json({ message: "Error converting video file.", error: err.message });
-        })
-        .run();
-} else {
-    // Save non-MKV files normally
-    await saveArchive({ ...req.body, filename: file.filename, filePath: file.path, fileType: file.mimetype, url: req.body.url }, res);
-}
-
-
   const newArchive = new Archive({
       userId: req.body.userId,
       title: req.body.title,
