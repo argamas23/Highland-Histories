@@ -279,6 +279,9 @@ const ConfirmUpload = () => {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'https://highlandhistories.org/api/archives/upload', true);
 
+        xhr.timeout = 300000; // Set timeout to 5 minutes
+
+
         xhr.upload.onprogress = (event) => {
             if (event.lengthComputable) {
                 // const percentCompleted = Math.round((event.loaded * 100) / event.total);
@@ -288,6 +291,12 @@ const ConfirmUpload = () => {
                 }
                 setUploadProgress(percentCompleted);
             }
+        };
+
+        xhr.ontimeout = () => {
+            console.error("The request for uploading file timed out.");
+            alert('File upload failed due to timeout.');
+            setUploading(false);
         };
 
         xhr.onload = () => {
