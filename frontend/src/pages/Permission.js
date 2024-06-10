@@ -10,10 +10,7 @@ const Permissions = () => {
   useEffect(() => {
     const fetchPendingRequests = async () => {
       try {
-        const response = await fetch("https://highlandhistories.org/api/requests/fetch");
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
+        const response = await fetch("http://highlandhistories.org/api/requests/fetch");
         const data = await response.json();
         setPendingRequests(data.requests);
       } catch (error) {

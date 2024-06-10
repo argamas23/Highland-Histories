@@ -46,15 +46,27 @@ router.post('/add', [
 });
 
 // Route to fetch all pending requests 
+// router.get('/fetch', async (req, res) => {
+//     try {
+//       const requests = await Request.find({});
+//       res.status(200).json({ requests });
+//     } catch (error) {
+//       console.error('Error fetching requests:', error);
+//       res.status(500).json({ message: 'Failed to fetch requests', error });
+//     }
+//   });
+
 router.get('/fetch', async (req, res) => {
-    try {
-      const requests = await Request.find({});
-      res.status(200).json({ requests });
-    } catch (error) {
-      console.error('Error fetching requests:', error);
-      res.status(500).json({ message: 'Failed to fetch requests', error });
-    }
-  });
+  try {
+    const requests = await Request.find({});
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json({ requests });
+  } catch (error) {
+    console.error('Error fetching requests:', error);
+    res.setHeader('Content-Type', 'application/json');
+    res.status(500).json({ message: 'Failed to fetch requests', error });
+  }
+});
 
   router.delete('/delete/:id', async (req, res) => {
     try {
