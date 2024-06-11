@@ -60,10 +60,12 @@ router.get('/fetch', async (req, res) => {
   try {
     const requests = await Request.find({});
     res.setHeader('Content-Type', 'application/json');
+    console.log('Headers:', res.getHeaders());
     res.status(200).json({ requests });
   } catch (error) {
     console.error('Error fetching requests:', error);
     res.setHeader('Content-Type', 'application/json');
+    console.log('Headers:', res.getHeaders());
     res.status(500).json({ message: 'Failed to fetch requests', error });
   }
 });
