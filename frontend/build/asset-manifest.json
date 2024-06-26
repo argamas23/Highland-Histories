@@ -1,15 +1,39 @@
 {
   "files": {
     "main.css": "/static/css/main.b362b83d.css",
-    "main.js": "/static/js/main.f01b4219.js",
+    "main.js": "/static/js/main.1f8efe97.js",
     "static/js/453.c44a0ee9.chunk.js": "/static/js/453.c44a0ee9.chunk.js",
+    "static/media/IMG_20231125_112124073.jpg": "/static/media/IMG_20231125_112124073.7498d8c199f5d89f4d3b.jpg",
+    "static/media/IMG_20211025_135907.jpg": "/static/media/IMG_20211025_135907.d814a4233c25ab6b3434.jpg",
+    "static/media/IMG_20240211_150257165_HDR.jpg": "/static/media/IMG_20240211_150257165_HDR.da687fc0e23916e60f37.jpg",
+    "static/media/IMG_20231125_125029197_HDR.jpg": "/static/media/IMG_20231125_125029197_HDR.90320434e9cecee87f06.jpg",
+    "static/media/IMG_20231125_124600857_HDR.jpg": "/static/media/IMG_20231125_124600857_HDR.f5afac10d502895a2885.jpg",
+    "static/media/IMG_20231223_124810342_HDR.jpg": "/static/media/IMG_20231223_124810342_HDR.09027ed234caddff5af7.jpg",
+    "static/media/IMG_20231125_162003538_HDR.jpg": "/static/media/IMG_20231125_162003538_HDR.710033d06bba79d768e6.jpg",
+    "static/media/IMG_20211021_121532.jpg": "/static/media/IMG_20211021_121532.ed864a58c215a59cc203.jpg",
+    "static/media/IMG_20240211_115348913_HDR~2.jpg": "/static/media/IMG_20240211_115348913_HDR~2.17b70d7608a2cab7d0fd.jpg",
+    "static/media/IMG_20231224_113047555_HDR.jpg": "/static/media/IMG_20231224_113047555_HDR.870b4ee776d0cf51dbc4.jpg",
+    "static/media/IMG_20231123_145016641_HDR.jpg": "/static/media/IMG_20231123_145016641_HDR.31a64a44b4053db07a16.jpg",
+    "static/media/IMG_20211025_102629.jpg": "/static/media/IMG_20211025_102629.db7d6b1822a329e519eb.jpg",
+    "static/media/IMG_20231125_141139313_HDR.jpg": "/static/media/IMG_20231125_141139313_HDR.a6b4ed4c18305d6a4030.jpg",
+    "static/media/IMG_20211025_152725.jpg": "/static/media/IMG_20211025_152725.aa7fba25e7195264f093.jpg",
+    "static/media/IMG_20211025_160226.jpg": "/static/media/IMG_20211025_160226.c766f553065056955df5.jpg",
+    "static/media/IMG_20211021_173201.jpg": "/static/media/IMG_20211021_173201.ccc7f121bf0493350620.jpg",
+    "static/media/IMG_20211025_101517.jpg": "/static/media/IMG_20211025_101517.bd173e8e010666a07d6d.jpg",
+    "static/media/IMG_20211025_134901.jpg": "/static/media/IMG_20211025_134901.0a46fe443cf2bb7550a1.jpg",
+    "static/media/IMG_20211026_152530.jpg": "/static/media/IMG_20211026_152530.9d2f9f592482f685e6e1.jpg",
+    "static/media/Himalayan Terraced Fields Agriculture, Aniket 2006.jpg": "/static/media/Himalayan Terraced Fields Agriculture, Aniket 2006.2e7bbff8130065a51e5f.jpg",
+    "static/media/IMG-20231120-WA0018.jpg": "/static/media/IMG-20231120-WA0018.6f7445622beb256bee7b.jpg",
+    "static/media/Kamru Fort, Sangla 2003.jpg": "/static/media/Kamru Fort, Sangla 2003.6133e5b6c2ed7b043069.jpg",
+    "static/media/The Road (1) 2003.jpg": "/static/media/The Road (1) 2003.7b486be7842d2f7e2bf1.jpg",
+    "static/media/Sangla Valley 2004 -- Chitkul - Fort and Mountains (2).jpg": "/static/media/Sangla Valley 2004 -- Chitkul - Fort and Mountains (2).bac64f161eda4f33b393.jpg",
     "index.html": "/index.html",
     "main.b362b83d.css.map": "/static/css/main.b362b83d.css.map",
-    "main.f01b4219.js.map": "/static/js/main.f01b4219.js.map",
+    "main.1f8efe97.js.map": "/static/js/main.1f8efe97.js.map",
     "453.c44a0ee9.chunk.js.map": "/static/js/453.c44a0ee9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.b362b83d.css",
-    "static/js/main.f01b4219.js"
+    "static/js/main.1f8efe97.js"
   ]
 }
