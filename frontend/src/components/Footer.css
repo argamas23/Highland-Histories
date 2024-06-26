@@ -1,25 +1,94 @@
-/* src/components/Footer.css */
-
-.footer {
-  background-color: #333;
-  color: white;
+/* .footer {
+  background-color: #333; 
+  color: white; 
   text-align: center;
   padding: 20px 0;
+  font-family: 'Arial', sans-serif; 
 }
 
 .footer-content {
   display: flex;
   justify-content: space-around;
-  align-items: center; /* Center vertically */
-  margin-bottom: 20px;
+  align-items: center;
+  flex-wrap: wrap; 
+  padding: 0 20px; 
 }
 
 .footer-section h4 {
   margin-bottom: 15px;
+  font-size: 16px; 
+}
+
+.footer-section a {
+  color: #f2f2f2;
+  text-decoration: none; 
+}
+
+.footer-section a:hover {
+  text-decoration: underline; 
 }
 
 .footer-bottom {
   margin-top: 20px;
   border-top: 1px solid #777;
   padding-top: 10px;
+}
+
+.footer-bottom p {
+  font-size: 14px; 
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column; 
+  }
+} */
+
+
+/* src/components/Footer.css */
+
+.footer {
+  background-color: #333; /* Dark background for the footer */
+  color: white; /* White text color */
+  text-align: center;
+  padding: 20px 0;
+  font-family: 'Arial', sans-serif; /* Adds a more readable typeface */
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-around;
+  align-items: center; /* Center vertically */
+  flex-wrap: wrap; /* Ensure it wraps on small screens */
+  padding: 0 20px; /* Adds padding on the sides */
+}
+
+.footer-section h4 {
+  margin-bottom: 15px;
+  font-size: 16px; /* Larger font size for headers */
+}
+
+.footer-section a {
+  color: #f2f2f2; /* Light grey color for links for better readability */
+  text-decoration: none; /* No underline */
+}
+
+.footer-section a:hover {
+  text-decoration: underline; /* Underline on hover for better interactivity */
+}
+
+.footer-bottom {
+  margin-top: 20px;
+  border-top: 1px solid #777; /* Subtle border color */
+  padding-top: 10px;
+}
+
+.footer-bottom p {
+  font-size: 14px; /* Smaller font size for less important text */
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column; /* Stack the content vertically on small screens */
+  }
 }
