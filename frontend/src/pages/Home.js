@@ -27,7 +27,14 @@ const Home = () => {
     const images = require.context('../images/home', false, /\.(png|jpe?g|svg|heic)$/);
 
     console.log(images.keys());
-    const imagePaths = images.keys().map(image => images(image).default);
+    const imagePaths = images.keys().map(image => {
+        const path = images(image);
+        console.log('Image:', image, 'Resolved Path:', path);
+        return path.default || path;
+    });
+
+    // Log the imagePaths array to verify
+    console.log(imagePaths);
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -36,7 +43,7 @@ const Home = () => {
 
         return () => clearInterval(intervalId); // Cleanup to stop the interval when the component unmounts
     }, [imagePaths.length]);
-    console.log(imagePaths);
+
     if (imagePaths.length === 0) {
         return <div>Loading images...</div>;
     }
