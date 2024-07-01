@@ -25,6 +25,8 @@ const Home = () => {
     const [currentImage, setCurrentImage] = useState(0);
     // Update the path to the correct one
     const images = require.context('../images/home', false, /\.(png|jpe?g|svg|heic)$/);
+
+    console.log(images.keys());
     const imagePaths = images.keys().map(image => images(image).default);
 
     useEffect(() => {
