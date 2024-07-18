@@ -56,13 +56,13 @@ router.post('/add', [
 //     }
 //   });
 
-router.get('/fetch', async (res) => {
+router.get('/fetch', async (req, res) => {
   try {
     let query = {};
     const requests = await Request.find(query);
-    // res.setHeader('Content-Type', 'application/json');
-    // console.log('Headers:', res.getHeaders());
-    res.status(200).json(requests);
+    console.log("Request:", requests);
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(requests));
   } catch (error) {
     console.error('Error fetching requests:', error);
     res.setHeader('Content-Type', 'application/json');
