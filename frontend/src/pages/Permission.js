@@ -11,6 +11,7 @@ const Permissions = () => {
     const fetchPendingRequests = async () => {
       try {
         const response = await fetch("https://highlandhistories.org/api/requests/fetch");
+        console.log(response);
         const data = await response.json();
         setPendingRequests(data.requests);
       } catch (error) {
