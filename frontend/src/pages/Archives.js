@@ -19,7 +19,7 @@ const Archives = () => {
 
   useEffect(() => {
     const fetchArchives = async () => {
-      const response = await fetch(`http://localhost:5000/api/archives?section=${filterType}`);
+      const response = await fetch(`https://highlandhistories.org/api/archives?section=${filterType}`);
       const data = await response.json();
       if (response.ok) {
         setArchives(data);
