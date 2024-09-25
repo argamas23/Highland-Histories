@@ -17,6 +17,7 @@ import ArchiveDetail from './pages/ArchiveDetail';
 import EditUpload from './pages/EditUpload';
 import Permission from './pages/Permission';
 import ViewUpload from './pages/ViewUpload';
+import Events from './pages/Events';
 
 
 function App() {
