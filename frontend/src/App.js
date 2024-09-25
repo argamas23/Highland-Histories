@@ -39,7 +39,7 @@ function App() {
           <Route path="/confirm-upload" element={<ConfirmUpload />} />
           {/* <Route path="/confirm-upload" element={ConfirmUpload} /> */}
           <Route path="/my-uploads" element={<MyUploads />} />
-          
+          <Route path="/events" element={<Events />} />
           <Route path="/archives/:id" element={<ArchiveDetail />} />
           <Route path="/edit-upload/:id" element={<EditUpload />} />
           <Route path="/permission" element={<Permission />}/>
