@@ -198,6 +198,10 @@
 
 // export default Register;
 
+
+
+
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Register.css';
@@ -210,14 +214,66 @@ const Register = () => {
     password: '',
     confirmPassword: '',
     usertype: '',
-    moreInfo: false,  // State to control visibility of more info fields
+    moreInfo: false,
+    institute: '',
+    profession: '',
+    bio: '',
   });
   const [formErrors, setFormErrors] = useState({});
   const [secretkey, setSecretKey] = useState('');
 
   const navigate = useNavigate();
 
-  // Handlers and validation functions remain the same...
+  const validateField = (name, value) => {
+    switch (name) {
+      case 'name':
+        return value.length >= 3;
+      case 'email':
+        return /\S+@\S+\.\S+/.test(value);
+      case 'password':
+        return value.length >= 8;
+      case 'confirmPassword':
+        return value === credentials.password;
+      case 'bio':
+        return value.length <= 200;  // Ensure bio is not more than 200 words
+      default:
+        return true;
+    }
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setCredentials(prev => ({ ...prev, [name]: value }));
+    if (formErrors[name] && validateField(name, value)) {
+      setFormErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const validateForm = () => {
+    const errors = {};
+    Object.keys(credentials).forEach(key => {
+      if (!validateField(key, credentials[key])) {
+        errors[key] = `${key} is invalid`;
+      }
+    });
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!validateForm()) return;
+
+    const { name, email, password, usertype, institute, profession, bio } = credentials;
+    const userDetails = { name, email, password, usertype, institute, profession, bio };
+
+    if (usertype === 'Admin' && secretkey === config.SECRET_KEY) {
+      // Handle admin registration
+    } else if (usertype === 'User') {
+      // Handle regular user registration
+    }
+  };
 
   const handleMoreInfoToggle = () => {
     setCredentials(prev => ({ ...prev, moreInfo: !prev.moreInfo }));
@@ -226,43 +282,39 @@ const Register = () => {
   return (
     <div>
       <h2>Register</h2>
-      <form onSubmit={handleSubmit} noValidate>
-        {/* User Type Selection */}
+      <form onSubmit={handleSubmit}>
+        {/* User Type Radio Buttons */}
         <div>
-          <label>
-            <input
-              type="radio"
-              name="usertype"
-              value="User"
-              onChange={handleInputChange}
-            />
-            User
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="usertype"
-              value="Admin"
-              onChange={handleInputChange}
-            />
-            Admin
-          </label>
+          <input
+            type="radio"
+            name="usertype"
+            value="User"
+            onChange={handleInputChange}
+            checked={credentials.usertype === 'User'}
+          /> User
+          <input
+            type="radio"
+            name="usertype"
+            value="Admin"
+            onChange={handleInputChange}
+            checked={credentials.usertype === 'Admin'}
+          /> Admin
         </div>
 
-        {/* Admin Secret Key Input */}
-        {credentials.usertype === "Admin" &&
+        {/* Secret Key for Admin */}
+        {credentials.usertype === 'Admin' && (
           <div>
             <input
               type="text"
-              name="secret-key"
+              name="secretkey"
               placeholder="Secret Key"
               value={secretkey}
               onChange={e => setSecretKey(e.target.value)}
             />
           </div>
-        }
+        )}
 
-        {/* Basic User Information Inputs */}
+        {/* Name Input */}
         <div>
           <input
             type="text"
@@ -272,11 +324,49 @@ const Register = () => {
             onChange={handleInputChange}
             required
           />
-          {/* Other fields remain unchanged... */}
+          {formErrors.name && <p>{formErrors.name}</p>}
         </div>
 
-        {/* More Information Section */}
-        {credentials.moreInfo &&
+        {/* Email Input */}
+        <div>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={credentials.email}
+            onChange={handleInputChange}
+            required
+          />
+          {formErrors.email && <p>{formErrors.email}</p>}
+        </div>
+
+        {/* Password Inputs */}
+        <div>
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={credentials.password}
+            onChange={handleInputChange}
+            required
+          />
+          {formErrors.password && <p>{formErrors.password}</p>}
+        </div>
+
+        <div>
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            value={credentials.confirmPassword}
+            onChange={handleInputChange}
+            required
+          />
+          {formErrors.confirmPassword && <p>{formErrors.confirmPassword}</p>}
+        </div>
+
+        {/* More Info Section */}
+        {credentials.moreInfo && (
           <div>
             <input
               type="text"
@@ -298,16 +388,15 @@ const Register = () => {
               value={credentials.bio}
               onChange={handleInputChange}
             />
-            {/* Add more fields as needed */}
           </div>
-        }
+        )}
 
-        {/* Toggle Button for More Info */}
+        {/* Toggle More Info Button */}
         <button type="button" onClick={handleMoreInfoToggle}>
           {credentials.moreInfo ? 'Less Info' : 'More Info'}
         </button>
 
-        {/* Registration Submit Button */}
+        {/* Submit Button */}
         <button type="submit">Register</button>
       </form>
     </div>
