@@ -10,7 +10,11 @@ router.post('/add', [
     body('name', 'Enter a valid name').isLength({ min: 3 }),
     body('email', 'Enter a valid email').isEmail(),
     body('password', 'Enter a valid password').isLength({ min: 3 }),
-    body('usertype', 'Enter the correct user type').isString()
+    body('usertype', 'Enter the correct user type').isString(),
+    body('institute', 'Institute is required').not().isEmpty(),
+    body('profession', 'Profession is required').not().isEmpty(),
+    body('bio', 'Bio must be up to 200 words').isLength({ max: 200 }),
+    body('age', 'Valid age is required').isInt({ min: 1 })
 ], async (req, res) => {
     // Check for validation errors
     const errors = validationResult(req);
@@ -33,7 +37,11 @@ router.post('/add', [
             name,
             email,
             password,
-            usertype
+            usertype,
+            institute: req.body.institute,
+            profession: req.body.profession,
+            bio: req.body.bio,
+            age: req.body.age
         });
 
         // Save the document to the database

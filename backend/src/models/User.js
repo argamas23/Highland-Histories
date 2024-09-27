@@ -18,9 +18,25 @@ const userSchema = new mongoose.Schema({
     usertype: {
         type: String,
         required: true
+    },
+    institute: {    // Added field
+        type: String,
+        required: true
+    },
+    profession: {   // Added field
+        type: String,
+        required: true
+    },
+    bio: {          // Added field
+        type: String,
+        required: true
+    },
+    age: {          // Added field
+        type: Number,
+        required: true
     }
     
-    // Add any other fields you need for your user model
+  
 });
 
 // Create User model

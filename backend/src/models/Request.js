@@ -18,6 +18,20 @@ const userSchema = new mongoose.Schema({
     usertype: {
         type: String,
         required: true
+    },
+
+    profession: {
+        type: String,
+        required: true
+    },
+    bio: {
+        type: String,
+        required: true,
+        maxlength: 200
+    },
+    age: {
+        type: Number,
+        required: true
     }
     
     // Add any other fields you need for your request model

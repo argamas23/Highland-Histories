@@ -120,7 +120,11 @@ router.post('/createuser', [
     body('name', 'Enter a Valid Name').isLength({ min: 3 }),
     body('email', 'Enter a Valid email').isEmail(),
     body('password', 'Enter a valid password').isLength({ min: 3 }),
-    body('usertype','Enter the correct secret key').isString()
+    body('usertype','Enter the correct secret key').isString(),
+    body('institute', 'Institute is required').not().isEmpty(),
+    body('profession', 'Profession is required').not().isEmpty(),
+    body('bio', 'Bio must be up to 200 words').isLength({ max: 200 }),
+    body('age', 'Valid age is required').isInt({ min: 1 })
 ], async (req, res) => {
     try {
         // If there are errors, return Bad request and errors
