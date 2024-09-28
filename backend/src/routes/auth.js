@@ -148,7 +148,11 @@ router.post('/createuser', [
             name: req.body.name,
             email: req.body.email,
             password: secPass,
-            usertype: req.body.usertype
+            usertype: req.body.usertype,
+            institute: req.body.institute,
+            profession: req.body.profession,
+            bio: req.body.bio,
+            age: req.body.age
         });
         const data = {
             user:{
