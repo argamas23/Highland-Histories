@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.d0b05576.css",
-    "main.js": "/static/js/main.00813317.js",
+    "main.js": "/static/js/main.9ad4d76c.js",
     "static/js/453.c44a0ee9.chunk.js": "/static/js/453.c44a0ee9.chunk.js",
     "static/media/IMG_20231125_112124073.jpg": "/static/media/IMG_20231125_112124073.7498d8c199f5d89f4d3b.jpg",
     "static/media/IMG_20211025_135907.jpg": "/static/media/IMG_20211025_135907.d814a4233c25ab6b3434.jpg",
@@ -29,11 +29,11 @@
     "static/media/Sangla Valley 2004 -- Chitkul - Fort and Mountains (2).jpg": "/static/media/Sangla Valley 2004 -- Chitkul - Fort and Mountains (2).bac64f161eda4f33b393.jpg",
     "index.html": "/index.html",
     "main.d0b05576.css.map": "/static/css/main.d0b05576.css.map",
-    "main.00813317.js.map": "/static/js/main.00813317.js.map",
+    "main.9ad4d76c.js.map": "/static/js/main.9ad4d76c.js.map",
     "453.c44a0ee9.chunk.js.map": "/static/js/453.c44a0ee9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.d0b05576.css",
-    "static/js/main.00813317.js"
+    "static/js/main.9ad4d76c.js"
   ]
 }
