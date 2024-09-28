@@ -123,7 +123,7 @@ router.post('/createuser', [
     body('usertype','Enter the correct secret key').isString(),
     body('institute', 'Institute is required').not().isEmpty(),
     body('profession', 'Profession is required').not().isEmpty(),
-    body('bio', 'Bio must be up to 200 words').isLength({ max: 200 }),
+    body('bio', 'Bio must be up to 200 characters').isLength({ max: 200 }),
     body('age', 'Valid age is required').isInt({ min: 1 })
 ], async (req, res) => {
     try {

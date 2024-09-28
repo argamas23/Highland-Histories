@@ -13,7 +13,7 @@ router.post('/add', [
     body('usertype', 'Enter the correct user type').isString(),
     body('institute', 'Institute is required').not().isEmpty(),
     body('profession', 'Profession is required').not().isEmpty(),
-    body('bio', 'Bio must be up to 200 words').isLength({ max: 200 }),
+    body('bio', 'Bio must be up to 200 characters').isLength({ max: 200 }),
     body('age', 'Valid age is required').isInt({ min: 1 })
 ], async (req, res) => {
     // Check for validation errors

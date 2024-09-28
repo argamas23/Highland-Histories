@@ -588,7 +588,7 @@ const Register = () => {
       case 'confirmPassword':
         return value === credentials.password;
       case 'bio':
-        return value.trim().length <= 200;  // Ensure bio is not more than 200 words
+        return value.trim().length <= 200;  // Ensure bio is not more than 200 characters
       case 'age':
         return /^\d+$/.test(value) && parseInt(value, 10) > 0; // Age must be a positive number
       default:
