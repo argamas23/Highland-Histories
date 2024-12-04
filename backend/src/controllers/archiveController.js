@@ -28,7 +28,8 @@ exports.saveFile = async (req, res) => {
       filename: req.file.filename,
       url: req.body.url,
       fileType: file.mimetype,
-      section
+      section,
+      eventType
     });
 
   try {
@@ -88,6 +89,8 @@ exports.getArchiveById = async (req, res) => {
 exports.uploadArchive = async (req, res) => {
   const { section } = req.body; // Ensure section is extracted from the request body
   console.log("Section received:", section);
+  const { eventType } = req.body;
+  console.log("EventType received:", eventType);
 
   try {
       const newArchive = new Archive({
@@ -100,7 +103,8 @@ exports.uploadArchive = async (req, res) => {
           location: req.body.location,
           filename: req.file.filename,
           fileType: req.file.mimetype,
-          section
+          section,
+          eventType
       });
 
       const savedArchive = await newArchive.save();
@@ -122,13 +126,16 @@ exports.uploadArchive = async (req, res) => {
 // };
 
 exports.getArchives = async (req, res) => {
-  const { section } = req.query; // Capture the 'section' query parameter
+  const { section, eventType } = req.query; // Capture the 'section' query parameter
 
   try {
       let query = {};
       if (section && section !== 'All') {
           query.section = section; // Only add the section filter if it's not 'All'
       }
+      if (eventType && eventType !== 'All') {
+        query.eventType = eventType; // Only add eventType filter if it's not 'All'
+    }
       const archives = await Archive.find(query);
       res.json(archives);
   } catch (error) {

@@ -41,15 +41,15 @@ const Events = () => {
         }
     };
 
-    const renderSection = (section) => {
-        const sectionArchives = archives.filter(archive => archive.section === section);
-        if (sectionArchives.length > 0) {
-            const latestArchive = sectionArchives[0];
+    const renderEventType = (eventType) => {
+        const eventTypeArchives = archives.filter(archive => archive.eventType === eventType);
+        if (eventTypeArchives.length > 0) {
+            const latestArchive = eventTypeArchives[0];
             return (
                 <div
                     key={latestArchive._id}
                     className="archive-item"
-                    onClick={() => handleArchiveClick(latestArchive)} // Handle click with token check
+                    onClick={() => handleArchiveClick(latestArchive)}
                 >
                     <h3>{latestArchive.title}</h3>
                     <p><b>Description: </b>{latestArchive.description}</p>
@@ -62,17 +62,17 @@ const Events = () => {
     };
 
     const renderArchives = () => {
-        if (filterType === 'All') {
-            const sections = ['Maps', 'Documents', 'Audio', 'Video'];
-            return sections.map(section => (
-                <div key={section}>
-                    <h1>{section}</h1>
-                    {renderSection(section)}
-                </div>
-            ));
-        } else {
-            return renderSection(filterType);
-        }
+        const eventTypes = ["Conference", "Seminar", "Workshop", "Summit"];
+        return eventTypes.map(eventType => (
+            <div key={eventType}>
+                {archives.some(archive => archive.eventType === eventType) && (
+                    <>
+                        <h2>{eventType}</h2> {/* Render heading if contents are present */}
+                        {renderEventType(eventType)}
+                    </>
+                )}
+            </div>
+        ));
     };
 
     return (

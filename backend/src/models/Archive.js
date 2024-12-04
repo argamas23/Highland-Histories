@@ -54,6 +54,10 @@ const archiveSchema = new mongoose.Schema({
     section: { 
         type: String, 
         required: true 
+    },
+    eventType: {
+        type: String,
+        required: true
     }
     
 });

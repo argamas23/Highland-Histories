@@ -257,6 +257,7 @@ const ConfirmUpload = () => {
     const { state } = useLocation();
     const navigate = useNavigate();
     const [section, setSection] = useState('');
+    const [eventType, setEventType] = useState(''); // Separate state for eventType
     const [uploadProgress, setUploadProgress] = useState(0);
     const [uploading, setUploading] = useState(false);
 
@@ -274,6 +275,7 @@ const ConfirmUpload = () => {
         formData.append('userId', localStorage.getItem('userId'));
         formData.append('url', `https://highlandhistories.org/uploads/${state.file.filename}`);
         formData.append('section', section);
+        formData.append('eventType', eventType); // Add eventType
         formData.append('fileType', state.file.type);
 
         const xhr = new XMLHttpRequest();
@@ -343,6 +345,17 @@ const ConfirmUpload = () => {
                 <option value="Documents">Documents</option>
                 <option value="Audio">Audio</option>
                 <option value="Video">Video</option>
+            </select>
+            <select
+                onChange={(e) => setEventType(e.target.value)}
+                defaultValue=""
+                className="filter-dropdown"
+            >
+                <option value="">Select Event</option>
+                <option value="Conference">Conference</option>
+                <option value="Seminar">Seminar</option>
+                <option value="Workshop">Workshop</option>
+                <option value="Summit">Summit</option>
             </select>
             {uploadProgress > 0 && <progress value={uploadProgress} max="100">{uploadProgress}%</progress>}
             <button onClick={handleUpload} disabled={uploading || (uploadProgress > 0 && uploadProgress < 100)} className="upload-btn">

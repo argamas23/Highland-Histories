@@ -80,7 +80,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     console.log(req.file); // Log file details
     try {
         console.log ("Hi from backend : archiveRoutes.js : I am in the POST endpoint for uploading an archive")
-        let { title, caption, categories, description, date, location,userId, url , section } = req.body;
+        let { title, caption, categories, description, date, location,userId, url , section, eventType } = req.body;
         const file = req.file;
         //debugging 
         console.log("Request Body Recieved from frontend to backend is : "  , req.body, "Consisting of - 'Title' = ", title, " Caption : ",  caption, "Categories : ", categories,"Description :", description,"Date : ", date,"Location : ", location, "UserID : " , userId, "URL :", url, " file : " , file)
@@ -152,7 +152,8 @@ router.post('/upload', upload.single('file'), async (req, res) => {
             filename: file.filename,
             filePath: file.path,
             fileType: file.mimetype,
-            section
+            section,
+            eventType
         });
 
         const savedArchive = await newArchive.save();
@@ -189,5 +190,14 @@ router.get('/', (req, res) => {
         .catch(err => res.status(500).json({ message: "Error fetching archives", error: err.message }));
 });
 
+//Fetch archives by Eventtype
+router.get('/', (req, res) => {
+    const { eventType } = req.query; 
+    let query = eventType ? { eventType } : {};
+    
+    Archive.find(query)
+        .then(archives => res.json(archives))
+        .catch(err => res.status(500).json({ message: "Error fetching archives", error: err.message }));
+});
 
 module.exports = router;

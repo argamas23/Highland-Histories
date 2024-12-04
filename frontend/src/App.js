@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
-import About from './pages/About';
+// import About from './pages/About';
 import Archives from './pages/Archives';
 import Login from './pages/Login'; 
 import Register from './pages/Register';
@@ -28,7 +28,7 @@ function App() {
         <div className="content"> {/* This div is used for pushing the footer down */}
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
+          {/* <Route path="/about" element={<About />} /> */}
           <Route path="/archives" element={<Archives />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} /> 
@@ -39,7 +39,7 @@ function App() {
           <Route path="/confirm-upload" element={<ConfirmUpload />} />
           {/* <Route path="/confirm-upload" element={ConfirmUpload} /> */}
           <Route path="/my-uploads" element={<MyUploads />} />
-          <Route path="/events" element={<Events />} />
+          <Route path="/events" element={<Happenings />} />
           <Route path="/archives/:id" element={<ArchiveDetail />} />
           <Route path="/edit-upload/:id" element={<EditUpload />} />
           <Route path="/permission" element={<Permission />}/>
