@@ -1,69 +1,126 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import './Archives.css'
+import { Link } from 'react-router-dom';
+import './Archives.css';
 
 const Archives = () => {
   const [archives, setArchives] = useState([]);
   const [filterType, setFilterType] = useState('All');
-  const location = useLocation();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const typeFromUrl = queryParams.get('type');
-    if (typeFromUrl) {
-      setFilterType(typeFromUrl);
-    } else {
-      setFilterType('All'); // Default to 'All' if no type is specified in the URL
-    }
-  }, [location]);
+  const SECTIONS = ['Maps', 'Documents', 'Audio', 'Video'];
 
   useEffect(() => {
     const fetchArchives = async () => {
-      const response = await fetch(`https://highlandhistories.org/api/archives?section=${filterType}`);
-      const data = await response.json();
-      if (response.ok) {
+      try {
+        setIsLoading(true);
+        const response = await fetch(`https://highlandhistories.org/api/archives?section=${filterType}`);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
         setArchives(data);
-      } else {
-        console.error("Error fetching archives:", response.statusText);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching archives:", err);
+        setError('Failed to load archives. Please try again later.');
+      } finally {
+        setIsLoading(false);
       }
     };
+
     fetchArchives();
   }, [filterType]);
 
-  const renderSection = (section) => {
-    return archives.filter(archive => archive.section === section).map(archive => (
+  const renderArchiveItem = (archive) => {
+    const hasThumbnail = archive.thumbnail && archive.thumbnail.trim() !== '';
+
+    return (
       <div key={archive._id} className="archive-item">
-        <Link to={`/view-upload/${archive._id}`}>
-          {archive.previewUrl ? (
-            <img src={archive.previewUrl} alt={archive.title} className="archive-preview" />
+        <div className="archive-thumbnail">
+          {hasThumbnail ? (
+            <img 
+              src={archive.thumbnail} 
+              alt={`${archive.title} thumbnail`} 
+              className="archive-image"
+            />
           ) : (
-            <div className="no-preview">No Preview Available</div>
+            <div className="no-preview">
+              <span>No Preview Available</span>
+            </div>
           )}
-          <h3>{archive.title}</h3>
-        </Link>
-        <p><b>Description: </b>{archive.description}</p>
-        <p><b>Categories: </b>{archive.categories.join(', ')}</p>
+        </div>
+        <div className="archive-content">
+          <Link to={`/view-upload/${archive._id}`} className="archive-title">
+            {archive.title}
+          </Link>
+          <p className="archive-description">
+            <strong>Description:</strong> {archive.description}
+          </p>
+          <div className="archive-categories">
+            <strong>Categories:</strong>{' '}
+            {archive.categories.map((category, index) => (
+              <span key={category} className="category-tag">
+                {category}{index < archive.categories.length - 1 ? ', ' : ''}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
-    ));
+    );
+  };
+
+  const renderSection = (section) => {
+    const sectionArchives = archives.filter(archive => archive.section === section);
+    
+    if (sectionArchives.length === 0) {
+      return null;
+    }
+
+    return (
+      <div className="archive-section" key={section}>
+        <h2 className="section-title">{section}</h2>
+        <div className="archive-grid">
+          {sectionArchives.map(renderArchiveItem)}
+        </div>
+      </div>
+    );
   };
 
   const renderArchives = () => {
-    if (filterType === 'All') {
-      const sections = ['Maps', 'Documents', 'Audio', 'Video'];
-      return sections.map(section => (
-        <div key={section}>
-          <h2>{section}</h2>
-          {renderSection(section)}
-        </div>
-      ));
-    } else {
-      return renderSection(filterType);
+    if (isLoading) {
+      return <div className="loading-spinner">Loading archives...</div>;
     }
+
+    if (error) {
+      return <div className="error-message">{error}</div>;
+    }
+
+    if (archives.length === 0) {
+      return <div className="no-archives">No archives found.</div>;
+    }
+
+    return filterType === 'All'
+      ? SECTIONS.map(section => renderSection(section))
+      : renderSection(filterType);
   };
 
   return (
     <div className="archives-container">
-      <h1>Archives: {filterType}</h1>
+      <h1 className="page-title">Media Archives</h1>
+      <select
+        onChange={e => setFilterType(e.target.value)}
+        value={filterType}
+        className="filter-dropdown"
+        aria-label="Filter archives by section"
+      >
+        <option value="All">All Types</option>
+        {SECTIONS.map(section => (
+          <option key={section} value={section}>{section}</option>
+        ))}
+      </select>
       {renderArchives()}
     </div>
   );

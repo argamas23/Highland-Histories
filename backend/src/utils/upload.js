@@ -47,5 +47,11 @@ const upload = multer({ storage: storage,
 
 });
 
-module.exports = upload;
+const multipleUpload = upload.fields([
+  { name: 'file', maxCount: 1 },
+  { name: 'thumbnail', maxCount: 1 }
+]);
+
+
+module.exports = { upload, multipleUpload };
 

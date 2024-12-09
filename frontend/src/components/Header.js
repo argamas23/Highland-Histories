@@ -25,8 +25,8 @@ const Header = () => {
       <nav>
         <ul>
           <li><Link to="/">Home</Link></li>
-          <li><Link to="/about">About</Link></li>
-          <li><Link to="/events">Events</Link></li>
+          {/* <li><Link to="/about">About</Link></li> */}
+          <li><Link to="/events">Happenings</Link></li>
           {token && (
             <li className="archives-menu">
               <Link to="/archives">Archives</Link>

@@ -19,17 +19,24 @@ const Search = () => {
           return;
         }
 
+        // Split search term into an array of parameters, trimming whitespace
+        const searchParams = searchTerm.split(',').map(param => param.trim().toLowerCase());
+
         const response = await fetch(`https://highlandhistories.org/api/archives?query=${searchTerm}`);
         if (!response.ok) {
           throw new Error('Failed to fetch search results');
         }
 
         const data = await response.json();
+
+        // Filter results based on multiple search parameters
         const results = data.filter(item =>
-          item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.categories.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          item.section.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.location.toLowerCase().includes(searchTerm.toLowerCase())
+          searchParams.some(param =>
+            item.title.toLowerCase().includes(param) ||
+            item.categories.some(tag => tag.toLowerCase().includes(param)) ||
+            item.section.toLowerCase().includes(param) ||
+            item.location.toLowerCase().includes(param)
+          )
         );
 
         setSearchResults(results);

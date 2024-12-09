@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Select from 'react-select';
 import './FileDetails.css';
 
 const FileDetails = () => {
@@ -14,6 +13,10 @@ const FileDetails = () => {
     description: '',
     date: '',
     location: '',
+    section: '', // State to track selected section
+    mapType: '', // State to track type of map, image, or scan
+    interviewer: [], // Changed to array
+    interviewee: [], // Changed to array
     userId: localStorage.getItem('userId'), // Fetch userId from localStorage
   });
 
@@ -24,7 +27,7 @@ const FileDetails = () => {
   }, [location, navigate]);
 
   const handleChange = (key, value) => {
-    setDetails(prevDetails => ({ ...prevDetails, [key]: value }));
+    setDetails((prevDetails) => ({ ...prevDetails, [key]: value }));
   };
 
   const handleSubmit = () => {
@@ -37,6 +40,69 @@ const FileDetails = () => {
   return (
     <div className="file-details-container">
       <h2>File Details</h2>
+      <div className="input-container">
+        <label>Section:</label>
+        <br />
+        <select
+          onChange={(e) => handleChange('section', e.target.value)}
+          value={details.section}
+          className="filter-dropdown"
+        >
+          <option value="">Select Section</option>
+          <option value="Maps">Maps</option>
+          <option value="Documents">Documents</option>
+          <option value="Audio">Audio</option>
+          <option value="Video">Video</option>
+        </select>
+      </div>
+      
+      {details.section === 'Maps' && (
+        <div className="input-container">
+          <label>Type:</label>
+          <br />
+          <select
+            onChange={(e) => handleChange('mapType', e.target.value)}
+            value={details.mapType}
+            className="filter-dropdown"
+          >
+            <option value="">Select Type</option>
+            <option value="Map">Map</option>
+            <option value="Image">Image</option>
+            <option value="Scan">Scan</option>
+          </select>
+        </div>
+      )}
+
+      {(details.section === 'Audio' || details.section === 'Video') && (
+        <>
+          <div className="input-container">
+            <label>Name of Interviewer:</label>
+            <br />
+            <input
+              type="text"
+              value={details.interviewer.join(',')} // Convert array to a comma-separated string
+              onChange={(e) =>
+                handleChange('interviewer', e.target.value.split(','))
+              }
+
+              className="input-field"
+            />
+          </div>
+          <div className="input-container">
+            <label>Name of Interviewee:</label>
+            <br />
+            <input
+              type="text"
+              value={details.interviewee.join(',')} // Convert array to a comma-separated string
+              onChange={(e) =>
+                handleChange('interviewee', e.target.value.split(','))
+              }
+              className="input-field"
+            />
+          </div>
+        </>
+      )}
+
       <div className="input-container">
         <label>Title:</label>
         <br />
@@ -58,12 +124,14 @@ const FileDetails = () => {
         />
       </div>
       <div className="input-container">
-        <label> Categories:</label>
+        <label>Categories:</label>
         <br />
         <input
           type="text"
-          value={details.categories}
-          onChange={(e) => handleChange('categories', e.target.value.split(','))}
+          value={details.categories.join(',')}
+          onChange={(e) =>
+            handleChange('categories', e.target.value.split(','))
+          }
           className="input-field"
         />
       </div>
@@ -96,6 +164,7 @@ const FileDetails = () => {
           className="input-field"
         />
       </div>
+
       <button onClick={handleSubmit} className="submit-button">
         Next
       </button>

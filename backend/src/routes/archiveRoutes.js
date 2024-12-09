@@ -1,8 +1,8 @@
 const express = require('express');
 const Archive = require('../models/Archive');
-const upload = require('../utils/upload');
+// const upload = require('../utils/upload');
+const {multipleUpload} = require('../utils/upload');
 const router = express.Router();
-const { exec } = require('child_process');
 
 const {
   getArchiveById, 
@@ -14,10 +14,6 @@ const {
   saveFile
 
 } = require('../controllers/archiveController');
-
-// const upload = require('../utils/upload');
-
-// const router = express.Router();
 
 const archiveController = require('../controllers/archiveController');
 
@@ -55,7 +51,7 @@ router.get('/user/:userId/uploads', async (req, res) => {
             return res.status(400).json({ message: "User ID is required." });
         }
 
-        const uploads = await archiveController.getMyUploads(req); 
+        const uploads = await archiveController.getMyUploads(req); // Assuming this function handles the logic correctly
         console.log("Uploads fetched for User ID:", userId, " Uploads:", uploads);
 
         res.status(200).json(uploads);
@@ -74,77 +70,75 @@ router.get('/:id', archiveController.getArchiveById);
 // router.post('/upload', upload.single('file'), saveFile);
 
 // POST endpoint for uploading an archive
-router.post('/upload', upload.single('file'), async (req, res) => {
-
+router.post('/upload', multipleUpload, async (req, res) => {
     console.log("Received fields:", req.body); // Log text field values
-    console.log(req.file); // Log file details
+    console.log("Files received:", req.files); // Log file details
+
     try {
-        console.log ("Hi from backend : archiveRoutes.js : I am in the POST endpoint for uploading an archive")
-        let { title, caption, categories, description, date, location,userId, url , section, eventType } = req.body;
-        const file = req.file;
-        //debugging 
-        console.log("Request Body Recieved from frontend to backend is : "  , req.body, "Consisting of - 'Title' = ", title, " Caption : ",  caption, "Categories : ", categories,"Description :", description,"Date : ", date,"Location : ", location, "UserID : " , userId, "URL :", url, " file : " , file)
+        console.log("Hi from backend: archiveRoutes.js: POST endpoint for uploading an archive");
 
+        let { 
+            title, 
+            caption, 
+            categories, 
+            description, 
+            date, 
+            location, 
+            userId, 
+            url, 
+            section, 
+            eventType, 
+            interviewer, 
+            interviewee,
+            mapType, 
+        } = req.body;
 
-        // Construct the URL
-        // const fileUrl = `http://43.204.23.49/uploads/${file.filename}`;
-        
-        // If url ends with "undefined", remove it, and replace with content of file.filename
-        if (url.endsWith("uploads/undefined")) {
-            url = url.replace ("uploads/undefined","uploads/"+file.filename);
-            // url = url.replace("uploads/undefined", file.filename);
+        const file = req.files?.file?.[0]; // Safely access the uploaded file
+        const thumbnailFile = req.files?.thumbnail?.[0]; // Safely access the uploaded thumbnail
+        console.log(interviewee, interviewer);
+        // Parse JSON fields with fallback to empty arrays if they are missing or invalid
+        try {
+            categories = categories ? JSON.parse(categories) : [];
+        } catch (err) {
+            console.error("Error parsing 'categories':", err);
+            categories = [];
         }
 
-        // If url ends with "undefined", construct the correct URL
-        // if (!url || url.endsWith("uploads/undefined")) {
-        //     url = `http://43.204.23.49/uploads/${file.filename}`;
-        // }
+        try {
+            interviewer = interviewer ? JSON.parse(interviewer) : [];
+        } catch (err) {
+            console.error("Error parsing 'interviewers':", err);
+            interviewer = [];
+        }
+
+        try {
+            interviewee = interviewee ? JSON.parse(interviewee) : [];
+        } catch (err) {
+            console.error("Error parsing 'interviewees':", err);
+            interviewee = [];
+        }
 
         if (!file) {
             return res.status(400).json({ message: "No file uploaded." });
         }
 
-        // let { url } = req.body;
-//   let filepath = req.file.path;
-//   let fileType = req.file.mimetype;
-//   let filename = req.file.filename;
+        // Modify `url` if it ends with "undefined"
+        if (url.endsWith("uploads/undefined")) {
+            url = url.replace("uploads/undefined", "uploads/" + file.filename);
+        }
 
-//   if (req.file.mimetype === 'video/x-matroska') {
-//     const oldPath = filepath;
-//     const newPath = oldPath.replace('.mkv', '.mp4');
+        // Construct thumbnail URL if thumbnail is provided
+        let thumbnailUrl = null;
+        if (thumbnailFile) {
+            thumbnailUrl = `https://highlandhistories.org/uploads/${thumbnailFile.filename}`;
+        }
 
-//     // Convert MKV to MP4 using ffmpeg
-//     try {
-//       await new Promise((resolve, reject) => {
-//         const ffmpegCommand = `ffmpeg -i "${oldPath}" "${newPath}" -hide_banner -loglevel error`;
-//         exec(ffmpegCommand, (error, stdout, stderr) => {
-//           if (error) {
-//             console.error('Conversion error:', stderr);
-//             reject(error);
-//           }
-//           resolve(stdout);
-//         });
-//       });
-
-//       // Update file path and mime type
-//       filepath = newPath;
-//       fileType = 'video/mp4';
-//       filename = filename.replace('.mkv', '.mp4');
-//       url = url.replace('.mkv', '.mp4');  // Update URL if needed
-
-//       // Optionally delete the original MKV file
-//       fs.unlinkSync(oldPath);
-//     } catch (error) {
-//       return res.status(500).json({ message: 'Error converting video file.', error: error.message });
-//     }
-//   }
-
+        // Save the archive
         const newArchive = new Archive({
             userId,
             title,
             caption,
-            categories: JSON.parse(categories),
-            // categories: categories.split(','),  // Assuming categories are sent as comma-separated
+            categories,
             description,
             date,
             location,
@@ -153,18 +147,20 @@ router.post('/upload', upload.single('file'), async (req, res) => {
             filePath: file.path,
             fileType: file.mimetype,
             section,
-            eventType
+            eventType,
+            interviewer,
+            interviewee,
+            thumbnail: thumbnailUrl,
+            mapType,
         });
 
         const savedArchive = await newArchive.save();
         res.status(201).json({ message: "File uploaded successfully", data: savedArchive });
     } catch (error) {
         console.error('Error uploading file:', error);
-        res.status(500).json({ error: "Error uploading file; Error Originates from archiveRoutes.js in the backend", message: error.message });
+        res.status(500).json({ error: "Error uploading file", message: error.message });
     }
 });
-
-
 
 
 

@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Assuming you're using react-router-dom v6
+import { useNavigate } from 'react-router-dom';
 import './Events.css';
 
 const Events = () => {
     const [archives, setArchives] = useState([]);
-    const [filterType, setFilterType] = useState('All');
     const [selectedArchive, setSelectedArchive] = useState(null);
-    const navigate = useNavigate(); // For navigation
-
-    // Check if the token is present in localStorage for authentication
+    const navigate = useNavigate();
     const token = localStorage.getItem('token');
 
     useEffect(() => {
         const fetchArchives = async () => {
             try {
-                const response = await fetch(`https://highlandhistories.org/api/archives?section=${filterType}`);
+                const response = await fetch(`https://highlandhistories.org/api/archives`);
                 const data = await response.json();
                 if (response.ok) {
-                    // Sort the archives by date of submission
                     data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                     setArchives(data);
                 } else {
@@ -29,14 +25,12 @@ const Events = () => {
         };
 
         fetchArchives();
-    }, [filterType]);
+    }, []);
 
     const handleArchiveClick = (archive) => {
-        // If no token is found, redirect to the login page
         if (!token) {
             navigate('/login');
         } else {
-            // If token is present, set the selected archive to view the details
             navigate(`/view-upload/${archive._id}`); 
         }
     };
@@ -62,7 +56,7 @@ const Events = () => {
     };
 
     const renderArchives = () => {
-        const eventTypes = ["Conference", "Seminar", "Workshop", "Summit"];
+        const eventTypes = ["Conference/Seminar/Workshop", "Blog", "Report", "Article", "Summit"];
         return eventTypes.map(eventType => (
             <div key={eventType}>
                 {archives.some(archive => archive.eventType === eventType) && (
@@ -79,17 +73,6 @@ const Events = () => {
         <div className="events-container">
             <div className="archive-list">
                 <h1>Events</h1>
-                <select
-                    onChange={e => setFilterType(e.target.value)}
-                    value={filterType}
-                    className="filter-dropdown"
-                >
-                    <option value="All">All Types</option>
-                    <option value="Maps">Maps</option>
-                    <option value="Documents">Documents</option>
-                    <option value="Audio">Audio</option>
-                    <option value="Video">Video</option>
-                </select>
                 {renderArchives()}
             </div>
             <div className="archive-details">

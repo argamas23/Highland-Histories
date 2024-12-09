@@ -24,11 +24,11 @@ const archiveSchema = new mongoose.Schema({
     },
     date: {
         type: String,
-        required:true,
+        required: true,
     },
     location: {
         type: String,
-        required:true,
+        required: true,
     },
     filename: {
         type: String,
@@ -46,11 +46,6 @@ const archiveSchema = new mongoose.Schema({
         type: String,
         required: [true, "URL is required"]
     },
-    // section: {
-    //     type: String,
-    //     required: true,
-    //     enum: ['Maps', 'Documents', 'Audio', 'Video']
-    //   },
     section: { 
         type: String, 
         required: true 
@@ -58,6 +53,22 @@ const archiveSchema = new mongoose.Schema({
     eventType: {
         type: String,
         required: true
+    },
+    thumbnail:{
+        type: String,
+        required: false
+    },
+    interviewer: {
+        type: [String],
+        required: false
+    },
+    interviewee: {
+        type: [String],
+        required: false
+    },
+    mapType: {
+        type: String,
+        required: false
     }
     
 });
