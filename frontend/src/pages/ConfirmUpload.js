@@ -98,7 +98,6 @@ const ConfirmUpload = () => {
                 <option value="Article">Article</option>
                 <option value="Talks">Talks</option>
                 <option value="Conference">Conference/Seminar/Workshop</option>
-                <option value="Summit">Summit</option>
             </select>
             <label htmlFor="thumbnail">Upload Thumbnail:</label>
             <input type="file" id="thumbnail" accept="image/*" onChange={handleThumbnailChange} />

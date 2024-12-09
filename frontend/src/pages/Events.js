@@ -56,7 +56,7 @@ const Events = () => {
     };
 
     const renderArchives = () => {
-        const eventTypes = ["Conference/Seminar/Workshop", "Blog", "Report", "Article", "Summit"];
+        const eventTypes = ["Conference/Seminar/Workshop", "Blog", "Report", "Article", "Talks"];
         return eventTypes.map(eventType => (
             <div key={eventType}>
                 {archives.some(archive => archive.eventType === eventType) && (
