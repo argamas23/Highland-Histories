@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './Archives.css';
 
 const Archives = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const initialFilterType = queryParams.get('type') || 'All';
+
   const [archives, setArchives] = useState([]);
-  const [filterType, setFilterType] = useState('All');
+  const [filterType, setFilterType] = useState(initialFilterType);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -33,6 +37,11 @@ const Archives = () => {
 
     fetchArchives();
   }, [filterType]);
+
+  useEffect(() => {
+    const queryFilter = queryParams.get('type') || 'All';
+    setFilterType(queryFilter);
+  }, [location.search]);
 
   const renderArchiveItem = (archive) => {
     const hasThumbnail = archive.thumbnail && archive.thumbnail.trim() !== '';
