@@ -64,8 +64,7 @@ Highland-Histories/
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-repo-url>
-cd Highland-Histories
+git clone https://github.com/argamas23/Highland-Histories.git
 ```
 
 ---
